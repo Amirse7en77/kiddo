@@ -14,7 +14,7 @@ const Home = () => {
          <HeroSection/>
 
       <h3 className="font-bold text-right m-1">ابزارهای برتر</h3>
-       <div className="flex flex-col items-center text-center p-4 rounded-xl bg-white shadow gap-2 relative   overflow-visible mb-10">
+       <div className="flex flex-col items-center text-center  rounded-xl bg-white shadow gap-2 relative   overflow-visible mb-10 p-10">
       
          <img src={book} alt="Image" className="absolute -top-5  w-10 h-10"/>
       
