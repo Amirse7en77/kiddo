@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+
+
+@import "tailwindcss";
+
+@theme {
+  --color-custom-purple: rgba(98, 72, 255, 1);
+  --color-custom-orange-1: rgba(255, 107, 72, 1);
+  --color-custom-orange-2: rgba(254, 76, 74, 1);
+
+  --gradient-border-main: linear-gradient(to right, var(--color-custom-purple), var(--color-custom-orange-1));
+  --gradient-border-alt: linear-gradient(135deg, var(--color-custom-purple) 0%, var(--color-custom-orange-2) 100%);
+}
+.image-with-border {
+  border: 2px solid #3498db; /* 2px solid blue border */
+  padding: 5px; /* Optional: adds space between the image and the border */
+  border-radius: 8px; /* Optional: rounds the corners of the border */
+}
