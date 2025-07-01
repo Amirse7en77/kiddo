@@ -1,7 +1,7 @@
-import Header from "../components/Header";
-import HeroSection from "../components/HeroSection";
-import RecentItem from "../components/RecentItem";
-import ToolCard from "../components/ToolCard";
+import Header from "../components/home/Header";
+import HeroSection from "../components/home/HeroSection";
+import RecentItem from "../components/home/RecentItem";
+import ToolCard from "../components/home/ToolCard";
 import book from './../assets/images/book.png'
 
 

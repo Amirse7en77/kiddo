@@ -1,6 +1,6 @@
 import { FC } from "react";
-import book from './../assets/images/book.png'
-import hero from './../assets/images/heroSection.png'
+import book from './../../assets/images/book.png'
+import hero from './../../assets/images/heroSection.png'
 
 const HeroSection: FC = () => {
   return (

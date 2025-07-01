@@ -1,12 +1,13 @@
 
 
-import Home from './pages/Home'
+import StudyAssistant from './pages/StudyAssistant'
 
 function App() {
  
   return (
     <>
-<Home/>
+<StudyAssistant/>
+
     </>
   )
 }

@@ -1,5 +1,5 @@
 import { FC } from "react";
-import image1 from './../assets/images/header.png'
+import image1 from './../../assets/images/header.png'
 
 const Header: FC = () => {
   return (
