@@ -1,17 +1,26 @@
 @import "tailwindcss";
 
-
-
-@import "tailwindcss";
+@font-face {
+  font-family: 'YekanBakh';
+  src: url('./assets/fonts/YekanBakhFaNum/webfonts/woff/YekanBakhFaNum-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 
 @theme {
   --color-custom-purple: rgba(98, 72, 255, 1);
   --color-custom-orange-1: rgba(255, 107, 72, 1);
   --color-custom-orange-2: rgba(254, 76, 74, 1);
 
+  /* Declare your custom font here */
+  --font-yekanBakh: YekanBakh, sans-serif; 
+
+  /* Your gradients are CSS variables, which is fine, but they don't directly create utility classes */
   --gradient-border-main: linear-gradient(to right, var(--color-custom-purple), var(--color-custom-orange-1));
   --gradient-border-alt: linear-gradient(135deg, var(--color-custom-purple) 0%, var(--color-custom-orange-2) 100%);
 }
+
 .image-with-border {
   border: 2px solid #3498db; /* 2px solid blue border */
   padding: 5px; /* Optional: adds space between the image and the border */

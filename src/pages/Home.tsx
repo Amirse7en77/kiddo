@@ -7,7 +7,7 @@ import book from './../assets/images/book.png'
 
 const Home = () => {
   return (
-    <div className="min-h-screen bg-gray-200  space-y-4">
+    <div className="min-h-screen bg-gray-200  space-y-4 font-yekanBakh">
       <Header />
 
      <div className="m-4">
@@ -24,7 +24,7 @@ const Home = () => {
       <div className="grid grid-cols-2 gap-3">
        
         <ToolCard icon="🧩" title="ترکیب‌کن" description="درسا رو همونطوری که دوست داری یاد بگیر." />
-        <ToolCard icon="🔍" title="گنج‌کاو" description="همراه خوب تو برای یادگرفتن چیزی جدید!" />
+        <ToolCard icon="🔍" title="گنج‌کاو" description="همراه خوب تو برای یادگرفتن چیزی جدید را یاد بگیر!" />
         <ToolCard icon="✅" title="سوال‌یار" description="با راهنمایی آزمون بده و درسا رو بهتر یاد بگیر!" />
         <ToolCard icon="✏️" title="آزمون‌ساز" description="کلی نمونه سوال حرفه‌ای برات طراحی می‌کنه!" />
       </div>
