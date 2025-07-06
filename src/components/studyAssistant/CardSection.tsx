@@ -1,21 +1,27 @@
 import React from 'react'
+import { studyAssistantConstatnt } from '../../constants/studyAssistantConstant'
 
-const CardSection = () => {
+const CardSection:React.FC = () => {
   return (
-     <div className='card-box '>
-        <div className=' flex justify-center flex-col bg-white rounded-[24px] border-2 border-gray-300 p-[16px] gap-[12px]'>
-            <div className='gap-[8px]'>
-                <h1>هیچ درسی دیگر سخت نیست</h1>
+  <div >
+   {studyAssistantConstatnt.map(study=>(
+        <div className='card-box mb-4'>
+        <div className=' flex justify-center flex-col bg-white rounded-[24px] border-2 border-gray-300 p-[16px] '>
+            <div className='gap-[8px] flex items-center justify-start'>
+               <img src={study.logo}/>
+                <h1 className='font-extrabold'> {study.title}   </h1>
 
             </div>
              <div>
-           <p>با درس یار هر مبحثی را سریع یاد بگیر</p>
+           <p className=' text-justify font-yekanBakhText'>{study.description}</p>
         </div>
             
         </div>
        
      </div>
   )
+   )}
+  </div>)
 }
 
 export default CardSection

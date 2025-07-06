@@ -1,19 +1,23 @@
 import React, { FC } from "react";
-import Header from "../components/studyAssistant/Header";
+import Header from "../components/common/Header";
 import HeroSection from "../components/studyAssistant/HeroSection";
 import CardSection from "../components/studyAssistant/CardSection";
+import ChatButton from "../components/common/ChatButton";
 
 interface IProps {};
 
 const StudyAssistant:FC<IProps> = (props) => {
     return <div className="font-yekanBakh">
         <Header/>
-        <div className="bg-backGround-1 gap-[32px]">
-    <HeroSection/>
+        <div className="bg-backGround-1 h-full pb-10 ">
+  <div className="mx-[32px] ">
+      <HeroSection/>
     <CardSection/>
-    <CardSection/>
-    <CardSection/>
+    
+  </div>
         </div>
+       
+        <ChatButton />
     </div>
 };
 

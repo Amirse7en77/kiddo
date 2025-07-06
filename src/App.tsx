@@ -1,14 +1,17 @@
 
 
-import StudyAssistant from './pages/StudyAssistant'
+
+import { Outlet } from 'react-router-dom'
+import Home from './pages/Home'
 
 function App() {
  
   return (
-    <>
-<StudyAssistant/>
+    <div className='font-yekanBakh'>
+    
+<Outlet/>
 
-    </>
+    </div>
   )
 }
 

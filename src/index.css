@@ -8,13 +8,29 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: 'YekanBakhText';
+  src: url('./assets/fonts/YekanBakhFaNum/webfonts/woff2/YekanBakhFaNum-Regular.woff2') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+
 @theme {
   --color-custom-purple: rgba(98, 72, 255, 1);
   --color-custom-orange-1: rgba(255, 107, 72, 1);
   --color-custom-orange-2: rgba(254, 76, 74, 1);
 --color-backGround-1:#F1F0EE;
+--color-borderColor-1:#DCDCDC;
+--color-chatButton-1:#6248FF;
+--color-backGroundButton:#4432B3;
+--color-backGroundCard:#F2EFFF;
+
+
   /* Declare your custom font here */
   --font-yekanBakh: YekanBakh, sans-serif; 
+  --font-yekanBakhText: YekanBakhText, sans-serif; 
 
   /* Your gradients are CSS variables, which is fine, but they don't directly create utility classes */
   --gradient-border-main: linear-gradient(to right, var(--color-custom-purple), var(--color-custom-orange-1));
@@ -30,7 +46,38 @@
   padding-top: 2px;
   padding-right: 2px;
   padding-left: 2px;
-  padding-bottom: 4px;
+  padding-bottom: 6px;
   background-color: #DCDCDC;
   border-radius: 24px;
+}
+.chat-button{
+  background-color: #6248FF;
+ padding-top: 12px;
+  padding-right: 8px;
+  padding-left: 8px;
+  padding-bottom: 12px;
+  border-radius: 16px;
+ 
+}
+.button-box{
+  padding-bottom: 4px;
+  background-color: #4432B3;
+  border-radius: 16px;
+}
+.onClickedCard-box{
+  padding-top: 2px;
+  padding-right: 2px;
+  padding-left: 2px;
+  padding-bottom: 6px;
+  background-color: #6248FF;
+  border-radius: 24px;
+  
+}
+
+.infoGradient {
+  background-image: linear-gradient(to left, 
+    rgba(98, 72, 255, 0.1), /* #6248FF with 10% opacity */
+    rgba(254, 76, 74, 0.1), /* #FE4C4A with 10% opacity */
+    rgba(255, 107, 72, 0.1)  /* #FF6B48 with 10% opacity */
+  );
 }
