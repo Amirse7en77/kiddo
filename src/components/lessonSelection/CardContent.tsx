@@ -8,15 +8,19 @@ const CardContent = () => {
   };
 
   return (
-    <div className='flex flex-col justify-center gap-[16px] p-[16px] h-full'>
-      <div className={` ${isClicked ? 'onClickedCard-box' : 'card-box'}`}>
+    // Changed m-2 to mb-[16px] for a bottom margin of 16px
+    <div className='flex flex-col justify-center mb-[12px]'> 
+      <div className={` ${isClicked ? 'onClickedButton-box' : 'buttonClicked-box'}`}>
         <div
-          className={`gap-[8px] p-[16px] rounded-[24px] cursor-pointer ${
+          className={`gap-[8px] p-[16px] rounded-[16px] cursor-pointer ${
             isClicked ? 'bg-backGroundCard' : 'bg-white'
           }`}
           onClick={handleClick}
         >
-          <h1>این یک کلاس است</h1>
+          <div className='flex justify-start items-center '>
+            <h1 className='text-[14px] font-extrabold'>این یک کلاس است/</h1>
+            <p className='text-[14px] '>کلاس نهم  </p>
+          </div>
         </div>
       </div>
     </div>

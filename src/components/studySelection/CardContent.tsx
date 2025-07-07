@@ -14,7 +14,8 @@ const CardContent: React.FC<CardContentProps> = ({
   onClick,
 }) => {
   return (
-    <div className={`${isSelected ? `onClickedCard-box  ` : "card-box"}`}>
+    <div className={`${isSelected ? `onClickedCard-box  transform 
+   translate-y-1` : "card-box"}`}>
       {" "}
       <div
         className={`
@@ -23,8 +24,7 @@ const CardContent: React.FC<CardContentProps> = ({
           flex flex-col 
           overflow-hidden 
           h-full 
-          ${isSelected?`bg-backGroundCard transform 
-   translate-y-1` :"bg-white"}
+          ${isSelected?`bg-backGroundCard ` :"bg-white"}
         `}
         onClick={onClick}
       >

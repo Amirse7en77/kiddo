@@ -1,6 +1,6 @@
 import React from 'react'
 import Header from '../components/common/Header'
-import ChatButton from '../components/common/ChatButton'
+
 import HeroSection from '../components/lessonSelection/HeroSection'
 import MainContent from '../components/lessonSelection/MainContent'
 import DisableChatButton from '../components/common/DisableChatButton'
@@ -10,7 +10,7 @@ const LessonSelection = () => {
     <div>
       <div >
       <Header/>
-      <div className='font-yekanBakh  bg-backGround-1 '>
+      <div className='  bg-backGround-1 '>
         <HeroSection/>
         <MainContent/>
       </div>

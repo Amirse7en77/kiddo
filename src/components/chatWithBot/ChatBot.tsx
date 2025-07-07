@@ -113,8 +113,8 @@ const ChatBot: React.FC<chatType> = ({ isChatting, setIsChatting }) => {
               <div
                 className={`max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg p-3 rounded-xl ${
                   msg.sender === "user"
-                    ? "bg-backGroundCard text-gray-900 rounded-br-none border-2 border-chatButton-1"
-                    : "bg-white text-gray-800 rounded-bl-none"
+                    ? "bg-backGroundCard text-gray-900  border-2 border-chatButton-1"
+                    : "bg-white text-gray-800 "
                 }`}
               >
                 <p className="text-sm sm:text-base">{msg.text}</p>

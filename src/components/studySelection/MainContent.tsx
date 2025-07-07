@@ -1,7 +1,7 @@
 // MainContent.tsx
 import React from 'react';
 import CardSelector from './CardSelector'; // CardContent is not directly used here
-import ChatButton from '../common/ChatButton';
+
 
 const MainContent: React.FC = () => {
   return (

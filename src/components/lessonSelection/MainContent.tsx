@@ -6,22 +6,24 @@ const MainContent: React.FC = () => {
   return (
     <div
       className="
-        border-2 border-borderColor-1 bg-white rounded-[16px]
-        p-4 sm:p-6 md:p-8 lg:p-10 
-        h-full w-full 
-        overflow-y-auto 
-        flex flex-col 
+         border-borderColor-1 bg-white 
         
+       h-screen
+        
+        flex flex-col 
+        gap-[12px]
       "
     >
-      {/* The `gap-[12px] pt-[16px] h-full` on the outer div were a bit ambiguous.
-          Moved padding and adjusted gap/flex behavior here. */}
-      <div className="bg-white pb-[200px]">
+    
+      <div className="bg-white gap-[16px] mt-[16px] mx-[16px]">
         {" "}
-        {/* This div acts as a wrapper for CardSelector */}
+        
         <CardContent />
         <CardContent />
         <CardContent />
+         <CardContent />
+          <CardContent />
+           <CardContent />
       </div>
     </div>
   );

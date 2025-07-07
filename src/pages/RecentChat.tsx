@@ -5,20 +5,25 @@ import ChatButton from '../components/common/ChatButton'
 
 const RecentChat = () => {
   return (
-   <>
-    <div className='bg-backGround-1 font-yekanBakh'>
+    <>
+      <div className='bg-backGround-1'>
         <Header/>
-        <h1 className='m-[16px] font-extrabold text-[18px]'>چت های اخیر</h1>
-      <div className='h-[82vh] '>
-        <MainContent/>
-        <MainContent/>
-        <MainContent/>
-        
+        {/* Changed gap to 16px here */}
+        <div className='gap-[16px] m-[16px]'> 
+          <h1 className=' font-extrabold text-[14px] '>چت های اخیر</h1>
+        </div>
+        <div className=' flex flex-col gap-[12px] mx-[16px]'>
+          <MainContent/>
+          <MainContent/>
+          <MainContent/>
+          <MainContent/>
+          <MainContent/>
+          <MainContent/>
+          <MainContent/>
+        </div>
       </div>
-      
-    </div>
-    <ChatButton textButton='ساخت چت جدید'/>
-   </>
+      <ChatButton textButton='ساخت چت جدید'/>
+    </>
   )
 }
 
