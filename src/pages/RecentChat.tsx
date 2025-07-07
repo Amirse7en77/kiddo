@@ -17,7 +17,7 @@ const RecentChat = () => {
       </div>
       
     </div>
-    <ChatButton/>
+    <ChatButton textButton='ساخت چت جدید'/>
    </>
   )
 }

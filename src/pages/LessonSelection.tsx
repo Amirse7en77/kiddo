@@ -3,6 +3,7 @@ import Header from '../components/common/Header'
 import ChatButton from '../components/common/ChatButton'
 import HeroSection from '../components/lessonSelection/HeroSection'
 import MainContent from '../components/lessonSelection/MainContent'
+import DisableChatButton from '../components/common/DisableChatButton'
 
 const LessonSelection = () => {
   return (
@@ -13,7 +14,7 @@ const LessonSelection = () => {
         <HeroSection/>
         <MainContent/>
       </div>
-      <ChatButton/>
+      <DisableChatButton textButton=' بزن بریم '/>
     </div>
     </div>
   )

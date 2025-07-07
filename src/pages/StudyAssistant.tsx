@@ -17,7 +17,7 @@ const StudyAssistant:FC<IProps> = (props) => {
   </div>
         </div>
        
-        <ChatButton />
+        <ChatButton textButton='ساخت چت جدید'/>
     </div>
 };
 

@@ -1,6 +1,7 @@
 // MainContent.tsx
 import React from 'react';
 import CardSelector from './CardSelector'; // CardContent is not directly used here
+import ChatButton from '../common/ChatButton';
 
 const MainContent: React.FC = () => {
   return (
@@ -18,6 +19,7 @@ const MainContent: React.FC = () => {
       <div> {/* This div acts as a wrapper for CardSelector */}
         <CardSelector />
       </div>
+      
     </div>
   );
 };

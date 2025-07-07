@@ -5,8 +5,12 @@ interface Message {
   sender: "user" | "bot";
   text: string;
 }
+interface chatType{
+  isChatting:boolean,
+  setIsChatting:boolean
+}
 
-const ChatBot: React.FC = ({ isChatting, setIsChatting }) => {
+const ChatBot: React.FC<chatType> = ({ isChatting, setIsChatting }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -177,10 +181,10 @@ const ChatBot: React.FC = ({ isChatting, setIsChatting }) => {
               </svg>
             </div>
 
-           <div className="rounded-[18px] p-[2px] bg-gradient-to-l from-custom-purple via-custom-orange-1 to-custom-orange-2">
+           <div className="rounded-[18px] p-[2px] bg-gradient-to-l from-custom-purple via-custom-orange-1 to-custom-orange-2 ">
              <input
               type="text"
-              className="w-full pr-12 p-3 border border-gray-300 rounded-[16px] focus:outline-none   transition duration-200 relative z-10 bg-white" /* Add relative z-10 and bg-white */
+              className="w-full pr-12 p-3 border border-gray-300 rounded-[16px] focus:outline-none   transition duration-200 relative z-10 bg-white" 
               placeholder="اینجا بنویس ... "
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
@@ -194,16 +198,16 @@ const ChatBot: React.FC = ({ isChatting, setIsChatting }) => {
               onClick={handleSendMessage}
               disabled={isLoading || inputMessage.trim() === ""}
               className={`absolute inset-y-0 right-0 flex items-center justify-center
-                          bg-purple-500 hover:bg-purple-600 text-white w-10 h-10 my-1 mr-1 rounded-full shadow-lg
+                          bg-purple-500 hover:bg-purple-600 text-white w-10 h-10 mt-[7px] mr-2 rounded-full shadow-lg
                           transition duration-200 ease-in-out transform hover:scale-105
                           disabled:bg-gray-400 disabled:cursor-not-allowed z-10
                           ${
                             isInputFocused ? "rotate-180" : "rotate-270"
-                          }`} /* Conditional rotation */
+                          }`} 
             >
               {isLoading ? (
                 <svg
-                  className="animate-spin h-5 w-5 text-white"
+                  className="animate-spin h-5 w-5 text-white "
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"

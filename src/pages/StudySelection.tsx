@@ -1,11 +1,13 @@
 // src/pages/StudySelection.tsx
-import React from 'react';
+import React, { useState } from 'react';
 import Header from '../components/common/Header';
 import HeroSection from '../components/studySelection/HeroSection';
 import MainContent from '../components/studySelection/MainContent'; // This is now draggable
 import ChatButton from '../components/common/ChatButton';
 
 const StudySelection = () => {
+   
+
   return (
     <div className="relative min-h-screen">
       <Header />
@@ -13,7 +15,7 @@ const StudySelection = () => {
         <HeroSection />
          <MainContent />
       </div>
-      <ChatButton />
+      <ChatButton textButton=' بعدی '/>
 
 
      
