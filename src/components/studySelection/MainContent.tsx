@@ -8,10 +8,10 @@ const MainContent: React.FC = () => {
     <div
       className='
         border-2 border-borderColor-1 bg-white rounded-[16px]
-        p-4 sm:p-6 md:p-8 lg:p-10 // Responsive padding around the content
-        h-full w-full // Ensure it fills available space
-        overflow-y-auto // Add scroll if content exceeds height on smaller screens
-        flex flex-col // Use flexbox for direct children if needed for internal layout
+        p-4 sm:p-6 md:p-8 lg:p-10 
+        h-full w-full 
+        overflow-y-auto 
+        flex flex-col 
       '
     >
       {/* The `gap-[12px] pt-[16px] h-full` on the outer div were a bit ambiguous.

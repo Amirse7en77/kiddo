@@ -20,7 +20,7 @@ const CardContent: React.FC<CardContentProps> = ({
       <div
         className={`
           rounded-[24px]   cursor-pointer
-          transition-colors duration-200 ease-in-out
+          transition-colors duration-200 
           flex flex-col 
           overflow-hidden 
           h-full 

@@ -29,7 +29,7 @@ const CardSelector: React.FC = () => {
         
         gap-4 
         p-4 
-        items-stretch 
+        
         
       "
     >

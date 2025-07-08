@@ -7,7 +7,7 @@ import ChatButton from "../components/common/ChatButton";
 interface IProps {};
 
 const StudyAssistant:FC<IProps> = (props) => {
-    return <div className="font-yekanBakh">
+    return <div >
         <Header/>
         <div className="bg-backGround-1 h-full pb-10 ">
   <div className="mx-[32px] ">

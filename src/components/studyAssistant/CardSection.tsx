@@ -13,7 +13,7 @@ const CardSection:React.FC = () => {
 
             </div>
              <div>
-           <p className=' text-justify font-yekanBakhText text-[14px]'>{study.description}</p>
+           <p className=' text-justify  text-[14px]'>{study.description}</p>
         </div>
             
         </div>

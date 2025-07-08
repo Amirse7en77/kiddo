@@ -1,32 +1,35 @@
 import Header from "../components/home/Header";
-import HeroSection from "../components/home/HeroSection";
-import RecentItem from "../components/home/RecentItem";
+
 import ToolCard from "../components/home/ToolCard";
 import RecentChatCard from "../components/recentChat/RecentChatCard";
-import book from './../assets/images/DarsYar.png'
+
 
 
 const Home = () => {
   return (
-    <div >
+    <div className="h-screen">
       <Header />
 
-     <div className="h-screen bg-backGround-1">
+     <div className=" bg-backGround-1 pb-10">
          
 
+     <div className=" p-[16px] ">
+      <h1 className="mb-[40px] font-extrabold text-[14px]">ابزار‌ها</h1>
      
      
-      <div className="flex items-center m-10 flex-row">
        
-        <div>
-          <ToolCard  title="ترکیب‌کن" description="درسا رو همونطوری که دوست داری یاد بگیر." />
-        <ToolCard  title="گنج‌کاو" description="همراه خوب تو برای یادگرفتن چیزی جدید را یاد بگیر!" />
-        </div>
         <div >
-          <ToolCard  title="سوال‌یار" description="با راهنمایی آزمون بده و درسا رو بهتر یاد بگیر!" />
-        <ToolCard  title="آزمون‌ساز" description="کلی نمونه سوال حرفه‌ای برات طراحی می‌کنه!" />
+          <div className="flex mb-[40px] gap-[12px]">
+          <ToolCard  title="ترکیب‌کن" description="درسا رو همونطوری که دوست داری یاد بگیر." />
+        <ToolCard  title="کنج‌کاو" description="درسا رو همونطوری که دوست داری یاد بگیر."/>
+        </div>
+        <div className="flex gap-[12px]">
+          <ToolCard  title="سوال‌یار" description="درسا رو همونطوری که دوست داری یاد بگیر." />
+        <ToolCard  title="آزمون‌ساز" description="درسا رو همونطوری که دوست داری یاد بگیر." />
+        </div>
         </div>
       </div>
+    
 
       <h3 className="font-bold text-right m-2">چت‌های اخیر</h3>
       <div className="space-y-4">

@@ -32,7 +32,7 @@ const ChatBot: React.FC<chatType> = ({ isChatting, setIsChatting }) => {
   const getBotResponse = async (userPrompt: string): Promise<string> => {
     setIsLoading(true);
     try {
-      let chatHistory = [];
+      const chatHistory = [];
       chatHistory.push({ role: "user", parts: [{ text: userPrompt }] });
 
       const payload = { contents: chatHistory };
@@ -111,10 +111,10 @@ const ChatBot: React.FC<chatType> = ({ isChatting, setIsChatting }) => {
             <div>
               {/* Inner div for solid background and message text */}
               <div
-                className={`max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg p-3 rounded-xl ${
+                className={`max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg p-3 rounded-[16px] ${
                   msg.sender === "user"
-                    ? "bg-backGroundCard text-gray-900  border-2 border-chatButton-1"
-                    : "bg-white text-gray-800 "
+                    ? "bg-backGroundCard text-gray-900  border-2 border-chatButton-1 p-[16px] m-[16px]"
+                    : "bg-white text-gray-800 ml-[8px] border-borderColor-1 border-2"
                 }`}
               >
                 <p className="text-sm sm:text-base">{msg.text}</p>
@@ -181,69 +181,67 @@ const ChatBot: React.FC<chatType> = ({ isChatting, setIsChatting }) => {
               </svg>
             </div>
 
-           <div className="rounded-[18px] p-[2px] bg-gradient-to-l from-custom-purple via-custom-orange-1 to-custom-orange-2 ">
-             <input
-              type="text"
-              className="w-full pr-12 p-3 border border-gray-300 rounded-[16px] focus:outline-none   transition duration-200 relative z-10 bg-white" 
-              placeholder="اینجا بنویس ... "
-              value={inputMessage}
-              onChange={(e) => setInputMessage(e.target.value)}
-              onKeyPress={handleKeyPress}
-              disabled={isLoading}
-              onClick={handleChatting}
-              onFocus={() => setIsInputFocused(true)}
-              onBlur={() => setIsInputFocused(false)}
-            />
-            <button
-              onClick={handleSendMessage}
-              disabled={isLoading || inputMessage.trim() === ""}
-              className={`absolute inset-y-0 right-0 flex items-center justify-center
-                          bg-purple-500 hover:bg-purple-600 text-white w-10 h-10 mt-[7px] mr-2 rounded-full shadow-lg
-                          transition duration-200 ease-in-out transform hover:scale-105
-                          disabled:bg-gray-400 disabled:cursor-not-allowed z-10
-                          ${
-                            isInputFocused ? "rotate-180" : "rotate-270"
-                          }`} 
-            >
-              {isLoading ? (
-                <svg
-                  className="animate-spin h-5 w-5 text-white "
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  ></circle>
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  ></path>
-                </svg>
-              ) : (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M14 5l7 7m0 0l-7 7m7-7H3"
-                  />
-                </svg>
-              )}
-            </button>
-           </div>
+         <div className="relative rounded-[26px] p-[2px] bg-gradient-to-l from-custom-purple via-custom-orange-1 to-custom-orange-2 flex items-center " >
+  <input
+    type="text"
+    className="w-full p-[12px] pr-[64px]  rounded-[24px] focus:outline-none transition duration-200 bg-white h-[64px]"
+    placeholder="اینجا بنویس ... "
+    value={inputMessage}
+    onChange={(e) => setInputMessage(e.target.value)}
+    onKeyPress={handleKeyPress}
+    disabled={isLoading}
+    onClick={handleChatting}
+    onFocus={() => setIsInputFocused(true)}
+    onBlur={() => setIsInputFocused(false)}
+  />
+  <button
+    onClick={handleSendMessage}
+    disabled={isLoading || inputMessage.trim() === ""}
+    className={`absolute inset-y-0 right-0 flex items-center justify-center
+                bg-chatButton-1  text-white w-10 h-10 my-auto mr-4 rounded-full shadow-lg
+                transition duration-200 ease-in-out transform hover:scale-105
+                disabled:bg-gray-400 disabled:cursor-not-allowed
+                rotate-270`}
+  >
+    {isLoading ? (
+      <svg
+        className="animate-spin h-5 w-5 text-white"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <circle
+          className="opacity-25"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          strokeWidth="4"
+        ></circle>
+        <path
+          className="opacity-75"
+          fill="currentColor"
+          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+        ></path>
+      </svg>
+    ) : (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-6 w-6"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        strokeWidth={2}
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M14 5l7 7m0 0l-7 7m7-7H3"
+        />
+      </svg>
+    )}
+  </button>
+</div>
           </div>
         </div>
       </div>
