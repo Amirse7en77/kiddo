@@ -1,24 +1,24 @@
 import { FC } from "react";
-
-
+import icon from './../../assets/images/DarsYar.png'
+ 
 interface ToolCardProps {
-  icon: React.ReactNode;
+  
   title: string;
   description: string;
 }
 
-const ToolCard: FC<ToolCardProps> = ({ icon, title, description }) => {
+const ToolCard: FC<ToolCardProps> = ({  title, description }) => {
   return (
-  <>
+  <div >
    
-   <div className="bg-gray-300   rounded-2xl px-1 pt-1 pb-2 cursor-pointer">
-     <div className="flex flex-col items-center text-center p-4 rounded-xl bg-white  hover:transform hover:translate-y-1">
-      <div className="text-3xl">{icon}</div>
-      <h3 className="font-bold">{title}</h3>
-      <p className="text-sm text-gray-500">{description}</p>
+   <div className="card-box cursor-pointer ">
+     <div className="flex flex-col items-center text-center  rounded-[24px] bg-white  hover:transform hover:translate-y-1 relative p-[16px]  ">
+      <img src={icon} className=" absolute -translate-y-11 h-[56px] w-[56px]"/>
+      <h3 className="font-extrabold text-[18px] mt-[16px]">{title}</h3>
+      <p className="text-[10px] ">{description}</p>
     </div>
    </div>
-  </>
+  </div>
   );
 };
 

@@ -1,12 +1,10 @@
 import React from 'react'
 import darsYar from './../../assets/images/DarsYar.png'
 
-const MainContent = () => {
+const RecentChatCard = () => {
   return (
-    <>
-    
-    <div >
-       <div className='card-box'>
+    <div>
+         <div className='card-box'>
             <div className='flex justify-start items-center bg-white rounded-[22px] p-[16px] gap-[16px] pl-[24px]'>
                 <div>
                     <img className='w-[56px] h-[56px] ' src={darsYar}/>
@@ -23,8 +21,7 @@ const MainContent = () => {
             </div>
         </div>
     </div>
-    </>
   )
 }
 
-export default MainContent
+export default RecentChatCard
