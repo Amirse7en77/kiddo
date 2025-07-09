@@ -13,6 +13,7 @@ const CardSelector: React.FC = () => {
     { id: 'science', title: 'علوم' },
     { id: 'history', title: 'تاریخ' },
     { id: 'geography', title: 'جغرافیا' },
+    
   ];
 
   const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
@@ -27,8 +28,8 @@ const CardSelector: React.FC = () => {
         grid
         grid-cols-2 
         
-        gap-4 
-        p-4 
+       gap-[12px] 
+        
         
         
       "

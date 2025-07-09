@@ -1,7 +1,7 @@
 
-import Header from '../components/common/Header'
-import ChatButton from '../components/common/ChatButton'
-import RecentChatCard from '../components/recentChat/RecentChatCard'
+import Header from '../../components/common/Header'
+import ChatButton from '../../components/common/ChatButton'
+import RecentChatCard from '../../components/darsYar/recentChat/RecentChatCard'
 
 const RecentChat = () => {
   return (

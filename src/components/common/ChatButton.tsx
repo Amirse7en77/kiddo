@@ -15,7 +15,7 @@ const ChatButton: React.FC<ButtonType> = ({ textButton }) => {
           fixed bottom-0 left-0 right-0
           flex justify-center items-center
           bg-white p-4 z-50
-          shadow-lg 
+          
         "
       >
         <div className="chat-button border-2 border-backGroundButton m-1">

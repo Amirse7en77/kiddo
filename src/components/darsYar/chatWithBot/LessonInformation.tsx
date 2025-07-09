@@ -2,7 +2,7 @@ import React from "react";
 
 const LessonInformation = () => {
   return (
-    <div className="flex justify-between items-center py-[8px] infoGradient rounded-[16px] px-[16px]">
+    <div className="flex justify-between items-center py-[8px] infoGradient  px-[16px] fixed w-full">
       <div>
         <h1 className="text-[14px]">پاسخ گویی با توجه به کتاب علوم</h1>
       </div>

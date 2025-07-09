@@ -1,5 +1,5 @@
 import React from 'react'
-import happyFace from './../../assets/images/happyFace.png'
+import happyFace from './../../../assets/images/happyFace.png'
 
 const HeroSection = () => {
   return (

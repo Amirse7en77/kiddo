@@ -1,6 +1,6 @@
 // CardContent.tsx
 import React from "react";
-import riazi from "./../../assets/images/riazi.png";
+import riazi from "./../../../assets/images/riazi.png";
 
 interface CardContentProps {
   title: string;

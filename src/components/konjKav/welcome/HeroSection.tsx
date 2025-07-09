@@ -1,16 +1,12 @@
-
-import kiddoFace from './../../assets/images/happyFace.png'
-
-
-
+import happyFace from './../../../assets/images/happyFace.png'
 
 const HeroSection = () => {
   return (
     <div className='mb-[32px] pt-[16px]'>
         <div className='flex justify-center  p-4'>
-        <img src={kiddoFace}/>
+        <img src={happyFace}/>
       </div>
-      <p className='text-center font-extrabold'>به درس‌یار خوش آمدی!</p>
+      <p className='text-center font-extrabold'>به کنج‌کاو خوش آمدی!</p>
     </div>
   )
 }

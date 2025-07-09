@@ -1,5 +1,5 @@
 import React from 'react'
-import { studyAssistantConstatnt } from '../../constants/studyAssistantConstant'
+import { studyAssistantConstatnt } from '../../../constants/studyAssistantConstant'
 
 const CardSection:React.FC = () => {
   return (

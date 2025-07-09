@@ -5,30 +5,37 @@ interface Message {
   sender: "user" | "bot";
   text: string;
 }
-interface chatType{
-  isChatting:boolean,
-  setIsChatting:boolean
+interface ChatType {
+  isChatting: boolean;
+  setIsChatting: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const ChatBot: React.FC<chatType> = ({ isChatting, setIsChatting }) => {
+const ChatBot: React.FC<ChatType> = ({ isChatting, setIsChatting }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isInputFocused, setIsInputFocused] = useState<boolean>(false);
 
-  // Ref for the messages container to enable auto-scrolling
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   // Scroll to the latest message whenever messages state changes
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   }, [messages]);
+
+  // Auto-resize textarea height
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+      textareaRef.current.style.height = textareaRef.current.scrollHeight + "px";
+    }
+  }, [inputMessage]);
 
   const handleChatting = () => {
     setIsChatting(true);
   };
 
-  // Function to call the Gemini API for bot responses
   const getBotResponse = async (userPrompt: string): Promise<string> => {
     setIsLoading(true);
     try {
@@ -75,31 +82,29 @@ const ChatBot: React.FC<chatType> = ({ isChatting, setIsChatting }) => {
       text: inputMessage.trim(),
     };
     setMessages((prevMessages) => [...prevMessages, newUserMessage]);
-    setInputMessage(""); // Clear input immediately
+    setInputMessage("");
 
-    // Get bot response
     const botResponseText = await getBotResponse(newUserMessage.text);
 
     const newBotMessage: Message = { sender: "bot", text: botResponseText };
     setMessages((prevMessages) => [...prevMessages, newBotMessage]);
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" && !isLoading) {
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey && !isLoading) {
+      e.preventDefault();
       handleSendMessage();
     }
   };
 
   return (
     <div
-      className={`flex flex-col   antialiased ${
+      className={`flex flex-col antialiased fixed bottom-0 left-0 right-0 ${
         isChatting && "h-screen bg-backGround-1"
       }`}
     >
-      {/* Chat Header */}
-
       {/* Messages Display Area */}
-      <div className="flex-1 overflow-y-auto ">
+      <div className="flex-1 overflow-y-auto">
         {messages.map((msg, index) => (
           <div
             key={index}
@@ -107,13 +112,11 @@ const ChatBot: React.FC<chatType> = ({ isChatting, setIsChatting }) => {
               msg.sender === "user" ? "justify-start" : "justify-end"
             }`}
           >
-            {/* Outer div for gradient border */}
             <div>
-              {/* Inner div for solid background and message text */}
               <div
                 className={`max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg p-3 rounded-[16px] ${
                   msg.sender === "user"
-                    ? "bg-backGroundCard text-gray-900  border-2 border-chatButton-1 p-[16px] m-[16px]"
+                    ? "bg-backGroundCard text-gray-900 border-2 border-chatButton-1 p-[16px] m-[16px]"
                     : "bg-white text-gray-800 ml-[8px] border-borderColor-1 border-2"
                 }`}
               >
@@ -123,7 +126,7 @@ const ChatBot: React.FC<chatType> = ({ isChatting, setIsChatting }) => {
           </div>
         ))}
         {isLoading && (
-          <div className="flex justify-start">
+          <div className="flex justify-end">
             <div className="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg p-3 rounded-xl shadow-md bg-gray-300 text-gray-800 rounded-bl-none">
               <div className="flex items-center space-x-2">
                 <div
@@ -142,27 +145,23 @@ const ChatBot: React.FC<chatType> = ({ isChatting, setIsChatting }) => {
             </div>
           </div>
         )}
-        <div ref={messagesEndRef} /> {/* Element to scroll into view */}
+        <div ref={messagesEndRef} />
       </div>
 
       {/* Message Input Area */}
       <div>
-        <div className="p-4 bg-white border-t border-gray-200 flex items-center gap-2 shadow-lg rounded-t-lg ">
-          {/* New container for input and button */}
+        <div className="px-[24px] py-[16px] flex items-center gap-2 ">
           <div className="relative flex-1">
-            {/* Gradient Border Overlay */}
             <div
-              className="absolute inset-0 rounded-full p-[2px]" /* Adjust p-[2px] for border thickness */
+              className="absolute inset-0 rounded-full p-[2px]"
               style={{
-                background:
-                  "linear-gradient(to right, #8B5CF6, #F97316)" /* Purple to Orange */,
-                mask: "url(#mask)" /* Apply mask for inner cut-out */,
-                WebkitMask: "url(#mask)" /* For Webkit browsers */,
-                maskComposite: "exclude" /* Exclude inner content from mask */,
-                WebkitMaskComposite: "exclude" /* For Webkit browsers */,
+                background: "linear-gradient(to right, #8B5CF6, #F97316)",
+                mask: "url(#mask)",
+                WebkitMask: "url(#mask)",
+                maskComposite: "exclude",
+                WebkitMaskComposite: "exclude",
               }}
             >
-              {/* SVG for the mask to create the border effect */}
               <svg width="0" height="0">
                 <defs>
                   <mask id="mask">
@@ -181,67 +180,68 @@ const ChatBot: React.FC<chatType> = ({ isChatting, setIsChatting }) => {
               </svg>
             </div>
 
-         <div className="relative rounded-[26px] p-[2px] bg-gradient-to-l from-custom-purple via-custom-orange-1 to-custom-orange-2 flex items-center " >
-  <input
-    type="text"
-    className="w-full p-[12px] pr-[64px]  rounded-[24px] focus:outline-none transition duration-200 bg-white h-[64px]"
-    placeholder="اینجا بنویس ... "
-    value={inputMessage}
-    onChange={(e) => setInputMessage(e.target.value)}
-    onKeyPress={handleKeyPress}
-    disabled={isLoading}
-    onClick={handleChatting}
-    onFocus={() => setIsInputFocused(true)}
-    onBlur={() => setIsInputFocused(false)}
-  />
-  <button
-    onClick={handleSendMessage}
-    disabled={isLoading || inputMessage.trim() === ""}
-    className={`absolute inset-y-0 right-0 flex items-center justify-center
-                bg-chatButton-1  text-white w-10 h-10 my-auto mr-4 rounded-full shadow-lg
-                transition duration-200 ease-in-out transform hover:scale-105
-                disabled:bg-gray-400 disabled:cursor-not-allowed
-                rotate-270`}
-  >
-    {isLoading ? (
-      <svg
-        className="animate-spin h-5 w-5 text-white"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-      >
-        <circle
-          className="opacity-25"
-          cx="12"
-          cy="12"
-          r="10"
-          stroke="currentColor"
-          strokeWidth="4"
-        ></circle>
-        <path
-          className="opacity-75"
-          fill="currentColor"
-          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-        ></path>
-      </svg>
-    ) : (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-6 w-6"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        strokeWidth={2}
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M14 5l7 7m0 0l-7 7m7-7H3"
-        />
-      </svg>
-    )}
-  </button>
-</div>
+            <div className="relative rounded-[26px] p-[2px] bg-gradient-to-l from-custom-purple via-custom-orange-1 to-custom-orange-2 flex items-center ">
+              <textarea
+                ref={textareaRef}
+                rows={1}
+                className="w-full py-4 px-[12px] pr-[64px] rounded-[24px] focus:outline-none transition duration-200 bg-white min-h-[64px] max-h-[150px] resize-none overflow-hidden text-[14px] pt-5" // Changed p-[12px] to py-4 and px-[12px] for better vertical centering
+                placeholder="اینجا بنویس ... "
+                value={inputMessage}
+                onChange={(e) => setInputMessage(e.target.value)}
+                onKeyPress={handleKeyPress}
+                disabled={isLoading}
+                onClick={handleChatting}
+                onFocus={() => setIsInputFocused(true)}
+                onBlur={() => setIsInputFocused(false)}
+              />
+              <button
+                onClick={handleSendMessage}
+                disabled={isLoading || inputMessage.trim() === ""}
+                className={`absolute bottom-4 right-0 flex items-center justify-center
+                                 bg-chatButton-1 text-white w-10 h-10 my-auto mr-4 rounded-full shadow-lg
+                                 transition duration-200 ease-in-out transform hover:scale-105
+                                 disabled:bg-gray-400 disabled:cursor-not-allowed
+                                 rotate-270`}
+              >
+                {isLoading ? (
+                  <svg
+                    className="animate-spin h-5 w-5 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg>
+                ) : (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M14 5l7 7m0 0l-7 7m7-7H3"
+                    />
+                  </svg>
+                )}
+              </button>
+            </div>
           </div>
         </div>
       </div>
