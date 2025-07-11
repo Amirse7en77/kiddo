@@ -1,47 +1,105 @@
 import { createBrowserRouter } from "react-router-dom";
-import Home from "../pages/Home";
+
 import App from "../App";
-import RecentChat from "../pages/darsYar/RecentChat";
-import StudyAssistant from "../pages/darsYar/StudyAssistant";
-import StudySelection from "../pages/darsYar/StudySelection";
-import LessonSelection from "../pages/darsYar/LessonSelection";
+import Home from "../student/pages/StudentHome";
+import DarsyarRecentChat from "../student/pages/darsYar/DarsyarRecentChat";
+import DarsyarWelcome from "../student/pages/darsYar/DarsyarStudyAssistant";
+import DarsyarStudySelection from "../student/pages/darsYar/DarsyarStudySelection";
+import DarsyarLessonSelection from "../student/pages/darsYar/DarsyarLessonSelection";
+import DarsyarChatWithBot from "../student/pages/darsYar/DarsyarChatWithBot";
+import KonjkavWelcome from "../student/pages/konjKav/KonjkavWelcome";
+import KonjkavTopicSelection from "../student/pages/konjKav/KonjkavTopicSelection";
+import KonjkavTopicBot from "../student/pages/konjKav/KonjkavTopicBot";
+import KonjkavRecentChat from "../student/pages/konjKav/KonjkavRecentChat";
+import KonjkavStudySelection from "../student/pages/konjKav/KonjkavStudySelection";
+import TarkibkonWelcome from "../student/pages/tarkibKon/TarkibkonWelcome";
+import TarkibkonRecentChat from "../student/pages/tarkibKon/TarkibkonRecentChat";
+import TarkibkonStudySelection from "../student/pages/tarkibKon/TarkibkonStudySelection";
+import StudentHome from "../student/pages/StudentHome";
+import TeacherHome from "../teacher/pages/TeacherHome";
+import ContentContainer from "../teacher/pages/ContentContainer";
 
-import ChatWithBot from "../pages/darsYar/ChatWithBot";
-import Welcome from "../pages/konjKav/Welcome";
 
-export const router= createBrowserRouter([
-    {
-        path:'/',
-        element:<App/>,
-        children:[
-            {
-                index:true,
-                element:<Home/>
-            },
-            {
-                path:'recentChat',
-                element:<RecentChat/>
-            },
-             {
-                path:'studyAssistant',
-                element:<StudyAssistant/>
-            },
-             {
-                path:'studySelection',
-                element:<StudySelection/>
-            },
-             {
-                path:'lessonSelection',
-                element:<LessonSelection/>
-            },
-             {
-                path:'chatWithBot',
-                element:<ChatWithBot/>
-            },
-            {
-                path:'welcome',
-                element:<Welcome/>
-            },
-        ]
-    }
-])
+
+export const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+    children: [
+      {
+        path:'/student',
+        element: <StudentHome />,
+      },
+      {
+        path:'/teacher',
+        element: <TeacherHome />,
+      },
+       {
+        path:'/content',
+        element: <ContentContainer />,
+      },
+
+      {
+        path: "darsyar/recent-chat",
+        element: <DarsyarRecentChat />,
+      },
+      {
+        path: "darsyar/study-assistant",
+        element: <DarsyarWelcome />,
+      },
+      {
+        path: "darsyar/study-selection",
+        element: <DarsyarStudySelection />,
+      },
+      {
+        path: "darsyar/lesson-selection",
+        element: <DarsyarLessonSelection />,
+      },
+      {
+        path: "darsyar/chat-with-bot",
+        element: <DarsyarChatWithBot />,
+      },
+      {
+        path: "konjkav/welcome",
+        element: <KonjkavWelcome />,
+      },
+      {
+        path: "konjkav/topic-selection",
+        element: <KonjkavTopicSelection />,
+      },
+      {
+        path: "konjkav/topic-bot",
+        element: <KonjkavTopicBot />,
+      },
+      {
+        path: "konjkav/recent-chat",
+        element: <KonjkavRecentChat />,
+      },
+      {
+        path: "konjkav/study-selection",
+        element: <KonjkavStudySelection />,
+      },
+      {
+        path: "tarkibkon/welcome",
+        element: <TarkibkonWelcome />,
+      },
+      {
+        path: "tarkibkon/recent-chat",
+        element: <TarkibkonRecentChat />,
+      },
+      {
+        path: "tarkibkon/study-selection",
+        element: <TarkibkonStudySelection />,
+      },
+
+      {
+        path: "tarkibkon/recent-chat",
+        element: <TarkibkonRecentChat />,
+      },
+      {
+        path: "tarkibkon/recent-chat",
+        element: <TarkibkonRecentChat />,
+      },
+    ],
+  },
+]);

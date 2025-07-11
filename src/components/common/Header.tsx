@@ -1,6 +1,10 @@
 import { FC } from "react";
 
-const Header: FC = () => {
+interface ButtonType{
+title:string
+}
+
+const Header: FC<ButtonType> = ({title}) => {
   
 
 
@@ -16,7 +20,7 @@ const Header: FC = () => {
         <div className=" flex items-center justify-center">
    
         </div>
-        <div className="text-[16px] font-extrabold">درس یار</div>
+        <div className="text-[16px] font-extrabold">{title} </div>
         
       </header>
       
