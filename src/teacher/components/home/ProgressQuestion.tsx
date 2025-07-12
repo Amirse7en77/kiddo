@@ -21,7 +21,7 @@ const ProgressQuestion:React.FC<ProgressBarProps> = ({ progress }) => {
                 </h1>
                 </div>
              </div>
-                <div className="w-full bg-gray-200 rounded-full h-4 dark:bg-gray-700 overflow-hidden shadow-inner">
+                <div className="w-full  rounded-full h-4 bg-backGround-1 overflow-hidden ">
       <div
         className="bg-gradient-to-l from-custom-purple via-custom-orange-1 to-custom-orange-2 h-4 rounded-full transition-all duration-500 ease-out"
         style={{ width: `${clampedProgress}%` }}

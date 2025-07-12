@@ -25,7 +25,7 @@ const Header: FC<ButtonType> = ({title}) => {
       </header>
       
        <div className="h-[52px]"></div>
-      <hr className="border-[1.5px] border-borderColor-1 w-full" />
+      <hr className="border-[2px] border-borderColor-1 w-full" />
     </div>
   );
 };

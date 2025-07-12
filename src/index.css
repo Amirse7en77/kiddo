@@ -105,6 +105,14 @@
   background-color: #6248ff;
   border-radius: 18px;
 }
+.alert-box{
+  padding-top: 2px;
+  padding-right: 2px;
+  padding-left: 2px;
+  padding-bottom: 4px;
+  background-color: #FE4C4A;
+  border-radius: 18px;
+}
 
 .infoGradient {
   background-image: linear-gradient(

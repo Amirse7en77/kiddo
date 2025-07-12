@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 
 import App from "../App";
-import Home from "../student/pages/StudentHome";
+
 import DarsyarRecentChat from "../student/pages/darsYar/DarsyarRecentChat";
 import DarsyarWelcome from "../student/pages/darsYar/DarsyarStudyAssistant";
 import DarsyarStudySelection from "../student/pages/darsYar/DarsyarStudySelection";
@@ -18,6 +18,7 @@ import TarkibkonStudySelection from "../student/pages/tarkibKon/TarkibkonStudySe
 import StudentHome from "../student/pages/StudentHome";
 import TeacherHome from "../teacher/pages/TeacherHome";
 import ContentContainer from "../teacher/pages/ContentContainer";
+import Reports from "../teacher/pages/Reports";
 
 
 
@@ -37,6 +38,10 @@ export const router = createBrowserRouter([
        {
         path:'/content',
         element: <ContentContainer />,
+      },
+      {
+        path:'/reports',
+        element: <Reports />,
       },
 
       {
