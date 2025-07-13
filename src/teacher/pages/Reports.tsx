@@ -2,8 +2,8 @@ import React from 'react'
 import Header from '../../components/common/Header'
 import Navbar from '../components/contentContainer/Navbar'
 import StudentAlert from '../components/contentContainer/StudentAlert'
-import ReportTools from '../components/reports/ReportTools'
-import StudentReports from '../components/reports/StudentReports'
+import ReportTools from '../components/contentContainer/reports/ReportTools'
+import StudentReports from '../components/contentContainer/reports/StudentReports'
 
 const Reports = () => {
   return (
