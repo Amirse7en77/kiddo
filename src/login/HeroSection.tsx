@@ -2,7 +2,7 @@ import happyFace from './../assets/images/happyFace.png'
 
 const HeroSection = () => {
   return (
-    <div className='pb-[32px] pt-[16px] bg-backGround-1 h-[50vh]'>
+    <div className='pb-[32px] pt-[16px]  h-[50vh]'>
         <div className='flex justify-center  p-4'>
         <img src={happyFace}/>
       </div>

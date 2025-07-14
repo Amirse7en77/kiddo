@@ -38,7 +38,9 @@ const ToolsModal: React.FC<StudentModalProps> = ({ isModalOpen, handleCloseModal
           />
         ))}
 
-        <ChatButton textButton={'تایید'}/>
+         <div onClick={handleCloseModal}>
+          <ChatButton textButton={'تایید'} />
+        </div>
       </Modal>
     </div>
   );

@@ -2,8 +2,9 @@ import { useSelector } from "react-redux"
 import ChatButton from "../../../components/common/ChatButton"
 import DisableChatButton from "../../../components/common/DisableChatButton"
 import Header from "../../../components/common/Header"
-import HeroSection from "../../components/darsYar/chatWithBot/HeroSection"
+
 import MainContent from "../../components/darsYar/lessonSelection/MainContent"
+import HeroSection from "../../components/darsYar/lessonSelection/HeroSection"
 
 
 const DarsyarLessonSelection = () => {

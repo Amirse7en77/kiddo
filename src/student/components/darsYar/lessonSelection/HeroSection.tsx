@@ -1,5 +1,5 @@
 import React from 'react'
-import darsYar from './../../../assets/images/DarsYar.png'
+import darsYar from './../../../../assets/images/DarsYar.png'
 
 const HeroSection = () => {
   return (

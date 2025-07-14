@@ -2,7 +2,7 @@
 import { useState } from "react";
 
 import LessonInformation from "../../components/darsYar/chatWithBot/LessonInformation";
-import HeroSection from "../../components/home/HeroSection";
+
 import ChatBot from "../../components/darsYar/chatWithBot/ChatBot";
 import Header from "../../../components/common/Header";
 
@@ -16,7 +16,7 @@ const DarsyarChatWithBot = () => {
         {!isChatting && (
           <div>
             <LessonInformation />
-            <HeroSection />
+            
           </div>
         )}
         {/* Pass setIsChatting correctly */}

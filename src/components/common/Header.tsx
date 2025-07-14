@@ -13,7 +13,7 @@ const Header: FC<ButtonType> = ({title}) => {
       <header
         className={`
           flex items-center justify-center bg-white py-[24px] px-[16px] h-[52px]
-            fixed top-0 w-full
+            fixed top-0 w-full z-100
          
         `}
       >

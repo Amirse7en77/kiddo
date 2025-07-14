@@ -32,12 +32,13 @@ const ToolsModal: React.FC<StudentModalProps> = ({ isModalOpen, handleCloseModal
   const allToolsOptionName = "همه درس ها";
 
   return (
-    <div>
+    <div >
       <Modal isOpen={isModalOpen} onClose={handleCloseModal} title="لطفا درس مورد نظر را انتخاب نمایید">
 
-        {/* "همه درس ها" option */}
-        <div
-          className='mb-[12px] cursor-pointer'
+        
+       <div className='pb-35'>
+         <div
+          className='mb-[12px] cursor-pointer '
           onClick={() => handleToolClick(allToolsOptionName)}
         >
           <div className={`
@@ -64,7 +65,10 @@ const ToolsModal: React.FC<StudentModalProps> = ({ isModalOpen, handleCloseModal
           ))}
         </div>
 
-        <ChatButton textButton={'تایید'} />
+        <div onClick={handleCloseModal}>
+          <ChatButton textButton={'تایید'} />
+        </div>
+       </div>
       </Modal>
     </div>
   );

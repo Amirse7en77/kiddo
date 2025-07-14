@@ -42,7 +42,7 @@ const Modal: FC<ModalProps> = ({ isOpen, onClose, children, title }) => {
   return (
     // Backdrop
     <div
-      className="fixed inset-0 bg-opacity-10 flex items-center justify-center z-50 "
+      className="fixed inset-0 bg-opacity-25 flex items-center justify-center "
       onClick={handleBackdropClick} // Only close if clicking on the backdrop, not the modal content itself
       aria-modal="true"
       role="dialog"

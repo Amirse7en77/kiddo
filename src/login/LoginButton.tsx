@@ -6,12 +6,12 @@ const LoginButton = () => {
         className="
           
           flex justify-center items-center
-          bg-white p-4 z-50
-          
+          bg-white 
+          w-full
         "
       >
-        <div className="chat-button border-2 border-backGroundButton m-1">
-          <button className="button-box text-white w-[327px] h-[50px] cursor-pointer">
+        <div className="chat-button border-2 border-backGroundButton w-full ">
+          <button className="button-box text-white cursor-pointer p-[16px] w-full">
             ورود
           </button>
         </div>

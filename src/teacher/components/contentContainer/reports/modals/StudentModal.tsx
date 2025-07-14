@@ -24,7 +24,9 @@ const StudentModal:React.FC<StudentModalProps> = ({isModalOpen,handleCloseModal}
         </div>
        </div>
         
-        <ChatButton textButton='مشاهده چت'/>
+       <div onClick={handleCloseModal}>
+          <ChatButton textButton={'مشاهده چت'} />
+        </div>
       </Modal>
     </div>
   )

@@ -31,7 +31,7 @@ const CardContent: React.FC<CardContentProps> = ({
       {" "}
       <div
         className={`
-          rounded-[24px] cursor-pointer
+          rounded-[22px] cursor-pointer
           transition-colors duration-200 
           flex flex-col 
           overflow-hidden 

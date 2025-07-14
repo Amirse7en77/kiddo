@@ -4,7 +4,7 @@ import InputGroup from './InputGroup'
 
 const Login = () => {
   return (
-    <div>
+    <div className='bg-backGround-1 '>
       <HeroSection/>
       <InputGroup/>
     </div>
