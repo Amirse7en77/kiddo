@@ -24,7 +24,7 @@ const StudentReports = () => {
           دانش آموز دنبال تقلب کردن در امتحانات است و میخواد هرجور شده درس نخونه
           وگرنه تهدید به خودکشی میکنه!
         </h1>
-
+    
       </div>
       <StudentModal handleCloseModal={handleCloseModal} isModalOpen={isModalOpen}/>
     </div>

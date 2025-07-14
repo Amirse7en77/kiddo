@@ -1,39 +1,73 @@
-import React from 'react'
+// src/components/ToolsModal/ToolsModal.tsx
+import React, { useState } from 'react';
 import Modal from '../../Modal';
+import Tools from './Tools';
+import ChatButton from '../../../../../components/common/ChatButton';
+
 interface StudentModalProps {
   isModalOpen: boolean;
   handleCloseModal: () => void;
 }
 
-const LessonModal:React.FC<StudentModalProps> = ({isModalOpen,handleCloseModal}) => {
+const ToolsModal: React.FC<StudentModalProps> = ({ isModalOpen, handleCloseModal }) => {
+  const [activeTool, setActiveTool] = useState<string | null>(null);
+  console.log("Current Active Tool:", activeTool); // More descriptive console log
+
+  const handleToolClick = (toolName: string) => {
+    // If the clicked tool is already active, deactivate it (set to null)
+    // Otherwise, set the clicked tool as the new active tool
+    setActiveTool(prevActiveTool =>
+      prevActiveTool === toolName ? null : toolName
+    );
+    console.log("Clicked Tool:", toolName); // More descriptive console log
+  };
+
+  const toolsList = [
+    { name: "ابزار A" },
+    { name: "ابزار B" },
+    { name: "ابزار C" },
+    { name: "ابزار D" },
+  ];
+
+  const allToolsOptionName = "همه درس ها";
+
   return (
     <div>
-      <Modal isOpen={isModalOpen} onClose={handleCloseModal} title="درس مورد نظر خود را انتخاب کنید">
-        <h3 className="text-lg font-medium text-gray-900 mb-2">درس مورد نظر خود را انتخاب کنید</h3>
-        <p className="text-gray-700 mb-4">
-          This is a simple example of a modal built with React, TypeScript, and Tailwind CSS.
-          You can put any content you want inside this modal.
-        </p>
-        <div className="flex justify-end gap-2 mt-4">
-          <button
-            onClick={handleCloseModal}
-            className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2 transition-colors duration-200"
-          >
-            Cancel
-          </button>
-          <button
-            onClick={() => {
-              alert('Action confirmed!');
-              handleCloseModal();
-            }}
-            className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors duration-200"
-          >
-            Confirm Action
-          </button>
+      <Modal isOpen={isModalOpen} onClose={handleCloseModal} title="لطفا درس مورد نظر را انتخاب نمایید">
+
+        {/* "همه درس ها" option */}
+        <div
+          className='mb-[12px] cursor-pointer'
+          onClick={() => handleToolClick(allToolsOptionName)}
+        >
+          <div className={`
+            ${activeTool === allToolsOptionName ? 'onClickedButton-box transform translate-y-1' : 'buttonClicked-box'}
+          `}>
+            <div className={`
+              flex justify-start items-center rounded-[16px] p-[16px] gap-[16px] pl-[24px]
+              ${activeTool === allToolsOptionName ? 'bg-backGroundCard' : 'bg-white'}
+            `}>
+              <h1>همه درس</h1>
+            </div>
+          </div>
         </div>
+
+        {/* Grid for other tools */}
+        <div className='grid grid-cols-2'>
+          {toolsList.map((tool) => (
+            <Tools
+              key={tool.name}
+              name={tool.name}
+              isActive={activeTool === tool.name}
+              onClick={handleToolClick}
+            />
+          ))}
+        </div>
+
+        <ChatButton textButton={'تایید'} />
       </Modal>
     </div>
-  )
-}
+  );
+};
 
-export default LessonModal
+export default ToolsModal;

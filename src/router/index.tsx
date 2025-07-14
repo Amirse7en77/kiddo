@@ -19,6 +19,7 @@ import StudentHome from "../student/pages/StudentHome";
 import TeacherHome from "../teacher/pages/TeacherHome";
 import ContentContainer from "../teacher/pages/ContentContainer";
 import Reports from "../teacher/pages/Reports";
+import Login from "../login/Login";
 
 
 
@@ -27,6 +28,10 @@ export const router = createBrowserRouter([
     path: "/",
     element: <App />,
     children: [
+      {
+        path:'/',
+        element: <Login />,
+      },
       {
         path:'/student',
         element: <StudentHome />,

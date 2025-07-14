@@ -42,7 +42,7 @@ const Modal: FC<ModalProps> = ({ isOpen, onClose, children, title }) => {
   return (
     // Backdrop
     <div
-      className="fixed inset-0  bg-opacity-50 flex items-center justify-center z-50 p-4"
+      className="fixed inset-0 bg-opacity-10 flex items-center justify-center z-50 "
       onClick={handleBackdropClick} // Only close if clicking on the backdrop, not the modal content itself
       aria-modal="true"
       role="dialog"
@@ -51,35 +51,14 @@ const Modal: FC<ModalProps> = ({ isOpen, onClose, children, title }) => {
       {/* Modal content */}
       <div
         ref={modalRef}
-        className="bg-white rounded-[24px] p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto transform transition-all sm:my-8 sm:w-full sm:max-w-lg"
+        className="bg-white rounded-[24px] p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto transform transition-all  rounded-b-none"
       >
-        <div className="flex justify-between items-center pb-3 border-b border-gray-200 mb-4">
+        <div className="flex justify-center items-center pb-3 mb-4">
           {title && (
             <h2 id="modal-title" className="text-xl font-semibold text-gray-900">
               {title}
             </h2>
           )}
-          <button
-            type="button"
-            className="text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 rounded-md"
-            onClick={onClose}
-            aria-label="Close modal"
-          >
-            <svg
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              aria-hidden="true"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </button>
         </div>
         {children}
       </div>

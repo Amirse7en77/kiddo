@@ -21,7 +21,7 @@ const Reports = () => {
                 <StudentReports/>
                 <StudentReports/>
                 <StudentReports/>
-                <StudentReports/>
+                
            </div>
           </div>
         </div>
