@@ -1,13 +1,18 @@
 import React from "react";
 
-const LessonInformation = () => {
+interface LessonInformationProps {
+  study: string;
+  lesson: string;
+}
+
+const LessonInformation: React.FC<LessonInformationProps> = ({ study, lesson }) => {
   return (
-    <div className="flex justify-between items-center py-[8px] infoGradient  px-[16px] fixed w-full">
+    <div className="flex justify-between items-center py-[8px] infoGradient px-[16px] fixed w-full">
       <div>
-        <h1 className="text-[14px]">پاسخ گویی با توجه به کتاب علوم</h1>
+        <h1 className="text-[14px]">پاسخ گویی با توجه به کتاب {study}</h1>
       </div>
       <div className="bg-white rounded-[16px] px-[16px] py-[4px]">
-        <h1 className="text-[14px] font-extrabold">همه‌ درس‌ها</h1>
+        <h1 className="text-[14px] font-extrabold">{lesson}</h1>
       </div>
     </div>
   );

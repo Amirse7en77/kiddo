@@ -2,15 +2,22 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { activeButtonReducer, disableButtonReducer } from "../../../../slice/darsyarSlice";
 
-const CardContent = () => {
+interface CardContentProps {
+  title: string;
+  isSelected: boolean;
+  onClick: () => void;
+}
+
+const CardContent: React.FC<CardContentProps> = ({ title, isSelected, onClick }) => {
+  const dispatch = useDispatch();
   const [isClicked, setIsClicked] = useState(false);
-  console.log(isClicked)
+  
+ 
 
   const handleClick = () => {
+    onClick();
     setIsClicked(!isClicked); // Toggles the state
   };
-  const dispatch = useDispatch();
-
 
   useEffect(() => {
     if (isClicked) {
@@ -35,8 +42,7 @@ const CardContent = () => {
           onClick={handleClick}
         >
           <div className="flex justify-start items-center ">
-            <h1 className="text-[14px] font-extrabold">این یک کلاس است/</h1>
-            <p className="text-[14px] ">کلاس نهم </p>
+            <h1 className="text-[14px] font-extrabold">{title}</h1>
           </div>
         </div>
       </div>

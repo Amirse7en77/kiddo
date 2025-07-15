@@ -21,94 +21,85 @@ import ContentContainer from "../teacher/pages/ContentContainer";
 import Reports from "../teacher/pages/Reports";
 import Login from "../login/Login";
 
-
-
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
     children: [
       {
-        path:'/',
+        path: "/",
         element: <Login />,
       },
       {
-        path:'/student',
+        path: "/student",
         element: <StudentHome />,
       },
       {
-        path:'/teacher',
+        path: "/teacher",
         element: <TeacherHome />,
       },
-       {
-        path:'/content',
+      {
+        path: "/content",
         element: <ContentContainer />,
       },
       {
-        path:'/reports',
+        path: "/reports",
         element: <Reports />,
       },
-
+      // DarsYar routes
       {
-        path: "darsyar/recent-chat",
+        path: "/student/darsyar/recent-chat",
         element: <DarsyarRecentChat />,
       },
       {
-        path: "darsyar/study-assistant",
+        path: "/student/darsyar/study-assistant",
         element: <DarsyarWelcome />,
       },
       {
-        path: "darsyar/study-selection",
+        path: "/student/darsyar/study-selection",
         element: <DarsyarStudySelection />,
       },
       {
-        path: "darsyar/lesson-selection",
+        path: "/student/darsyar/lesson-selection",
         element: <DarsyarLessonSelection />,
       },
       {
-        path: "darsyar/chat-with-bot",
+        path: "/student/darsyar/chat",
         element: <DarsyarChatWithBot />,
       },
+      // KonjKav routes
       {
-        path: "konjkav/welcome",
+        path: "/student/konjkav/welcome",
         element: <KonjkavWelcome />,
       },
       {
-        path: "konjkav/topic-selection",
-        element: <KonjkavTopicSelection />,
-      },
-      {
-        path: "konjkav/topic-bot",
-        element: <KonjkavTopicBot />,
-      },
-      {
-        path: "konjkav/recent-chat",
+        path: "/student/konjkav/recent-chat",
         element: <KonjkavRecentChat />,
       },
       {
-        path: "konjkav/study-selection",
+        path: "/student/konjkav/study-selection",
         element: <KonjkavStudySelection />,
       },
       {
-        path: "tarkibkon/welcome",
+        path: "/student/konjkav/topic-selection",
+        element: <KonjkavTopicSelection />,
+      },
+      {
+        path: "/student/konjkav/chat",
+        element: <KonjkavTopicBot />,
+      },
+      // Tarkibkon routes
+      {
+        path: "/student/tarkibkon/welcome",
         element: <TarkibkonWelcome />,
       },
       {
-        path: "tarkibkon/recent-chat",
+        path: "/student/tarkibkon/recent-chat",
         element: <TarkibkonRecentChat />,
       },
       {
-        path: "tarkibkon/study-selection",
+        path: "/student/tarkibkon/study-selection",
         element: <TarkibkonStudySelection />,
-      },
-
-      {
-        path: "tarkibkon/recent-chat",
-        element: <TarkibkonRecentChat />,
-      },
-      {
-        path: "tarkibkon/recent-chat",
-        element: <TarkibkonRecentChat />,
       },
     ],
   },

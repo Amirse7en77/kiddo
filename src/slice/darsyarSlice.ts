@@ -1,22 +1,51 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const initialState={
-studySelectionButton:false
+interface DarsyarState {
+  studySelectionButton: boolean;
+  selectedStudy: string | null;
+  selectedLessons: string[];
+  hasSelectedLessons: boolean;
 }
 
+const initialState: DarsyarState = {
+  studySelectionButton: false,
+  selectedStudy: null,
+  selectedLessons: [],
+  hasSelectedLessons: false
+};
 
-export const darsyarSlice=createSlice({
-name:'darsyar',
-initialState,
-reducers:{
-    activeButtonReducer:(state)=>{
-        state.studySelectionButton=true
+const darsyarSlice = createSlice({
+  name: 'darsyar',
+  initialState,
+  reducers: {
+    activeButtonReducer: (state) => {
+      state.studySelectionButton = true;
     },
-     disableButtonReducer:(state)=>{
-        state.studySelectionButton=false
+    disableButtonReducer: (state) => {
+      state.studySelectionButton = false;
+    },
+    setSelectedStudy: (state, action: PayloadAction<string>) => {
+      state.selectedStudy = action.payload;
+    },
+    setSelectedLesson: (state, action: PayloadAction<string[]>) => {
+      state.selectedLessons = action.payload;
+      state.hasSelectedLessons = action.payload.length > 0;
+    },
+    clearSelections: (state) => {
+      state.selectedStudy = null;
+      state.selectedLessons = [];
+      state.studySelectionButton = false;
+      state.hasSelectedLessons = false;
     }
-}
-})
-export const{activeButtonReducer,disableButtonReducer}=darsyarSlice.actions
+  }
+});
 
-export default darsyarSlice.reducer
+export const {
+  activeButtonReducer,
+  disableButtonReducer,
+  setSelectedStudy,
+  setSelectedLesson,
+  clearSelections
+} = darsyarSlice.actions;
+
+export default darsyarSlice.reducer;
