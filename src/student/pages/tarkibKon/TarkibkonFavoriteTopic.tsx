@@ -6,44 +6,46 @@ import { useNavigate } from "react-router-dom";
 import ChatButton from "../../../components/common/ChatButton";
 import DisableChatButton from "../../../components/common/DisableChatButton";
 import Header from "../../../components/common/Header";
-import HeroSection from "../../components/konjKav/topicSelection/HeroSection";
-import MainContent from "../../components/konjKav/topicSelection/MainContent";
-import { setSelectedTopic, activeButtonReducer, disableButtonReducer } from "../../../slice/konjkavSlice"; // Import reducers
-import { RootState } from "../../../store";
-import TopicSearchBox from "../../components/konjKav/topicSelection/TopicSearchBox";
 
-const KonjkavTopicSelection = () => {
+import {  activeButtonReducer, disableButtonReducer, setFavoriteTopic } from "../../../slice/tarkibkonSlice"; // Import reducers
+import { RootState } from "../../../store";
+import HeroSection from "../../components/tarkibKon/favoriteTopic/HeroSection";
+import TopicSearchBox from "../../components/tarkibKon/favoriteTopic/TopicSearchBox";
+import MainContent from "../../components/tarkibKon/favoriteTopic/MainContent";
+
+
+const TarkibkonFavoriteTopic = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const selectedStudy = useSelector((state: RootState) => state.konjkav.selectedStudy);
+  const selectedStudy = useSelector((state: RootState) => state.tarkibkon.selectedStudy);
   // selectedTopic from Redux now represents the ID of the selected card
-  const selectedTopic = useSelector((state: RootState) => state.konjkav.selectedTopic); 
+  const favoriteTopic = useSelector((state: RootState) => state.tarkibkon.favoriteTopic); 
 
   const [searchQuery, setSearchQuery] = useState<string>('');
 
   // Redirect if no study is selected
   useEffect(() => {
     if (!selectedStudy) {
-      navigate('/student/konjkav/study-selection');
+      navigate('/student/tarkibkon/study-selection');
     }
   }, [selectedStudy, navigate]);
 
   // Combined effect for button activation based on selection OR search query
   useEffect(() => {
-    const isActive = (selectedTopic !== null && selectedTopic !== "") || (searchQuery.trim() !== "");
+    const isActive = (favoriteTopic !== null && favoriteTopic !== "") || (searchQuery.trim() !== "");
     if (isActive) {
       dispatch(activeButtonReducer());
     } else {
       dispatch(disableButtonReducer());
     }
-  }, [selectedTopic, searchQuery, dispatch]); // Depend on selectedTopic and searchQuery
+  }, [favoriteTopic, searchQuery, dispatch]); // Depend on selectedTopic and searchQuery
 
   const handleStartChat = () => {
     // Before navigating, you might want to decide if the chat is based on a selected topic
     // or the search query. This logic depends on your backend expectations.
     // For now, we'll just navigate if *either* is active.
-    if ((selectedTopic && selectedTopic !== "") || searchQuery.trim() !== "") {
-      navigate('/student/konjkav/chat');
+    if ((favoriteTopic && favoriteTopic !== "") || searchQuery.trim() !== "") {
+      navigate('/student/tarkibkon/chat');
     }
   };
 
@@ -52,9 +54,9 @@ const KonjkavTopicSelection = () => {
     // This ensures only one mode of input (selection or search) triggers the button.
     if (topicId) {
       setSearchQuery(""); 
-      dispatch(setSelectedTopic(topicId));
+      dispatch(setFavoriteTopic(topicId));
     } else {
-      dispatch(setSelectedTopic("")); // Deselect
+      dispatch(setFavoriteTopic("")); // Deselect
     }
   };
 
@@ -62,12 +64,12 @@ const KonjkavTopicSelection = () => {
     setSearchQuery(query);
     // If the user types in the search box, deselect any topic card.
     if (query.trim() !== "") {
-      dispatch(setSelectedTopic("")); 
+      dispatch(setFavoriteTopic("")); 
     }
   };
 
   // Get button activation state from Redux (if you want to control it that way)
-  const isButtonActive = useSelector((state: RootState) => state.konjkav.studySelectionButton);
+  const isButtonActive = useSelector((state: RootState) => state.tarkibkon.studySelectionButton);
 
   return (
     <div className="h-screen">
@@ -76,13 +78,13 @@ const KonjkavTopicSelection = () => {
         
         <HeroSection />
         <div className="bg-white rounded-[24px] rounded-b-none pb-40 border-[2px] border-borderColor-1">
-          <TopicSearchBox 
+          <TopicSearchBox
             searchQuery={searchQuery} 
             setSearchQuery={handleSearchQueryChange} // Use the new handler
           />
           <MainContent 
             onTopicSelect={handleTopicSelect} 
-            selectedTopicFromParent={selectedTopic} // Pass the selected topic to MainContent
+            selectedTopicFromParent={favoriteTopic} // Pass the selected topic to MainContent
           />
         </div>
       </div>
@@ -95,4 +97,4 @@ const KonjkavTopicSelection = () => {
   );
 };
 
-export default KonjkavTopicSelection;
+export default TarkibkonFavoriteTopic;

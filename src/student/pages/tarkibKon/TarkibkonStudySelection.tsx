@@ -1,26 +1,40 @@
-// src/pages/StudySelection.tsx
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { RootState } from "../../../store";
+import { setSelectedStudy } from "../../../slice/tarkibkonSlice";
+import Header from "../../../components/common/Header";
+import DisableChatButton from "../../../components/common/DisableChatButton";
+import ChatButton from "../../../components/common/ChatButton";
+import HeroSection from "../../components/tarkibKon/studySelection/HeroSection";
+import MainContent from "../../components/tarkibKon/studySelection/MainContent";
 
-import Header from '../../../components/common/Header';
-import HeroSection from '../../../student/components/darsYar/studySelection/HeroSection';
-import MainContent from '../../../student/components/darsYar/studySelection/MainContent'; // This is now draggable
-import ChatButton from '../../../components/common/ChatButton';
+const KonjkavStudySelection = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const infoButton = useSelector((state: RootState) => state.konjkav.studySelectionButton);
 
-const TarkibkonStudySelection = () => {
-   
+  const handleNext = () => {
+    navigate('/student/tarkibkon/learn-topic-selection');
+  };
+
+  const handleLessonSelect = (selectedLessonValue: string) => {
+    dispatch(setSelectedStudy(selectedLessonValue));
+  };
 
   return (
     <div className="h-screen">
-      <Header title={'ترکیب‌کن'}/>
-      <div className='font-yekanBakh bg-backGround-1 pb-20'> {/* Increased pb to avoid overlap with draggable MainContent */}
+      <Header title={'کنجکاو'} />
+      <div className='font-yekanBakh bg-backGround-1 pb-20'>
         <HeroSection />
-         <MainContent />
+        <MainContent onLessonSelect={handleLessonSelect} />
       </div>
-      <ChatButton textButton=' بعدی '/>
-
-
-     
+      {infoButton ? (
+        <ChatButton textButton='بعدی' onClick={handleNext} />
+      ) : (
+        <DisableChatButton textButton='بعدی' />
+      )}
     </div>
   );
 };
 
-export default TarkibkonStudySelection;
+export default KonjkavStudySelection;

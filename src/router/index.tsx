@@ -20,7 +20,9 @@ import TeacherHome from "../teacher/pages/TeacherHome";
 import ContentContainer from "../teacher/pages/ContentContainer";
 import Reports from "../teacher/pages/Reports";
 import Login from "../login/Login";
-
+import TarkibkonLearnTopic from "../student/pages/tarkibKon/TarkibkonLearnTopic";
+import TarkibkonFavoriteTopic from "../student/pages/tarkibKon/TarkibkonFavoriteTopic";
+import TarkibkonChatBot from '../student/pages/tarkibKon/tarkibkonChatBot'
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -100,6 +102,18 @@ export const router = createBrowserRouter([
       {
         path: "/student/tarkibkon/study-selection",
         element: <TarkibkonStudySelection />,
+      },
+      {
+        path: "/student/tarkibkon/learn-topic-selection",
+        element: <TarkibkonLearnTopic />,
+      },
+      {
+        path: "/student/tarkibkon/favorite-topic-selection",
+        element: <TarkibkonFavoriteTopic />,
+      },
+      {
+        path: "/student/tarkibkon/chat",
+        element: <TarkibkonChatBot />,
       },
     ],
   },

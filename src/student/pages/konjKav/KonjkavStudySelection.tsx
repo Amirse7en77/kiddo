@@ -1,47 +1,38 @@
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch } from '../../../store';
-import { setSelectedStudy } from '../../../slice/konjkavSlice';
-import MainContent from '../../components/konjKav/studySelection/MainContent';
+import Header from '../../../components/common/Header';
 import HeroSection from '../../components/konjKav/studySelection/HeroSection';
-import { useState } from 'react';
+import MainContent from '../../components/konjKav/studySelection/MainContent';
+import ChatButton from '../../../components/common/ChatButton';
+import DisableChatButton from '../../../components/common/DisableChatButton';
+import { setSelectedStudy } from '../../../slice/konjkavSlice';
+import { RootState } from '../../../store';
 
 const KonjkavStudySelection = () => {
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [isButtonActive, setIsButtonActive] = useState(false);
+  const dispatch = useDispatch();
+  const infoButton = useSelector((state: RootState) => state.konjkav.studySelectionButton);
 
-  const handleStudySelect = (study: string) => {
-    if (study) {
-      dispatch(setSelectedStudy(study));
-      setIsButtonActive(true);
-    } else {
-      setIsButtonActive(false);
-    }
+  const handleNext = () => {
+    navigate('/student/konjkav/topic-selection');
   };
 
-  const handleContinue = () => {
-    if (isButtonActive) {
-      navigate('/student/konjkav/topic-selection');
-    }
+  const handleLessonSelect = (selectedLessonValue: string) => {
+    dispatch(setSelectedStudy(selectedLessonValue));
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#FAFBFF]">
-      <HeroSection />
-      <MainContent onStudySelect={handleStudySelect} />
-      <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t">
-        <button
-          onClick={handleContinue}
-          className={`w-full py-3 rounded-lg text-white font-bold transition-all duration-300 ${
-            isButtonActive
-              ? 'bg-primary hover:bg-primary-dark'
-              : 'bg-gray-300 cursor-not-allowed'
-          }`}
-          disabled={!isButtonActive}
-        >
-          ادامه
-        </button>
+    <div className="h-screen">
+      <Header title={'کنجکاو'} />
+      <div className='font-yekanBakh bg-backGround-1 pb-20'>
+        <HeroSection />
+        <MainContent onLessonSelect={handleLessonSelect} />
       </div>
+      {infoButton ? (
+        <ChatButton textButton='بعدی' onClick={handleNext} />
+      ) : (
+        <DisableChatButton textButton='بعدی' />
+      )}
     </div>
   );
 };

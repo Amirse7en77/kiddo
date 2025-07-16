@@ -2,7 +2,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { activeButtonReducer, disableButtonReducer } from '../../../../slice/konjkavSlice';
-import TopicSelector from './TopicSelector';
+import TopicSelector from './TopicSelector'
 
 // This Topic interface isn't directly used by TopicSelector anymore,
 // but it's good to keep if you plan to use these topics for filtering/search later.

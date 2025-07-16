@@ -2,17 +2,19 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface KonjkavState {
   selectedStudy: string;
-  selectedTopic: string;
+  learnTopic: string;
+  favoriteTopic: string;
   studySelectionButton: boolean;
 }
 
 const initialState: KonjkavState = {
   selectedStudy: "",
-  selectedTopic: "",
+  learnTopic: "",
+  favoriteTopic:'',
   studySelectionButton: false,
 };
 
-const konjkavSlice = createSlice({
+const tarkibkonSlice = createSlice({
   name: "konjkav",
   initialState,
   reducers: {
@@ -24,12 +26,16 @@ const konjkavSlice = createSlice({
         state.studySelectionButton = false;
       }
     },
-    setSelectedTopic: (state, action: PayloadAction<string>) => {
-      state.selectedTopic = action.payload;
+    setLearnTopic: (state, action: PayloadAction<string>) => {
+      state.learnTopic = action.payload;
+    },
+     setFavoriteTopic: (state, action: PayloadAction<string>) => {
+      state.favoriteTopic = action.payload;
     },
     resetSelection: (state) => {
       state.selectedStudy = "";
-      state.selectedTopic = "";
+      state.learnTopic = "";
+      state.favoriteTopic='';
       state.studySelectionButton = false;
     },
     activeButtonReducer: (state) => {
@@ -43,10 +49,11 @@ const konjkavSlice = createSlice({
 
 export const {
   setSelectedStudy,
-  setSelectedTopic,
+  setLearnTopic,
+  setFavoriteTopic,
   resetSelection,
   activeButtonReducer,
   disableButtonReducer,
-} = konjkavSlice.actions;
+} = tarkibkonSlice.actions;
 
-export default konjkavSlice.reducer;
+export default tarkibkonSlice.reducer;

@@ -8,7 +8,7 @@ import ChatBot from "../../components/konjKav/chatWithBot/ChatBot";
 interface RootState {
   konjkav: {
     selectedStudy: string | null;
-    selectedTopics: string[];
+    selectedTopic: string[];
   };
 }
 
@@ -16,21 +16,21 @@ const KonjkavTopicBot = () => {
   const navigate = useNavigate();
   const [isChatting, setIsChatting] = useState<boolean>(false);
   const selectedStudy = useSelector((state: RootState) => state.konjkav.selectedStudy);
-  const selectedTopics = useSelector((state: RootState) => state.konjkav.selectedTopics);
-
+  const selectedTopic = useSelector((state: RootState) => state.konjkav.selectedTopic);
+  console.log(selectedStudy,selectedTopic)
   useEffect(() => {
-    if (!selectedStudy || selectedTopics.length === 0) {
+    if (!selectedStudy || selectedTopic.length === 0) {
       navigate('/student/konjkav/study-selection');
     }
-  }, [selectedStudy, selectedTopics, navigate]);
+  }, [selectedStudy, selectedTopic, navigate]);
 
   // If no study or topics are selected, don't render anything while redirecting
-  if (!selectedStudy || selectedTopics.length === 0) {
+  if (!selectedStudy || selectedTopic.length === 0) {
     return null;
   }
 
   // Create the first message using selected study and topics
-  const firstMessage = `در مورد ${selectedStudy} میخواهم درباره ${selectedTopics.join('، ')} بیشتر بدانم.`;
+  const firstMessage = `${selectedStudy} میخواهم درباره ${selectedTopic} بیشتر بدانم.`;
 
   return (
     <div className="bg-backGround-1">

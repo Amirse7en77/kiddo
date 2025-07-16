@@ -1,49 +1,47 @@
-// src/pages/StudySelection.tsx
-
-import { useEffect, useState } from "react"; // Import useState
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { RootState } from "../../../store";
+import { useEffect, useState } from "react";
+import { activeButtonReducer, disableButtonReducer, setLearnTopic } from "../../../slice/tarkibkonSlice";
+import Header from "../../../components/common/Header";
 import ChatButton from "../../../components/common/ChatButton";
 import DisableChatButton from "../../../components/common/DisableChatButton";
-import Header from "../../../components/common/Header";
-import HeroSection from "../../components/konjKav/topicSelection/HeroSection";
-import MainContent from "../../components/konjKav/topicSelection/MainContent";
-import { setSelectedTopic, activeButtonReducer, disableButtonReducer } from "../../../slice/konjkavSlice"; // Import reducers
-import { RootState } from "../../../store";
-import TopicSearchBox from "../../components/konjKav/topicSelection/TopicSearchBox";
+import MainContent from "../../components/tarkibKon/learnTopic/MainContent";
+import TopicSearchBox from "../../components/tarkibKon/learnTopic/TopicSearchBox";
+import HeroSection from "../../components/tarkibKon/learnTopic/HeroSection";
 
-const KonjkavTopicSelection = () => {
+const TarkibkonLearnTopic = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const selectedStudy = useSelector((state: RootState) => state.konjkav.selectedStudy);
+  const selectedStudy = useSelector((state: RootState) => state.tarkibkon.selectedStudy);
   // selectedTopic from Redux now represents the ID of the selected card
-  const selectedTopic = useSelector((state: RootState) => state.konjkav.selectedTopic); 
+  const learnTopic = useSelector((state: RootState) => state.tarkibkon.learnTopic); 
 
   const [searchQuery, setSearchQuery] = useState<string>('');
 
   // Redirect if no study is selected
   useEffect(() => {
     if (!selectedStudy) {
-      navigate('/student/konjkav/study-selection');
+      navigate('/student/tarkibkon/study-selection');
     }
   }, [selectedStudy, navigate]);
 
   // Combined effect for button activation based on selection OR search query
   useEffect(() => {
-    const isActive = (selectedTopic !== null && selectedTopic !== "") || (searchQuery.trim() !== "");
+    const isActive = (learnTopic !== null && learnTopic !== "") || (searchQuery.trim() !== "");
     if (isActive) {
       dispatch(activeButtonReducer());
     } else {
       dispatch(disableButtonReducer());
     }
-  }, [selectedTopic, searchQuery, dispatch]); // Depend on selectedTopic and searchQuery
+  }, [learnTopic, searchQuery, dispatch]); // Depend on selectedTopic and searchQuery
 
   const handleStartChat = () => {
     // Before navigating, you might want to decide if the chat is based on a selected topic
     // or the search query. This logic depends on your backend expectations.
     // For now, we'll just navigate if *either* is active.
-    if ((selectedTopic && selectedTopic !== "") || searchQuery.trim() !== "") {
-      navigate('/student/konjkav/chat');
+    if ((learnTopic && learnTopic !== "") || searchQuery.trim() !== "") {
+      navigate('/student/tarkibkon/favorite-topic-selection');
     }
   };
 
@@ -52,9 +50,9 @@ const KonjkavTopicSelection = () => {
     // This ensures only one mode of input (selection or search) triggers the button.
     if (topicId) {
       setSearchQuery(""); 
-      dispatch(setSelectedTopic(topicId));
+      dispatch(setLearnTopic(topicId));
     } else {
-      dispatch(setSelectedTopic("")); // Deselect
+      dispatch(setLearnTopic("")); // Deselect
     }
   };
 
@@ -62,12 +60,12 @@ const KonjkavTopicSelection = () => {
     setSearchQuery(query);
     // If the user types in the search box, deselect any topic card.
     if (query.trim() !== "") {
-      dispatch(setSelectedTopic("")); 
+      dispatch(setLearnTopic("")); 
     }
   };
 
   // Get button activation state from Redux (if you want to control it that way)
-  const isButtonActive = useSelector((state: RootState) => state.konjkav.studySelectionButton);
+  const isButtonActive = useSelector((state: RootState) => state.tarkibkon.studySelectionButton);
 
   return (
     <div className="h-screen">
@@ -82,7 +80,7 @@ const KonjkavTopicSelection = () => {
           />
           <MainContent 
             onTopicSelect={handleTopicSelect} 
-            selectedTopicFromParent={selectedTopic} // Pass the selected topic to MainContent
+            selectedTopicFromParent={learnTopic} // Pass the selected topic to MainContent
           />
         </div>
       </div>
@@ -95,4 +93,4 @@ const KonjkavTopicSelection = () => {
   );
 };
 
-export default KonjkavTopicSelection;
+export default TarkibkonLearnTopic;

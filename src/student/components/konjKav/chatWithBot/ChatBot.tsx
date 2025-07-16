@@ -5,9 +5,14 @@ interface Message {
   sender: "user" | "bot";
   text: string;
 }
+interface ChatBotType{
+  firstMessage:string,
+  isChatting:Boolean,
+  setIsChatting:()=>void
+}
 
 
-const ChatBot: React.FC = () => {
+const ChatBot: React.FC<ChatBotType> = ({firstMessage,isChatting,setIsChatting}) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -15,7 +20,7 @@ const ChatBot: React.FC = () => {
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-
+ 
   // Scroll to the latest message whenever messages state changes
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
@@ -99,11 +104,11 @@ const ChatBot: React.FC = () => {
       
     >
       {/* Messages Display Area */}
-   <div className="flex-1 overflow-y-auto">
+   <div className="flex-1 overflow-y-auto pt-[52px]">
        <div
-        className="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg rounded-[16px] bg-backGroundCard text-gray-900 border-2 border-chatButton-1 p-[16px] m-[16px] flex justify-start"
+        className=" rounded-[16px] bg-backGroundCard text-gray-900 border-2 border-chatButton-1 p-[16px] m-[16px] flex justify-start "
     >
-        فروکتوز چیست؟ 
+        {firstMessage}
     </div>
     {messages.map((msg, index) => (
         <div

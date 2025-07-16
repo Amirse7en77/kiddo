@@ -2,6 +2,7 @@
 import Header from '../../../components/common/Header'
 import ChatButton from '../../../components/common/ChatButton'
 import RecentChatCard from '../../../components/common/RecentChatCard'
+import RecentChats from '../../../components/RecentChats'
 
 const TarkibkonRecentChat = () => {
   return (
@@ -13,12 +14,8 @@ const TarkibkonRecentChat = () => {
           <h1 className=' font-extrabold text-[14px] '>چت های اخیر</h1>
         </div>
         <div className=' flex flex-col gap-[12px] mx-[16px]'>
-          <RecentChatCard/>
-           <RecentChatCard/>
-            <RecentChatCard/>
-             <RecentChatCard/>
-              <RecentChatCard/>
-               <RecentChatCard/>
+          <RecentChats/>
+           
         </div>
       </div>
       <ChatButton textButton='ساخت چت جدید'/>

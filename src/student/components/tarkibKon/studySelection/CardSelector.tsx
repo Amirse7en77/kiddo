@@ -1,7 +1,7 @@
 // CardSelector.tsx
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { activeButtonReducer, disableButtonReducer } from '../../../../slice/konjkavSlice';
+import { activeButtonReducer, disableButtonReducer } from '../../../../slice/tarkibkonSlice';
 import CardContent from './CardContent';
 
 interface Card {
