@@ -41,7 +41,7 @@ const CardSelector: React.FC<CardSelectorProps> = ({ onLessonSelect }) => {
       {cards.map((card) => (
         <CardContent
           key={card.id}
-          title={card.title}
+          name={card.title}
           isSelected={selectedCardId === card.id}
           onClick={() => handleCardClick(card.id, card.title)}
         />

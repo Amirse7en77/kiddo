@@ -3,13 +3,13 @@ import React from "react";
 import riazi from "./../../../../assets/images/riazi.png";
 
 interface CardContentProps {
-  title: string;
+  name: string;
   isSelected: boolean;
   onClick: () => void;
 }
 
 const CardContent: React.FC<CardContentProps> = ({
-  title,
+  name,
   isSelected,
   onClick,
 }) => {
@@ -29,7 +29,7 @@ const CardContent: React.FC<CardContentProps> = ({
         <img
           src={riazi}
           className="w-full h-auto object-contain"
-          alt={title}
+          alt={name}
         />
         <div
           className="
@@ -44,7 +44,7 @@ const CardContent: React.FC<CardContentProps> = ({
               pb-0 mt-0 
             "
           >
-            {title}
+            {name}
           </h1>
         </div>
       </div>

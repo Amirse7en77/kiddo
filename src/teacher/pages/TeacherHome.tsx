@@ -5,23 +5,30 @@ import ToolCard from "../../student/components/home/ToolCard";
 import RecentChatCard from "../../components/common/RecentChatCard";
 import ProgressQuestion from "../components/home/ProgressQuestion";
 import { useChatSessions } from "../../hooks/useChatSessions";
+import { useNavigate } from "react-router-dom";
 
 const TeacherHome = () => {
+  const navigate=useNavigate()
   const { data: chatSessions = [], isLoading, isError } = useChatSessions();
 
   const hasRecentChatsForTool = (tool: string) => {
     return chatSessions.some((session) => session.tool === tool);
   };
+  const handleClasses=()=>{
+    navigate('/teacher/students')
+  }
 
   return (
     <div>
       <Header />
       <div className="bg-backGround-1 h-full">
         <div className="p-[24px] gap-[16px]">
-          <div>
+          <div >
             <h1 className="pb-[16px]">کلاس‌ها</h1>
-            <Classes />
-            <Classes />
+            <div onClick={handleClasses}>
+              <Classes />
+            </div>
+           
           </div>
           <div>
             <h1 className="pt-[20px] pb-[32px]">ابزار‌ها</h1>

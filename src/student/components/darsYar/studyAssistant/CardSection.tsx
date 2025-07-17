@@ -4,8 +4,8 @@ import { studyAssistantConstatnt } from '../../../../constants/studyAssistantCon
 const CardSection:React.FC = () => {
   return (
   <div className='h-screen'>
-   {studyAssistantConstatnt.map(study=>(
-        <div className='card-box mb-[12px] gap-[12px] '>
+   {studyAssistantConstatnt.map((study,index)=>(
+        <div className='card-box mb-[12px] gap-[12px] ' key={index}>
         <div className=' flex justify-center flex-col bg-white rounded-[22px] gap-[8px] p-[16px] '>
             <div className='gap-[8px] flex items-center justify-start'>
                <img src={study.logo}/>

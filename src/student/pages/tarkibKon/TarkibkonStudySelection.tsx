@@ -8,7 +8,7 @@ import ChatButton from "../../../components/common/ChatButton";
 import HeroSection from "../../components/tarkibKon/studySelection/HeroSection";
 import MainContent from "../../components/tarkibKon/studySelection/MainContent";
 
-const KonjkavStudySelection = () => {
+const TarkibkonStudySelection = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const infoButton = useSelector((state: RootState) => state.konjkav.studySelectionButton);
@@ -37,4 +37,4 @@ const KonjkavStudySelection = () => {
   );
 };
 
-export default KonjkavStudySelection;
+export default TarkibkonStudySelection;

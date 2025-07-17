@@ -1,8 +1,9 @@
 // src/components/ToolsModal/ToolsModal.tsx
 import React, { useState } from 'react';
-import Modal from '../../Modal';
+
 import Tools from './Tools';
 import ChatButton from '../../../../../components/common/ChatButton';
+import Modal from '../../Modal';
 
 interface StudentModalProps {
   isModalOpen: boolean;

@@ -1,11 +1,11 @@
 import React from 'react'
 
-const tarkibkonChatBot = () => {
+const TarkibkonChatBot = () => {
   return (
     <div>
-      
+      رزیبلابلابلابلا
     </div>
   )
 }
 
-export default tarkibkonChatBot
+export default TarkibkonChatBot

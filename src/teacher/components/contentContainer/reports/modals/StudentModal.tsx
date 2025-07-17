@@ -8,12 +8,12 @@ interface StudentModalProps {
 
 const StudentModal:React.FC<StudentModalProps> = ({isModalOpen,handleCloseModal}) => {
   return (
-    <div>
+    <div >
       <Modal isOpen={isModalOpen} onClose={handleCloseModal} title="">
-       <div className='flex flex-col justify-center items-center gap-[8px] pb-40'>
+       <div className='flex flex-col justify-center items-center gap-[8px] '>
         <img src={''}/>
         <h1>نرگس شریفی</h1>
-        <div className='flex '>
+        <div className='flex justify-between'>
           <p className=' bg-backGround-1 gap-[8px] px-[8px] rounded-[16px] text-[10px] py-[2px]'>22 دانش آموز</p>
           <p className=' bg-backGround-1 gap-[8px] px-[8px] rounded-[16px] text-[10px] py-[2px]'>22 دانش آموز</p>
         </div>

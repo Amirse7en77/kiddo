@@ -1,5 +1,5 @@
 import React from 'react'
-import darsYar from './../../../../assets/images/DarsYar.png'
+import darsyar from './../../../assets/images/DarsYar.png'
 
 const RecentChatCard = () => {
   return (
@@ -7,7 +7,7 @@ const RecentChatCard = () => {
          <div className='card-box'>
             <div className='flex justify-start items-center bg-white rounded-[22px] p-[16px] gap-[16px] pl-[24px]'>
                 <div>
-                    <img className='w-[56px] h-[56px] ' src={darsYar}/>
+                    <img className='w-[56px] h-[56px] ' src={darsyar}/>
                 </div>
                 <div className='flex flex-col gap-[4px] '>
                     <h1 className='font-extrabold line-clamp-1 w-[215px] text-[14px]'>توضیحات مربوط به فتوسنتز و بقیه اطلاعات مهم و کاربری</h1>

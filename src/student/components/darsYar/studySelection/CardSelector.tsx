@@ -3,20 +3,33 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setSelectedStudy } from '../../../../slice/darsyarSlice';
 import CardContent from './CardContent';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 
 interface Card {
   id: string;
-  title: string;
+  name: string;
 }
 
 const CardSelector: React.FC = () => {
+
+   const {
+    data,
+    isLoading,
+    isError, 
+    error,   
+  } = useQuery<Card[]>({ 
+    queryKey: ['classes'],
+    queryFn: async () => { 
+      const response = await axios.get<Card[]>(`https://kiddo2.pythonanywhere.com/api/v1/academics/subjects`);
+      return response.data; 
+    },
+    });
+   if (!isLoading){
+     console.log(data)
+   }
   const dispatch = useDispatch();
-  const cards: Card[] = [
-    { id: 'math', title: 'ریاضی' },
-    { id: 'science', title: 'علوم' },
-    { id: 'history', title: 'تاریخ' },
-    { id: 'geography', title: 'جغرافیا' },
-  ];
+ 
 
   const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
 
@@ -33,13 +46,13 @@ const CardSelector: React.FC = () => {
   };
 
   return (
-    <div className="grid grid-cols-2 gap-[12px]">
-      {cards.map((card) => (
+   (!isLoading) &&  <div className="grid grid-cols-2 gap-[12px]">
+      {data?.map((card) => (
         <CardContent
           key={card.id}
-          title={card.title}
+          name={card.name}
           isSelected={selectedCardId === card.id}
-          onClick={() => handleCardClick(card.id, card.title)}
+          onClick={() => handleCardClick(card.id, card.name)}
         />
       ))}
     </div>

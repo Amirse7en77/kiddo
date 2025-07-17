@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Modal from "../Modal";
+
 import StudentModal from "./modals/StudentModal";
 
 const StudentReports = () => {
@@ -14,10 +14,10 @@ const StudentReports = () => {
   };
   return (
     <div className="mb-[32px]">
-      <div className="mb-[8px]">
+      <div className="mb-[8px] flex justify-between">
         <h1> امیر علی</h1>
         <img src={""} />
-        <button onClick={handleOpenModal}>باز کردن modal</button>
+        <button className="rounded-[24px] px-[8px] py-[2px] " onClick={handleOpenModal}>  مشاهده</button>
       </div>
       <div>
         <h1 className="text-[12px]">

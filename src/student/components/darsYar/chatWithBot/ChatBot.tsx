@@ -19,6 +19,8 @@ const ChatBot: React.FC<ChatType> = ({ isChatting, setIsChatting }) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
+  
+
   // Scroll to the latest message whenever messages state changes
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
@@ -45,7 +47,7 @@ const ChatBot: React.FC<ChatType> = ({ isChatting, setIsChatting }) => {
       const payload = { contents: chatHistory };
       const apiKey = ""; // Canvas will automatically provide the API key at runtime
       const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-
+console.log(chatHistory)
       const response = await fetch(apiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -116,7 +118,7 @@ const ChatBot: React.FC<ChatType> = ({ isChatting, setIsChatting }) => {
               <div
                 className={`max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg p-3 rounded-[16px] ${
                   msg.sender === "user"
-                    ? "bg-backGroundCard text-gray-900 border-2 border-chatButton-1 p-[16px] m-[16px]"
+                    ? "bg-backGroundCard text-gray-900 border-2 border-chatButton-1 p-[16px] m-[16px] mt-[55px]"
                     : "bg-white text-gray-800 ml-[8px] border-borderColor-1 border-2"
                 }`}
               >
