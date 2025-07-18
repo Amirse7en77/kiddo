@@ -1,27 +1,39 @@
 // MainContent.tsx
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setSelectedLesson } from "../../../../slice/darsyarSlice";
 import CardContent from "./CardContent";
+import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
 
-interface Lesson {
+// Interface for the API response
+interface LessonResponse {
   id: string;
   title: string;
 }
 
+
 const MainContent: React.FC = () => {
   const dispatch = useDispatch();
   const [selectedLessons, setSelectedLessons] = useState<string[]>([]);
-  console.log(selectedLessons);
+  const subject = useSelector((state: any) => state.darsyar.selectedStudy?.id);
+  console.log('Selected subject:', subject);
+  console.log('Selected lessons:', selectedLessons);
+   const {
+    data,
+    isLoading,
+    isError, 
+    error,   
+  } = useQuery<LessonResponse[]>({ 
+    queryKey: ['classes', subject],
+    queryFn: async () => { 
+      const response = await axios.get<LessonResponse[]>(`https://kiddo2.pythonanywhere.com/api/v1/academics/subjects/${subject}/chapters/`);
+      return response.data; 
+    },
+    enabled: !!subject
+    });
+  
 
-  const lessons: Lesson[] = [
-    { id: 'lesson1', title: 'درس اول' },
-    { id: 'lesson2', title: 'درس دوم' },
-    { id: 'lesson3', title: 'درس سوم' },
-    { id: 'lesson4', title: 'درس چهارم' },
-    { id: 'lesson5', title: 'درس پنجم' },
-    { id: 'lesson6', title: 'درس ششم' },
-  ];
 
   const handleLessonSelect = (id: string) => {
     setSelectedLessons(prev => {
@@ -30,29 +42,35 @@ const MainContent: React.FC = () => {
         ? prev.filter(lessonId => lessonId !== id)
         : [...prev, id];
       
-      // Update Redux state with all selected lesson titles
-      const selectedTitles = newSelection.map(selectedId => 
-        lessons.find(lesson => lesson.id === selectedId)?.title || ''
-      ).filter(title => title !== '');
+      // Update Redux state with selected lessons including both id and name
+      const selectedLessonsData = newSelection
+        .map(selectedId => data?.find(l => l.id === selectedId))
+        .filter((lesson): lesson is LessonResponse => lesson !== undefined)
+        .map(lesson => ({
+          id: lesson.id,
+          name: lesson.title
+        }));
       
-      dispatch(setSelectedLesson(selectedTitles));
+      dispatch(setSelectedLesson(selectedLessonsData));
       return newSelection;
     });
   };
 
   return (
-    <div className="border-borderColor-1 bg-white h-screen flex flex-col gap-[12px]">
-      <div className="bg-white gap-[16px] mt-[16px] mx-[16px]">
-        {lessons.map((lesson) => (
-          <CardContent
-            key={lesson.id}
-            title={lesson.title}
-            isSelected={selectedLessons.includes(lesson.id)}
-            onClick={() => handleLessonSelect(lesson.id)}
-          />
-        ))}
+    (!isLoading) && (
+      <div className="border-borderColor-1 bg-white h-screen flex flex-col gap-[12px]">
+        <div className="bg-white gap-[16px] mt-[16px] mx-[16px]">
+          {data?.map((lesson) => (
+            <CardContent
+              key={lesson.id}
+              title={lesson.title} // CardContent still expects title prop
+              isSelected={selectedLessons.includes(lesson.id)}
+              onClick={() => handleLessonSelect(lesson.id)}
+            />
+          ))}
+        </div>
       </div>
-    </div>
+    ) 
   );
 };
 

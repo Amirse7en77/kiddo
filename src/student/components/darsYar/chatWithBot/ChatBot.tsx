@@ -1,20 +1,45 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useSelector } from "react-redux";
+import { startDarsyarSession, sendDarsyarMessage, ChatResponse, sendMessageAgain } from "../../../../api/darsyarApi";
 
 // Define the structure for a chat message
+interface APIMessage {
+  sender_type: 'SYSTEM' | 'AI';
+  content: string;
+}
+
 interface Message {
   sender: "user" | "bot";
   text: string;
 }
+
 interface ChatType {
   isChatting: boolean;
   setIsChatting: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+interface Study {
+  id: string;
+  name: string;
+}
+
+interface RootState {
+  darsyar: {
+    selectedStudy: Study | null;
+    selectedLessons: { id: string; name: string; }[];
+  };
+}
+
 const ChatBot: React.FC<ChatType> = ({ isChatting, setIsChatting }) => {
   const [messages, setMessages] = useState<Message[]>([]);
+  const [contextMessages, setContextMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isInputFocused, setIsInputFocused] = useState<boolean>(false);
+  const [sessionId, setSessionId] = useState<string | null>(null);
+
+  const selectedStudy = useSelector((state: RootState) => state.darsyar.selectedStudy);
+  const selectedLessons = useSelector((state: RootState) => state.darsyar.selectedLessons);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -34,62 +59,85 @@ const ChatBot: React.FC<ChatType> = ({ isChatting, setIsChatting }) => {
     }
   }, [inputMessage]);
 
-  const handleChatting = () => {
+  const handleChatting = async () => {
+    if (!selectedStudy || selectedLessons.length === 0) {
+      setContextMessages([{
+        sender: "bot",
+        text: "لطفاً ابتدا درس و مبحث مورد نظر خود را انتخاب کنید."
+      }]);
+      return;
+    }
+
     setIsChatting(true);
-  };
-
-  const getBotResponse = async (userPrompt: string): Promise<string> => {
     setIsLoading(true);
+
     try {
-      const chatHistory = [];
-      chatHistory.push({ role: "user", parts: [{ text: userPrompt }] });
-
-      const payload = { contents: chatHistory };
-      const apiKey = ""; // Canvas will automatically provide the API key at runtime
-      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-console.log(chatHistory)
-      const response = await fetch(apiUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      const result = await response.json();
-
-      if (
-        result.candidates &&
-        result.candidates.length > 0 &&
-        result.candidates[0].content &&
-        result.candidates[0].content.parts &&
-        result.candidates[0].content.parts.length > 0
-      ) {
-        return result.candidates[0].content.parts[0].text;
+      const response = await startDarsyarSession(
+        selectedStudy.id,
+        selectedLessons.map(lesson => lesson.id)
+      );
+      setSessionId(response.id);
+      console.log(response.messages)
+      // Add initial system message if any
+      if (response.messages && response.messages.length > 0) {
+        setContextMessages(response.messages.map((msg: APIMessage) => ({
+          sender: (msg.sender_type === 'SYSTEM') ? 'bot' : 'user',
+          text: msg.content
+          
+        }
+      )
+    ));
       } else {
-        console.error("Unexpected API response structure:", result);
-        return "Sorry, I couldn't get a response. Please try again.";
+        setContextMessages([{
+          sender: "bot",
+          text: "سلام! من دستیار درسی شما هستم. چطور می‌توانم کمکتان کنم؟"
+        }]);
       }
     } catch (error) {
-      console.error("Error fetching bot response:", error);
-      return "Oops! Something went wrong. Please try again later.";
+      console.error('Failed to start chat session:', error);
+      setContextMessages([{
+        sender: "bot",
+        text: "متأسفانه در شروع گفتگو مشکلی پیش آمده است. لطفاً دوباره تلاش کنید."
+      }]);
     } finally {
       setIsLoading(false);
     }
   };
-
+console.log(contextMessages,messages)
   const handleSendMessage = async () => {
-    if (inputMessage.trim() === "") return;
+    if (!sessionId || inputMessage.trim() === "") return;
 
+    const userMessageText = inputMessage.trim();
     const newUserMessage: Message = {
       sender: "user",
-      text: inputMessage.trim(),
+      text: userMessageText,
     };
-    setMessages((prevMessages) => [...prevMessages, newUserMessage]);
+    
+    setMessages(prevMessages => [...prevMessages, newUserMessage]);
     setInputMessage("");
+    setIsLoading(true);
 
-    const botResponseText = await getBotResponse(newUserMessage.text);
-
-    const newBotMessage: Message = { sender: "bot", text: botResponseText };
-    setMessages((prevMessages) => [...prevMessages, newBotMessage]);
+    try {
+      const response = await sendMessageAgain(sessionId, userMessageText);
+      console.log(response)
+      // Add all messages received from the API
+      response.messages.forEach((msg: { sender_type: string; content: string; }) => {
+        const newMessage: Message = {
+          sender: msg.sender_type.toLowerCase() === 'system' ? 'bot' : 'user',
+          text: msg.content
+        };
+        setMessages(prevMessages => [...prevMessages, newMessage]);
+      });
+    } catch (error) {
+      console.error('Failed to send message:', error);
+      const errorMessage: Message = {
+        sender: "bot",
+        text: "متأسفانه در ارسال پیام مشکلی پیش آمده است. لطفاً دوباره تلاش کنید."
+      };
+      setMessages(prevMessages => [...prevMessages, errorMessage]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -119,7 +167,7 @@ console.log(chatHistory)
                 className={`max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg p-3 rounded-[16px] ${
                   msg.sender === "user"
                     ? "bg-backGroundCard text-gray-900 border-2 border-chatButton-1 p-[16px] m-[16px] mt-[55px]"
-                    : "bg-white text-gray-800 ml-[8px] border-borderColor-1 border-2"
+                    : "bg-white text-gray-800 ml-[8px] border-borderColor-1 border-2 "
                 }`}
               >
                 <p className="text-sm sm:text-base">{msg.text}</p>
@@ -128,8 +176,8 @@ console.log(chatHistory)
           </div>
         ))}
         {isLoading && (
-          <div className="flex justify-end">
-            <div className="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg p-3 rounded-xl shadow-md bg-gray-300 text-gray-800 rounded-bl-none">
+          <div className="flex justify-start">
+            <div className="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg p-3 rounded-xl border-2 border-borderColor-1 bg-white text-gray-800 rounded-bl-none">
               <div className="flex items-center space-x-2">
                 <div
                   className="w-3 h-3 bg-gray-600 rounded-full animate-bounce"
@@ -192,7 +240,7 @@ console.log(chatHistory)
                 onChange={(e) => setInputMessage(e.target.value)}
                 onKeyPress={handleKeyPress}
                 disabled={isLoading}
-                onClick={handleChatting}
+                onClick={!sessionId ? handleChatting : undefined}
                 onFocus={() => setIsInputFocused(true)}
                 onBlur={() => setIsInputFocused(false)}
               />

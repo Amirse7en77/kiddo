@@ -5,10 +5,15 @@ import ChatBot from "../../components/darsYar/chatWithBot/ChatBot";
 import Header from "../../../components/common/Header";
 import { useNavigate } from "react-router-dom";
 
+interface Study {
+  id: string;
+  name: string;
+}
+
 interface RootState {
   darsyar: {
-    selectedStudy: string | null;
-    selectedLessons: string[];
+    selectedStudy: Study | null;
+    selectedLessons: { id: string; name: string; }[];
   };
 }
 
@@ -17,6 +22,7 @@ const DarsyarChatWithBot = () => {
   const [isChatting, setIsChatting] = useState<boolean>(false);
   const selectedStudy = useSelector((state: RootState) => state.darsyar.selectedStudy);
   const selectedLessons = useSelector((state: RootState) => state.darsyar.selectedLessons);
+ 
 
   useEffect(() => {
     if (!selectedStudy || selectedLessons.length === 0) {
@@ -36,8 +42,8 @@ const DarsyarChatWithBot = () => {
         {!isChatting && (
           <div>
             <LessonInformation 
-              study={selectedStudy}
-              lesson={selectedLessons.join(', ')}
+              study={selectedStudy.name}
+              lesson={selectedLessons.map(l => l.name).join(', ')}
             />
           </div>
         )}

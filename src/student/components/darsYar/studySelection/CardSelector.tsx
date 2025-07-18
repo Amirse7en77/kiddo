@@ -1,7 +1,7 @@
 // CardSelector.tsx
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { setSelectedStudy } from '../../../../slice/darsyarSlice';
+import { setSelectedStudy, clearSelections } from '../../../../slice/darsyarSlice';
 import CardContent from './CardContent';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
@@ -33,15 +33,18 @@ const CardSelector: React.FC = () => {
 
   const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
 
-  const handleCardClick = (clickedId: string, title: string) => {
+  const handleCardClick = (clickedId: string, name: string) => {
     const newSelectedId = selectedCardId === clickedId ? null : clickedId;
     setSelectedCardId(newSelectedId);
     
-    // Now properly dispatch the action with a payload
     if (newSelectedId) {
-      dispatch(setSelectedStudy(title));
+      dispatch(setSelectedStudy({
+        id: clickedId,
+        name: name
+      }));
     } else {
-      dispatch(setSelectedStudy(''));
+      // When deselecting, we set the study to null
+      dispatch(clearSelections());
     }
   };
 
