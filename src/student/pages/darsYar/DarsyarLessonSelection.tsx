@@ -22,6 +22,12 @@ const DarsyarLessonSelection = () => {
   const selectedStudy = useSelector((state: RootState) => state.darsyar.selectedStudy);
   const selectedLessons = useSelector((state: RootState) => state.darsyar.selectedLessons);
 
+    useEffect(() => {
+    // Navigate to login page if selections are missing
+    if (!selectedStudy ) {
+      navigate('/'); 
+    }
+  }, [selectedStudy, navigate]);
   useEffect(() => {
     if (shouldNavigate && selectedStudy && selectedLessons.length > 0) {
       navigate('/student/darsyar/chat');

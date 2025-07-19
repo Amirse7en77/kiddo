@@ -1,53 +1,52 @@
-// CardSelector.tsx
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { activeButtonReducer, disableButtonReducer } from '../../../../slice/tarkibkonSlice';
+import { setSelectedStudy } from '../../../../slice/tarkibkonSlice';
 import CardContent from './CardContent';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 
-interface Card {
+interface Subject {
   id: string;
-  title: string;
+  name: string;
 }
 
-interface CardSelectorProps {
-  onLessonSelect: (selectedLessonValue: string) => void;
-}
+const CardSelector: React.FC = () => {
+    const dispatch = useDispatch();
+    const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
 
-const CardSelector: React.FC<CardSelectorProps> = ({ onLessonSelect }) => {
-  const dispatch = useDispatch();
-  const cards: Card[] = [
-    { id: 'math', title: 'ریاضی' },
-    { id: 'science', title: 'علوم' },
-    { id: 'social', title: 'مطالعات اجتماعی' },
-    { id: 'literature', title: 'ادبیات فارسی' },
-  ];
+    const { data: subjects, isLoading, isError } = useQuery<Subject[]>({
+        queryKey: ['subjects'],
+        queryFn: async () => {
+            const response = await axios.get<Subject[]>(`https://kiddo2.pythonanywhere.com/api/v1/academics/subjects`);
+            return response.data;
+        },
+    });
 
-  const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
+    const handleCardClick = (subject: Subject) => {
+        if (selectedCardId === subject.id) {
+            setSelectedCardId(null);
+            dispatch(setSelectedStudy(null));
+        } else {
+            setSelectedCardId(subject.id);
+            dispatch(setSelectedStudy(subject));
+        }
+    };
 
-  const handleCardClick = (clickedId: string, title: string) => {
-    if (selectedCardId === clickedId) {
-      setSelectedCardId(null);
-      onLessonSelect('');
-      dispatch(disableButtonReducer());
-    } else {
-      setSelectedCardId(clickedId);
-      onLessonSelect(title);
-      dispatch(activeButtonReducer());
-    }
-  };
+    if (isLoading) return <div>در حال بارگذاری دروس...</div>;
+    if (isError) return <div>خطا در بارگذاری دروس.</div>;
 
-  return (
-    <div className="grid grid-cols-2 gap-[12px]">
-      {cards.map((card) => (
-        <CardContent
-          key={card.id}
-          name={card.title}
-          isSelected={selectedCardId === card.id}
-          onClick={() => handleCardClick(card.id, card.title)}
-        />
-      ))}
-    </div>
-  );
+    return (
+        <div className="grid grid-cols-2 gap-[12px]">
+            {subjects?.map((subject) => (
+                <CardContent
+                    key={subject.id}
+                    name={subject.name}
+                    isSelected={selectedCardId === subject.id}
+                    onClick={() => handleCardClick(subject)}
+                />
+            ))}
+        </div>
+    );
 };
 
 export default CardSelector;

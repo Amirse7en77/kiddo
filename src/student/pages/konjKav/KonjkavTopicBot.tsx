@@ -1,47 +1,53 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Header from "../../../components/common/Header";
+import Chat from "../../../components/common/Chat";
+import { startKonjkavSession } from "../../../api-chat";
+import { ChatSession } from "../../../types/api";
 
-import ChatBot from "../../components/konjKav/chatWithBot/ChatBot";
+interface Study {
+    id: string;
+    name: string;
+}
 
 interface RootState {
   konjkav: {
-    selectedStudy: string | null;
-    selectedTopic: string[];
+    selectedStudy: Study | null;
+    selectedTopic: string;
   };
 }
 
 const KonjkavTopicBot = () => {
   const navigate = useNavigate();
-  const [isChatting, setIsChatting] = useState<boolean>(false);
-  const selectedStudy = useSelector((state: RootState) => state.konjkav.selectedStudy);
-  const selectedTopic = useSelector((state: RootState) => state.konjkav.selectedTopic);
-  console.log(selectedStudy,selectedTopic)
+  const [isChatting, setIsChatting] = useState(false);
+  const { selectedStudy, selectedTopic } = useSelector((state: RootState) => state.konjkav);
+
   useEffect(() => {
-    if (!selectedStudy || selectedTopic.length === 0) {
+    if (!selectedStudy || !selectedTopic) {
       navigate('/student/konjkav/study-selection');
     }
   }, [selectedStudy, selectedTopic, navigate]);
+  
+  const startSessionCallback = useCallback((): Promise<ChatSession> => {
+    if (!selectedStudy || !selectedTopic) {
+      return Promise.reject("Selections are not valid.");
+    }
+    return startKonjkavSession(selectedStudy.id, selectedTopic);
+  }, [selectedStudy, selectedTopic]);
 
-  // If no study or topics are selected, don't render anything while redirecting
-  if (!selectedStudy || selectedTopic.length === 0) {
+  if (!selectedStudy || !selectedTopic) {
     return null;
   }
 
-  // Create the first message using selected study and topics
-  const firstMessage = `${selectedStudy} میخواهم درباره ${selectedTopic} بیشتر بدانم.`;
-
   return (
-    <div className="bg-backGround-1">
+    <div className="bg-backGround-1 h-screen flex flex-col">
       <Header title={'کنج‌کاو'} />
-      <div>
-        
-        <ChatBot 
-          setIsChatting={setIsChatting} 
-          isChatting={isChatting}
-          firstMessage={firstMessage}
-        />
+      <div className="flex-grow flex flex-col">
+          <Chat 
+            startSession={startSessionCallback}
+            setIsChatting={setIsChatting} 
+          />
       </div>
     </div>
   );

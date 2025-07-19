@@ -4,7 +4,7 @@ PROJECT CONTEXT
 DIRECTORY STRUCTURE
 ================
 
-kiddo-project
+kiddo
 ├── README.md
 ├── backend
 │   └── api-docs.md
@@ -15,6 +15,7 @@ kiddo-project
 │   └── vite.svg
 ├── src
 │   ├── App.tsx
+│   ├── api
 │   ├── api-chat-details.ts
 │   ├── api-chat.ts
 │   ├── api.ts
@@ -53,17 +54,22 @@ kiddo-project
 │   │   └── react.svg
 │   ├── components
 │   │   ├── RecentChats.tsx
-│   │   └── common
-│   │       ├── ChatButton.tsx
-│   │       ├── DisableChatButton.tsx
-│   │       ├── Header.tsx
-│   │       └── RecentChatCard.tsx
+│   │   ├── common
+│   │   │   ├── Chat.tsx
+│   │   │   ├── ChatButton.tsx
+│   │   │   ├── DisableChatButton.tsx
+│   │   │   ├── Header.tsx
+│   │   │   ├── RecentChatCard.tsx
+│   │   │   └── Toast.tsx
+│   │   └── login
 │   ├── constants
 │   │   └── studyAssistantConstant.ts
 │   ├── hooks
 │   │   ├── useChatSessions.ts
 │   │   └── useClientInfo.ts
 │   ├── index.css
+│   ├── layout
+│   │   └── ClassLayout.tsx
 │   ├── login
 │   │   ├── HeroSection.tsx
 │   │   ├── InputGroup.tsx
@@ -85,7 +91,6 @@ kiddo-project
 │   │   │   ├── darsYar
 │   │   │   │   ├── chatWithBot
 │   │   │   │   ├── lessonSelection
-│   │   │   │   ├── recentChat
 │   │   │   │   ├── studyAssistant
 │   │   │   │   └── studySelection
 │   │   │   ├── home
@@ -100,10 +105,8 @@ kiddo-project
 │   │   │   │   ├── topicSelection
 │   │   │   │   └── welcome
 │   │   │   └── tarkibKon
-│   │   │       ├── chatBot
 │   │   │       ├── favoriteTopic
 │   │   │       ├── learnTopic
-│   │   │       ├── recentChat
 │   │   │       ├── studySelection
 │   │   │       └── welcome
 │   │   └── pages
@@ -133,7 +136,6 @@ kiddo-project
 │   │   │   │   ├── Modal.tsx
 │   │   │   │   ├── Navbar.tsx
 │   │   │   │   ├── StudentAlert.tsx
-│   │   │   │   ├── chats
 │   │   │   │   ├── reports
 │   │   │   │   └── students
 │   │   │   └── home
@@ -142,10 +144,12 @@ kiddo-project
 │   │   │       ├── RecentChat.tsx
 │   │   │       └── ToolCard.tsx
 │   │   └── pages
+│   │       ├── ClassChat.tsx
 │   │       ├── ContentContainer.tsx
-│   │       ├── Reports.tsx
+│   │       ├── ReportsPage.tsx
 │   │       └── TeacherHome.tsx
 │   ├── types
+│   │   ├── api.ts
 │   │   └── state.ts
 │   └── vite-env.d.ts
 ├── tsconfig.app.json
@@ -220,6 +224,69 @@ FILE: tsconfig.json
 ```
 
 ================
+FILE: README.md
+================
+
+```
+# React + TypeScript + Vite
+
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+
+Currently, two official plugins are available:
+
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+
+## Expanding the ESLint configuration
+
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+
+```js
+export default tseslint.config({
+  extends: [
+    // Remove ...tseslint.configs.recommended and replace with this
+    ...tseslint.configs.recommendedTypeChecked,
+    // Alternatively, use this for stricter rules
+    ...tseslint.configs.strictTypeChecked,
+    // Optionally, add this for stylistic rules
+    ...tseslint.configs.stylisticTypeChecked,
+  ],
+  languageOptions: {
+    // other options...
+    parserOptions: {
+      project: ['./tsconfig.node.json', './tsconfig.app.json'],
+      tsconfigRootDir: import.meta.dirname,
+    },
+  },
+})
+```
+
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
+
+export default tseslint.config({
+  plugins: {
+    // Add the react-x and react-dom plugins
+    'react-x': reactX,
+    'react-dom': reactDom,
+  },
+  rules: {
+    // other rules...
+    // Enable its recommended typescript rules
+    ...reactX.configs['recommended-typescript'].rules,
+    ...reactDom.configs.recommended.rules,
+  },
+})
+```
+#   k i d d o  
+ 
+```
+
+================
 FILE: src\vite-env.d.ts
 ================
 
@@ -233,15 +300,20 @@ FILE: src\main.tsx
 ================
 
 ```
+// src/main.tsx
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
-import App from './App.tsx'
 import { RouterProvider } from 'react-router-dom'
-import { router } from './router/index.tsx'
+import { router } from './router' // Removed App import as it's handled by router
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Provider } from 'react-redux'
-import { store } from './store/index.ts'
+import { store } from './store'
+import { setupAxiosInterceptors } from './api' // Import the setup function
+
+// Call the setup function once when the app starts
+setupAxiosInterceptors();
+
 const queryClient = new QueryClient();
 
 createRoot(document.getElementById('root')!).render(
@@ -250,13 +322,9 @@ createRoot(document.getElementById('root')!).render(
       <Provider store={store}>
         <RouterProvider router={router}/>
       </Provider>
-      
-      
     </QueryClientProvider>
-   
   </StrictMode>,
 )
-
 ```
 
 ================
@@ -424,7 +492,11 @@ FILE: src\api.ts
 ================
 
 ```
+// src/api.ts
 import axios, { AxiosError } from 'axios';
+import { router } from './router'; // Import router for navigation
+import { store } from './store'; // Import store to dispatch actions
+import { clearUser } from './slice/userSlice'; // Import the action to clear user data
 
 const API_BASE_URL = 'https://kiddo2.pythonanywhere.com';
 
@@ -440,6 +512,7 @@ interface LoginResponse {
 }
 
 export const login = async (username: string, password: string): Promise<LoginResponse> => {
+  console.log("API CALL: login", { username });
   try {
     const response = await axios.post<LoginResponse>(`${API_BASE_URL}/api/v1/accounts/login/`, {
       username,
@@ -447,16 +520,39 @@ export const login = async (username: string, password: string): Promise<LoginRe
     });
     // Store token for future requests
     axios.defaults.headers.common['Authorization'] = `Token ${response.data.token}`;
+    console.log("API RESPONSE: login success", response.data.user);
     return response.data;
   } catch (error) {
     const axiosError = error as AxiosError;
-    if (axiosError.response?.status === 401) {
+     console.error("API ERROR: login", axiosError.response?.data);
+    if (axiosError.response?.status === 400) { // Django REST Framework returns 400 for bad credentials
       throw new Error('نام کاربری یا رمز عبور اشتباه است');
     }
     throw new Error('خطا در ارتباط با سرور');
   }
 };
 
+// This function sets up the global interceptor
+export const setupAxiosInterceptors = () => {
+  axios.interceptors.response.use(
+    // On successful response, just return it
+    (response) => response,
+    // On error, check for 401
+    (error: AxiosError) => {
+      if (error.response?.status === 401) {
+        console.log('Global 401 Unauthorized error detected. Logging out and redirecting.');
+        // Clear user data from Redux
+        store.dispatch(clearUser());
+        // Clear auth header
+        delete axios.defaults.headers.common['Authorization'];
+        // Redirect to login page
+        router.navigate('/');
+      }
+      // Important: return the error so that the original caller (e.g., useQuery) can handle it too
+      return Promise.reject(error);
+    }
+  );
+};
 ```
 
 ================
@@ -464,7 +560,115 @@ FILE: src\api-chat.ts
 ================
 
 ```
+// src/api-chat.ts
+import axios from 'axios';
+import { ApiMessage, ChatSession } from './types/api';
 
+const API_BASE_URL = 'https://kiddo2.pythonanywhere.com/api/v1';
+
+// Remember that the auth token is set globally in api.ts after login
+
+/**
+ * Starts a new DarsYar chat session.
+ * @param subjectId The ID of the selected subject.
+ * @param chapterIds An array of chapter IDs.
+ * @returns The newly created chat session.
+ */
+export const startDarsYarSession = async (subjectId: string, chapterIds: string[]): Promise<ChatSession> => {
+  console.log('API CALL: startDarsYarSession', { subjectId, chapterIds });
+  try {
+    const response = await axios.post<ChatSession>(`${API_BASE_URL}/tools/dars-yar/start/`, {
+      subject_id: subjectId,
+      chapter_ids: chapterIds,
+    });
+    console.log('API RESPONSE: startDarsYarSession', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('API ERROR: startDarsYarSession', error);
+    throw error;
+  }
+};
+
+/**
+ * Starts a new Konjkav Sho chat session.
+ * @param subjectId The ID of the selected subject.
+ * @param initialTopic The initial topic from the user.
+ * @returns The newly created chat session.
+ */
+export const startKonjkavSession = async (subjectId: string, initialTopic: string): Promise<ChatSession> => {
+    console.log('API CALL: startKonjkavSession', { subjectId, initialTopic });
+    try {
+        const response = await axios.post<ChatSession>(`${API_BASE_URL}/tools/konjkav-sho/start/`, {
+            subject_id: subjectId,
+            initial_topic: initialTopic,
+        });
+        console.log('API RESPONSE: startKonjkavSession', response.data);
+        return response.data;
+    } catch (error) {
+        console.error('API ERROR: startKonjkavSession', error);
+        throw error;
+    }
+};
+
+/**
+ * Starts a new Tarkib Kon chat session.
+ * @param subjectId The ID of the selected subject.
+ * @param topic The topic to learn.
+ * @param theme The theme for the explanation.
+ * @returns The newly created chat session.
+ */
+export const startTarkibkonSession = async (subjectId: string, topic: string, theme: string): Promise<ChatSession> => {
+    console.log('API CALL: startTarkibkonSession', { subjectId, topic, theme });
+    try {
+        const response = await axios.post<ChatSession>(`${API_BASE_URL}/tools/tarkib-kon/start/`, {
+            subject_id: subjectId,
+            topic: topic,
+            theme: theme,
+        });
+        console.log('API RESPONSE: startTarkibkonSession', response.data);
+        return response.data;
+    } catch (error) {
+        console.error('API ERROR: startTarkibkonSession', error);
+        throw error;
+    }
+};
+
+/**
+ * Sends a message to an existing chat session.
+ * @param sessionId The ID of the chat session.
+ * @param content The text of the message to send.
+ * @returns The message object created for the user.
+ */
+export const sendMessage = async (sessionId: string, content: string): Promise<ApiMessage> => {
+  console.log('API CALL: sendMessage', { sessionId, content });
+  try {
+    const response = await axios.post<ApiMessage>(`${API_BASE_URL}/chat/sessions/${sessionId}/messages/`, {
+      content,
+    });
+    console.log('API RESPONSE: sendMessage', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('API ERROR: sendMessage', error);
+    throw error;
+  }
+};
+
+/**
+ * Fetches the details and all messages for a given session.
+ * @param sessionId The ID of the chat session.
+ * @returns The full session details with all messages.
+ */
+export const getSessionDetails = async (sessionId: string): Promise<ChatSession> => {
+  console.log('API CALL: getSessionDetails', { sessionId });
+  try {
+    const response = await axios.get<ChatSession>(`${API_BASE_URL}/chat/sessions/${sessionId}/`);
+    console.log('API RESPONSE: getSessionDetails', response.data);
+    return response.data;
+  } catch(error) {
+    console.error('API ERROR: getSessionDetails', error);
+    throw error;
+  }
+}
 ```
 
 ================
@@ -472,814 +676,6 @@ FILE: src\api-chat-details.ts
 ================
 
 ```
-
-```
-
-================
-FILE: README.md
-================
-
-```
-# React + TypeScript + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
-#   k i d d o  
- 
-```
-
-================
-FILE: src\types\state.ts
-================
-
-```
-export interface RootState {
-  darsyar: {
-    studySelectionButton: boolean;
-    selectedStudy: string | null;
-    selectedLesson: string | null;
-  };
-  konjkav: {
-    studySelectionButton: boolean;
-    selectedStudy: string | null;
-    selectedTopics: string[];
-    hasSelectedTopics: boolean;
-  };
-}
-
-export interface Lesson {
-  id: string;
-  title: string;
-}
-
-export interface Study {
-  id: string;
-  title: string;
-}
-
-export interface Topic {
-  id: string;
-  title: string;
-  description: string;
-  emoji: string;
-}
-
-```
-
-================
-FILE: src\router\index.tsx
-================
-
-```
-import { createBrowserRouter } from "react-router-dom";
-
-import App from "../App";
-
-import DarsyarRecentChat from "../student/pages/darsYar/DarsyarRecentChat";
-import DarsyarWelcome from "../student/pages/darsYar/DarsyarStudyAssistant";
-import DarsyarStudySelection from "../student/pages/darsYar/DarsyarStudySelection";
-import DarsyarLessonSelection from "../student/pages/darsYar/DarsyarLessonSelection";
-import DarsyarChatWithBot from "../student/pages/darsYar/DarsyarChatWithBot";
-import KonjkavWelcome from "../student/pages/konjKav/KonjkavWelcome";
-import KonjkavTopicSelection from "../student/pages/konjKav/KonjkavTopicSelection";
-import KonjkavTopicBot from "../student/pages/konjKav/KonjkavTopicBot";
-import KonjkavRecentChat from "../student/pages/konjKav/KonjkavRecentChat";
-import KonjkavStudySelection from "../student/pages/konjKav/KonjkavStudySelection";
-import TarkibkonWelcome from "../student/pages/tarkibKon/TarkibkonWelcome";
-import TarkibkonRecentChat from "../student/pages/tarkibKon/TarkibkonRecentChat";
-import TarkibkonStudySelection from "../student/pages/tarkibKon/TarkibkonStudySelection";
-import StudentHome from "../student/pages/StudentHome";
-import TeacherHome from "../teacher/pages/TeacherHome";
-import ContentContainer from "../teacher/pages/ContentContainer";
-import Reports from "../teacher/pages/Reports";
-import Login from "../login/Login";
-import TarkibkonLearnTopic from "../student/pages/tarkibKon/TarkibkonLearnTopic";
-import TarkibkonFavoriteTopic from "../student/pages/tarkibKon/TarkibkonFavoriteTopic";
-import TarkibkonChatBot from "../student/pages/tarkibKon/TarkibkonChatBot";
-
-export const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <App />,
-    children: [
-      {
-        path: "/",
-        element: <Login />,
-      },
-      {
-        path: "/student",
-        element: <StudentHome />,
-      },
-      {
-        path: "/teacher",
-        element: <TeacherHome />,
-      },
-      {
-        path: "/teacher/content",
-        element: <ContentContainer />,
-      },
-      {
-        path: "/teacher/reports",
-        element: <Reports />,
-      },
-      // DarsYar routes
-      {
-        path: "/student/darsyar/recent-chat",
-        element: <DarsyarRecentChat />,
-      },
-      {
-        path: "/student/darsyar/study-assistant",
-        element: <DarsyarWelcome />,
-      },
-      {
-        path: "/student/darsyar/study-selection",
-        element: <DarsyarStudySelection />,
-      },
-      {
-        path: "/student/darsyar/lesson-selection",
-        element: <DarsyarLessonSelection />,
-      },
-      {
-        path: "/student/darsyar/chat",
-        element: <DarsyarChatWithBot />,
-      },
-      // KonjKav routes
-      {
-        path: "/student/konjkav/welcome",
-        element: <KonjkavWelcome />,
-      },
-      {
-        path: "/student/konjkav/recent-chat",
-        element: <KonjkavRecentChat />,
-      },
-      {
-        path: "/student/konjkav/study-selection",
-        element: <KonjkavStudySelection />,
-      },
-      {
-        path: "/student/konjkav/topic-selection",
-        element: <KonjkavTopicSelection />,
-      },
-      {
-        path: "/student/konjkav/chat",
-        element: <KonjkavTopicBot />,
-      },
-      // Tarkibkon routes
-      {
-        path: "/student/tarkibkon/welcome",
-        element: <TarkibkonWelcome />,
-      },
-      {
-        path: "/student/tarkibkon/recent-chat",
-        element: <TarkibkonRecentChat />,
-      },
-      {
-        path: "/student/tarkibkon/study-selection",
-        element: <TarkibkonStudySelection />,
-      },
-      {
-        path: "/student/tarkibkon/learn-topic-selection",
-        element: <TarkibkonLearnTopic />,
-      },
-      {
-        path: "/student/tarkibkon/favorite-topic-selection",
-        element: <TarkibkonFavoriteTopic />,
-      },
-      {
-        path: "/student/tarkibkon/chat",
-        element: <TarkibkonChatBot />,
-      },
-    ],
-  },
-]);
-
-```
-
-================
-FILE: src\store\index.ts
-================
-
-```
-import { configureStore } from '@reduxjs/toolkit';
-import { useDispatch } from 'react-redux';
-import darsyarReducer from './../slice/darsyarSlice';
-import konjkavReducer from './../slice/konjkavSlice';
-import tarkibkonReducer from './../slice/tarkibkonSlice';
-import userReducer from './../slice/userSlice';
-
-export const store = configureStore({
-  reducer: {
-    darsyar: darsyarReducer,
-    konjkav: konjkavReducer,
-    tarkibkon:tarkibkonReducer,
-    user:userReducer
-  },
-});
-
-export type RootState = ReturnType<typeof store.getState>;
-
-export type AppDispatch = typeof store.dispatch;
-
-export const useAppDispatch = () => useDispatch<AppDispatch>();
-```
-
-================
-FILE: src\login\LoginButton.tsx
-================
-
-```
-import React from 'react'
-
-interface LoginButtonProps {
-  disabled?: boolean
-}
-
-const LoginButton: React.FC<LoginButtonProps> = ({ disabled }) => {
-  return (
-    <div className="flex justify-center items-center bg-white w-full">
-      <div className={`chat-button border-2 border-backGroundButton w-full ${disabled ? 'opacity-50' : ''}`}>
-        <button 
-          type="submit"
-          disabled={disabled}
-          className="button-box text-white cursor-pointer p-[16px] w-full disabled:cursor-not-allowed"
-        >
-          {disabled ? 'در حال ورود...' : 'ورود'}
-        </button>
-      </div>
-    </div>
-  )
-}
-
-export default LoginButton
-
-```
-
-================
-FILE: src\login\Login.tsx
-================
-
-```
-import React from 'react'
-import HeroSection from './HeroSection'
-import InputGroup from './InputGroup'
-
-const Login = () => {
-  return (
-    <div className='bg-backGround-1 '>
-      <HeroSection/>
-      <InputGroup/>
-    </div>
-  )
-}
-
-export default Login
-
-```
-
-================
-FILE: src\login\InputGroup.tsx
-================
-
-```
-import { useState } from 'react'
-import { useDispatch } from 'react-redux'
-import LoginButton from './LoginButton'
-import { login } from '../api'
-import { setUser } from '../slice/userSlice'
-import { useNavigate } from 'react-router-dom'
-
-const InputGroup = () => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError('')
-    setLoading(true)
-
-    try {
-      const response = await login(username, password)
-      console.log(response.user)
-      dispatch(setUser({
-        id: response.user.id,
-        username: response.user.username,
-        first_name: response.user.first_name,
-        last_name: response.user.last_name,
-        role: response.user.role,
-        token: response.token
-      }))
-      
-      // Navigate based on role
-      if (response.user.role === 'STUDENT') {
-        navigate('/student')
-      } else if (response.user.role === 'STAFF') {
-        navigate('/teacher')
-      }
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'خطا در ورود به سیستم')
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  return (
-    <form onSubmit={handleSubmit} className='flex flex-col justify-center items-center rounded-[24px] p-[40px] space-y-6 bg-white border-[2px] border-borderColor-1 rounded-b-none'>
-      {error && (
-        <div className='w-full text-right text-red-500 text-sm mb-4'>
-          {error}
-        </div>
-      )}
-      <div className='w-full mb-[16px]'>
-        <p className='mb-[12px] text-right text-[14px] font-extrabold'>نام کاربری</p>
-        <input
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          className='p-[16px] rounded-[16px] w-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500'
-          required
-        />
-      </div>
-      <div className='w-full mb-[40px]'>
-        <p className='mb-[12px] text-right text-[14px] font-extrabold'>کد ورود</p>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className='p-[16px] rounded-[16px] border border-gray-300 w-full focus:outline-none focus:ring-2 focus:ring-blue-500'
-          required
-        />
-      </div>
-      <LoginButton disabled={loading} />
-    </form>
-  )
-}
-
-export default InputGroup
-```
-
-================
-FILE: src\login\HeroSection.tsx
-================
-
-```
-import happyFace from './../assets/images/happyFace.png'
-
-const HeroSection = () => {
-  return (
-    <div className='pb-[32px] pt-[16px]  h-[50vh]'>
-        <div className='flex justify-center  p-4'>
-        <img src={happyFace}/>
-      </div>
-      <p className='text-center font-extrabold'>به کیدو خوش آمدی!</p>
-    </div>
-  )
-}
-
-export default HeroSection
-```
-
-================
-FILE: src\hooks\useClientInfo.ts
-================
-
-```
-import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
-
-interface ClientInfo {
-  id: string;
-  username: string;
-  first_name: string;
-  last_name: string;
-  role: string;
-}
-
-const fetchClientInfo = async (): Promise<ClientInfo> => {
-  const response = await axios.get('/api/v1/accounts/me/', {
-    headers: {
-      Authorization: `Token ${localStorage.getItem('token')}`,
-    },
-  });
-  console.log(response)
-  return response.data;
-};
-
-export const useClientInfo = () => {
-  return useQuery({
-    queryKey: ['clientInfo'],
-    queryFn: fetchClientInfo,
-  });
-};
-
-```
-
-================
-FILE: src\hooks\useChatSessions.ts
-================
-
-```
-import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
-
-interface ChatSession {
-  id: string;
-  tool: string;
-  title: string;
-  subject: string;
-  updated_at: string;
-}
-
-const fetchChatSessions = async (): Promise<ChatSession[]> => {
-  const response = await axios.get('/api/v1/chat/sessions/', {
-    headers: {
-      Authorization: `Token ${localStorage.getItem('token')}`,
-    },
-  });
-  // Ensure we always return an array
-  return Array.isArray(response.data) ? response.data : [];
-};
-
-export const useChatSessions = () => {
-  return useQuery({
-    queryKey: ['chatSessions'],
-    queryFn: fetchChatSessions,
-    // Initialize with an empty array
-    initialData: [],
-  });
-};
-
-```
-
-================
-FILE: src\constants\studyAssistantConstant.ts
-================
-
-```
-import rocketlogo from './../assets/images/logos/rocketLogo.png'
-import emojiLogo from './../assets/images/logos/emojiLogo.png'
-import alienLogo from './../assets/images/logos/alienLogo.png'
-
-export const studyAssistantConstatnt:studyAssistantType[] = [
-  {
-    logo: rocketlogo,
-    title: "هیچ درسی دیگه سخت نیست",
-    description:
-      "با درس‌یـــار هر مبحث سختی از کتاب رو اینجا به زبون ساده و سریع یاد بگیر.",
-  },
-  {
-    logo:emojiLogo,
-    title: "معلم خصوصی ۲۴ ساعته",
-    description:
-      "درس‌یـــار همیشه همراه تو! هر زمان و هرکجا، برای سوالاتت جواب فوری بگیر.",
-  },
-  {
-    logo: alienLogo,
-    title: "جمع‌بندی آسون برای امتحانات",
-    description:
-      "با خلاصه‌های دقیق و نکته‌های امتحانی، سریع‌تر از همیشه برای امتحانات آماده شو.",
-  },
-];
-export interface studyAssistantType{
-   logo:string ,
-    title: string,
-    description:string
-}
-
-```
-
-================
-FILE: src\slice\userSlice.ts
-================
-
-```
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-export interface UserState {
-  id: string | null;
-  username: string | null;
-  first_name: string | null;
-  last_name: string | null;
-  role: 'STUDENT' | 'STAFF' | null;
-  token: string | null;
-}
-
-const initialState: UserState = {
-  id: null,
-  username: null,
-  first_name: null,
-  last_name: null,
-  role: null,
-  token: null,
-};
-
-const userSlice = createSlice({
-  name: 'user',
-  initialState,
-  reducers: {
-    setUser: (state, action: PayloadAction<UserState>) => {
-      return { ...action.payload };
-    },
-    clearUser: () => initialState,
-  },
-  
-});
-
-
-export const { setUser, clearUser } = userSlice.actions;
-export default userSlice.reducer;
-
-```
-
-================
-FILE: src\slice\tarkibkonSlice.ts
-================
-
-```
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-interface KonjkavState {
-  selectedStudy: string;
-  learnTopic: string;
-  favoriteTopic: string;
-  studySelectionButton: boolean;
-}
-
-const initialState: KonjkavState = {
-  selectedStudy: "",
-  learnTopic: "",
-  favoriteTopic:'',
-  studySelectionButton: false,
-};
-
-const tarkibkonSlice = createSlice({
-  name: "konjkav",
-  initialState,
-  reducers: {
-    setSelectedStudy: (state, action: PayloadAction<string>) => {
-      state.selectedStudy = action.payload;
-      if (action.payload) {
-        state.studySelectionButton = true;
-      } else {
-        state.studySelectionButton = false;
-      }
-    },
-    setLearnTopic: (state, action: PayloadAction<string>) => {
-      state.learnTopic = action.payload;
-    },
-     setFavoriteTopic: (state, action: PayloadAction<string>) => {
-      state.favoriteTopic = action.payload;
-    },
-    resetSelection: (state) => {
-      state.selectedStudy = "";
-      state.learnTopic = "";
-      state.favoriteTopic='';
-      state.studySelectionButton = false;
-    },
-    activeButtonReducer: (state) => {
-      state.studySelectionButton = true;
-    },
-    disableButtonReducer: (state) => {
-      state.studySelectionButton = false;
-    },
-  },
-});
-
-export const {
-  setSelectedStudy,
-  setLearnTopic,
-  setFavoriteTopic,
-  resetSelection,
-  activeButtonReducer,
-  disableButtonReducer,
-} = tarkibkonSlice.actions;
-
-export default tarkibkonSlice.reducer;
-
-```
-
-================
-FILE: src\slice\konjkavSlice.ts
-================
-
-```
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-interface KonjkavState {
-  selectedStudy: string;
-  selectedTopic: string;
-  studySelectionButton: boolean;
-}
-
-const initialState: KonjkavState = {
-  selectedStudy: "",
-  selectedTopic: "",
-  studySelectionButton: false,
-};
-
-const konjkavSlice = createSlice({
-  name: "konjkav",
-  initialState,
-  reducers: {
-    setSelectedStudy: (state, action: PayloadAction<string>) => {
-      state.selectedStudy = action.payload;
-      if (action.payload) {
-        state.studySelectionButton = true;
-      } else {
-        state.studySelectionButton = false;
-      }
-    },
-    setSelectedTopic: (state, action: PayloadAction<string>) => {
-      state.selectedTopic = action.payload;
-    },
-    resetSelection: (state) => {
-      state.selectedStudy = "";
-      state.selectedTopic = "";
-      state.studySelectionButton = false;
-    },
-    activeButtonReducer: (state) => {
-      state.studySelectionButton = true;
-    },
-    disableButtonReducer: (state) => {
-      state.studySelectionButton = false;
-    },
-  },
-});
-
-export const {
-  setSelectedStudy,
-  setSelectedTopic,
-  resetSelection,
-  activeButtonReducer,
-  disableButtonReducer,
-} = konjkavSlice.actions;
-
-export default konjkavSlice.reducer;
-
-```
-
-================
-FILE: src\slice\darsyarSlice.ts
-================
-
-```
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-interface DarsyarState {
-  studySelectionButton: boolean;
-  selectedStudy: string | null;
-  selectedLessons: string[];
-  hasSelectedLessons: boolean;
-}
-
-const initialState: DarsyarState = {
-  studySelectionButton: false,
-  selectedStudy: null,
-  selectedLessons: [],
-  hasSelectedLessons: false
-};
-
-const darsyarSlice = createSlice({
-  name: 'darsyar',
-  initialState,
-  reducers: {
-    activeButtonReducer: (state) => {
-      state.studySelectionButton = true;
-    },
-    disableButtonReducer: (state) => {
-      state.studySelectionButton = false;
-    },
-    setSelectedStudy: (state, action: PayloadAction<string>) => {
-      state.selectedStudy = action.payload;
-    },
-    setSelectedLesson: (state, action: PayloadAction<string[]>) => {
-      state.selectedLessons = action.payload;
-      state.hasSelectedLessons = action.payload.length > 0;
-    },
-    clearSelections: (state) => {
-      state.selectedStudy = null;
-      state.selectedLessons = [];
-      state.studySelectionButton = false;
-      state.hasSelectedLessons = false;
-    }
-  }
-});
-
-export const {
-  activeButtonReducer,
-  disableButtonReducer,
-  setSelectedStudy,
-  setSelectedLesson,
-  clearSelections
-} = darsyarSlice.actions;
-
-export default darsyarSlice.reducer;
-```
-
-================
-FILE: src\slice\chatSlice.ts
-================
-
-```
-
-```
-
-================
-FILE: src\components\RecentChats.tsx
-================
-
-```
-import React from 'react';
-import { useChatSessions } from '../hooks/useChatSessions';
-import RecentChatCard from './common/RecentChatCard';
-
-const RecentChats: React.FC = () => {
-  const { data: chatSessions, isLoading, isError } = useChatSessions();
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (isError) {
-    return <div>Error loading recent chats</div>;
-  }
-
-  if (!chatSessions || chatSessions.length === 0) {
-    return (
-      <div className="flex flex-col items-center justify-center p-6 text-center">
-        <p className="text-gray-500">There are no recent chats here.</p>
-      </div>
-    );
-  }
-
-  return (
-    <div className="grid gap-4">
-      {chatSessions.map((session) => (
-        <RecentChatCard
-          key={session.id}
-          title={session.title}
-          tool={session.tool}
-          subject={session.subject}
-          updatedAt={session.updated_at}
-        />
-      ))}
-    </div>
-  );
-};
-
-export default RecentChats;
 
 ```
 
@@ -1827,6 +1223,814 @@ Authorization: Token YOUR_TOKEN_HERE
 ```
 
 ================
+FILE: src\types\state.ts
+================
+
+```
+export interface RootState {
+  darsyar: {
+    studySelectionButton: boolean;
+    selectedStudy: string | null;
+    selectedLesson: string | null;
+  };
+  konjkav: {
+    studySelectionButton: boolean;
+    selectedStudy: string | null;
+    selectedTopics: string[];
+    hasSelectedTopics: boolean;
+  };
+}
+
+export interface Lesson {
+  id: string;
+  title: string;
+}
+
+export interface Study {
+  id: string;
+  title: string;
+}
+
+export interface Topic {
+  id: string;
+  title: string;
+  description: string;
+  emoji: string;
+}
+
+```
+
+================
+FILE: src\types\api.ts
+================
+
+```
+// src/types/api.ts
+
+// Based on GET /api/v1/chat/sessions/{session_id}/
+export interface ApiMessage {
+  id: string;
+  sender_type: 'SYSTEM' | 'USER' | 'AI';
+  content: string;
+  timestamp: string;
+  raw_ai_response?: any; // Define more strictly if needed
+}
+
+// Based on POST /api/v1/tools/dars-yar/start/
+export interface ChatSession {
+  id: string; // This is the crucial session_id
+  tool: string;
+  title: string;
+  messages: ApiMessage[];
+}
+```
+
+================
+FILE: src\store\index.ts
+================
+
+```
+import { configureStore } from '@reduxjs/toolkit';
+import { useDispatch } from 'react-redux';
+import darsyarReducer from './../slice/darsyarSlice';
+import konjkavReducer from './../slice/konjkavSlice';
+import tarkibkonReducer from './../slice/tarkibkonSlice';
+import userReducer from './../slice/userSlice';
+
+export const store = configureStore({
+  reducer: {
+    darsyar: darsyarReducer,
+    konjkav: konjkavReducer,
+    tarkibkon:tarkibkonReducer,
+    user:userReducer
+  },
+});
+
+export type RootState = ReturnType<typeof store.getState>;
+
+export type AppDispatch = typeof store.dispatch;
+
+export const useAppDispatch = () => useDispatch<AppDispatch>();
+```
+
+================
+FILE: src\slice\userSlice.ts
+================
+
+```
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
+export interface UserState {
+  id: string | null;
+  username: string | null;
+  first_name: string | null;
+  last_name: string | null;
+  role: 'STUDENT' | 'STAFF' | null;
+  token: string | null;
+}
+
+const initialState: UserState = {
+  id: null,
+  username: null,
+  first_name: null,
+  last_name: null,
+  role: null,
+  token: null,
+};
+
+const userSlice = createSlice({
+  name: 'user',
+  initialState,
+  reducers: {
+    setUser: (state, action: PayloadAction<UserState>) => {
+      return { ...action.payload };
+    },
+    clearUser: () => initialState,
+  },
+  
+});
+
+
+export const { setUser, clearUser } = userSlice.actions;
+export default userSlice.reducer;
+
+```
+
+================
+FILE: src\slice\tarkibkonSlice.ts
+================
+
+```
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
+interface Study {
+    id: string;
+    name: string;
+}
+
+interface TarkibkonState {
+  selectedStudy: Study | null;
+  learnTopic: string;
+  favoriteTopic: string;
+  studySelectionButton: boolean;
+}
+
+const initialState: TarkibkonState = {
+  selectedStudy: null,
+  learnTopic: "",
+  favoriteTopic: '',
+  studySelectionButton: false,
+};
+
+const tarkibkonSlice = createSlice({
+  name: "tarkibkon",
+  initialState,
+  reducers: {
+    setSelectedStudy: (state, action: PayloadAction<Study | null>) => {
+      state.selectedStudy = action.payload;
+      state.studySelectionButton = !!action.payload;
+    },
+    setLearnTopic: (state, action: PayloadAction<string>) => {
+      state.learnTopic = action.payload;
+    },
+     setFavoriteTopic: (state, action: PayloadAction<string>) => {
+      state.favoriteTopic = action.payload;
+    },
+    resetSelection: (state) => {
+      state.selectedStudy = null;
+      state.learnTopic = "";
+      state.favoriteTopic='';
+      state.studySelectionButton = false;
+    },
+    activeButtonReducer: (state) => {
+      state.studySelectionButton = true;
+    },
+    disableButtonReducer: (state) => {
+      state.studySelectionButton = false;
+    },
+  },
+});
+
+export const {
+  setSelectedStudy,
+  setLearnTopic,
+  setFavoriteTopic,
+  resetSelection,
+  activeButtonReducer,
+  disableButtonReducer,
+} = tarkibkonSlice.actions;
+
+export default tarkibkonSlice.reducer;
+```
+
+================
+FILE: src\slice\konjkavSlice.ts
+================
+
+```
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
+interface Study {
+  id: string;
+  name: string;
+}
+
+interface KonjkavState {
+  selectedStudy: Study | null;
+  selectedTopic: string;
+  studySelectionButton: boolean;
+}
+
+const initialState: KonjkavState = {
+  selectedStudy: null,
+  selectedTopic: "",
+  studySelectionButton: false,
+};
+
+const konjkavSlice = createSlice({
+  name: "konjkav",
+  initialState,
+  reducers: {
+    setSelectedStudy: (state, action: PayloadAction<Study | null>) => {
+      state.selectedStudy = action.payload;
+      if (action.payload) {
+        state.studySelectionButton = true;
+      } else {
+        state.studySelectionButton = false;
+      }
+    },
+    setSelectedTopic: (state, action: PayloadAction<string>) => {
+      state.selectedTopic = action.payload;
+    },
+    resetSelection: (state) => {
+      state.selectedStudy = null;
+      state.selectedTopic = "";
+      state.studySelectionButton = false;
+    },
+    activeButtonReducer: (state) => {
+      state.studySelectionButton = true;
+    },
+    disableButtonReducer: (state) => {
+      state.studySelectionButton = false;
+    },
+  },
+});
+
+export const {
+  setSelectedStudy,
+  setSelectedTopic,
+  resetSelection,
+  activeButtonReducer,
+  disableButtonReducer,
+} = konjkavSlice.actions;
+
+export default konjkavSlice.reducer;
+```
+
+================
+FILE: src\slice\darsyarSlice.ts
+================
+
+```
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
+interface Study {
+  id: string;
+  name: string;
+}
+
+interface Lesson {
+  id: string;
+  title: string;
+}
+
+interface DarsyarState {
+  studySelectionButton: boolean;
+  selectedStudy: Study | null;
+  studyName: string | null;
+  selectedLessons: Lesson[];
+  hasSelectedLessons: boolean;
+}
+
+const initialState: DarsyarState = {
+  studySelectionButton: false,
+  selectedStudy: null,
+  studyName: null,
+  selectedLessons: [],
+  hasSelectedLessons: false
+};
+
+const darsyarSlice = createSlice({
+  name: 'darsyar',
+  initialState,
+  reducers: {
+    activeButtonReducer: (state) => {
+      state.studySelectionButton = true;
+    },
+    disableButtonReducer: (state) => {
+      state.studySelectionButton = false;
+    },
+    setSelectedStudy: (state, action: PayloadAction<Study>) => {
+      state.selectedStudy = action.payload;
+      state.studyName = action.payload.name;
+    },
+    setSelectedLesson: (state, action: PayloadAction<Lesson[]>) => {
+      state.selectedLessons = action.payload;
+      state.hasSelectedLessons = action.payload.length > 0;
+    },
+    clearSelections: (state) => {
+      state.selectedStudy = null;
+      state.studyName = null;
+      state.selectedLessons = [];
+      state.studySelectionButton = false;
+      state.hasSelectedLessons = false;
+    }
+  }
+});
+
+export const {
+  activeButtonReducer,
+  disableButtonReducer,
+  setSelectedStudy,
+  setSelectedLesson,
+  clearSelections
+} = darsyarSlice.actions;
+
+export default darsyarSlice.reducer;
+```
+
+================
+FILE: src\slice\chatSlice.ts
+================
+
+```
+
+```
+
+================
+FILE: src\router\index.tsx
+================
+
+```
+// src/router/index.tsx
+import { createBrowserRouter, Outlet } from "react-router-dom";
+
+// ... (all other imports remain the same)
+import App from "../App";
+import Login from "../login/Login";
+
+// ... (import all your other components)
+import TeacherHome from "../teacher/pages/TeacherHome";
+import StudentHome from "../student/pages/StudentHome";
+import ClassLayout from "../layout/ClassLayout";
+import StudentsActivities from "../teacher/components/contentContainer/students/StudentsActivities";
+import ClassChat from "../teacher/pages/ClassChat";
+import DarsyarRecentChat from "../student/pages/darsYar/DarsyarRecentChat";
+import DarsyarWelcome from "../student/pages/darsYar/DarsyarStudyAssistant";
+import DarsyarStudySelection from "../student/pages/darsYar/DarsyarStudySelection";
+import DarsyarLessonSelection from "../student/pages/darsYar/DarsyarLessonSelection";
+import DarsyarChatWithBot from "../student/pages/darsYar/DarsyarChatWithBot";
+import KonjkavWelcome from "../student/pages/konjKav/KonjkavWelcome";
+import KonjkavRecentChat from "../student/pages/konjKav/KonjkavRecentChat";
+import KonjkavStudySelection from "../student/pages/konjKav/KonjkavStudySelection";
+import KonjkavTopicSelection from "../student/pages/konjKav/KonjkavTopicSelection";
+import KonjkavTopicBot from "../student/pages/konjKav/KonjkavTopicBot";
+import TarkibkonWelcome from "../student/pages/tarkibKon/TarkibkonWelcome";
+import TarkibkonRecentChat from "../student/pages/tarkibKon/TarkibkonRecentChat";
+import TarkibkonLearnTopic from "../student/pages/tarkibKon/TarkibkonLearnTopic";
+import TarkibkonFavoriteTopic from "../student/pages/tarkibKon/TarkibkonFavoriteTopic";
+import TarkibkonChatBot from "../student/pages/tarkibKon/TarkibkonChatBot";
+import TarkibkonStudySelection from "../student/pages/tarkibKon/TarkibkonStudySelection";
+import ReportsPage from "../teacher/pages/ReportsPage";
+
+// The only change is to export the router instance
+export const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />, 
+    children: [
+      {
+        index: true,
+        element: <Login />,
+      },
+      // ... (all other routes remain exactly the same)
+      {
+        path: "teacher", 
+        element: <TeacherHome />,
+      },
+      {
+        path: "teacher", 
+        element: <ClassLayout />,
+        children: [
+          {
+            path: "students", 
+            element: <StudentsActivities />,
+          },
+          {
+            path: "reports",
+            element: <ReportsPage />,
+          },
+          {
+            path: "chat", 
+            element: <ClassChat />,
+          },
+          
+        ],
+      },
+      {
+        path: "student",
+        children: [
+          {
+            index: true,
+            element: <StudentHome />,
+          },
+          {
+            path: "darsyar",
+            element: <Outlet />,
+            children: [
+              { path: "recent-chat", element: <DarsyarRecentChat /> },
+              { path: "study-assistant", element: <DarsyarWelcome /> },
+              { path: "study-selection", element: <DarsyarStudySelection /> },
+              { path: "lesson-selection", element: <DarsyarLessonSelection /> },
+              { path: "chat", element: <DarsyarChatWithBot /> },
+            ],
+          },
+          {
+            path: "konjkav",
+            element: <Outlet />,
+            children: [
+              { path: "welcome", element: <KonjkavWelcome /> },
+              { path: "recent-chat", element: <KonjkavRecentChat /> },
+              { path: "study-selection", element: <KonjkavStudySelection /> },
+              { path: "topic-selection", element: <KonjkavTopicSelection /> },
+              { path: "chat", element: <KonjkavTopicBot /> },
+            ],
+          },
+          {
+            path: "tarkibkon",
+            element: <Outlet />,
+            children: [
+              { path: "welcome", element: <TarkibkonWelcome /> },
+              { path: "recent-chat", element: <TarkibkonRecentChat /> },
+              { path: "study-selection", element: <TarkibkonStudySelection /> },
+              { path: "learn-topic-selection", element: <TarkibkonLearnTopic /> },
+              { path: "favorite-topic-selection", element: <TarkibkonFavoriteTopic /> },
+              { path: "chat", element: <TarkibkonChatBot /> },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+]);
+```
+
+================
+FILE: src\login\LoginButton.tsx
+================
+
+```
+import React from 'react'
+
+interface LoginButtonProps {
+  disabled?: boolean
+}
+
+const LoginButton: React.FC<LoginButtonProps> = ({ disabled }) => {
+  return (
+    <div className="flex justify-center items-center bg-white w-full">
+      <div className={`chat-button border-2 border-backGroundButton w-full ${disabled ? 'opacity-50' : ''}`}>
+        <button 
+          type="submit"
+          disabled={disabled}
+          className="button-box text-white cursor-pointer p-[16px] w-full disabled:cursor-not-allowed"
+        >
+          {disabled ? 'در حال ورود...' : 'ورود'}
+        </button>
+      </div>
+    </div>
+  )
+}
+
+export default LoginButton
+
+```
+
+================
+FILE: src\login\Login.tsx
+================
+
+```
+import React from 'react'
+import HeroSection from './HeroSection'
+import InputGroup from './InputGroup'
+
+const Login = () => {
+  return (
+    <div className='bg-backGround-1 '>
+      <HeroSection/>
+      <InputGroup/>
+    </div>
+  )
+}
+
+export default Login
+
+```
+
+================
+FILE: src\login\InputGroup.tsx
+================
+
+```
+import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import LoginButton from './LoginButton'
+import { login } from '../api'
+import { setUser } from '../slice/userSlice'
+import { useNavigate } from 'react-router-dom'
+
+const InputGroup = () => {
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setError('')
+    setLoading(true)
+
+    try {
+      const response = await login(username, password)
+      console.log(response.user)
+      dispatch(setUser({
+        id: response.user.id,
+        username: response.user.username,
+        first_name: response.user.first_name,
+        last_name: response.user.last_name,
+        role: response.user.role,
+        token: response.token
+      }))
+      
+      // Navigate based on role
+      if (response.user.role === 'STUDENT') {
+        navigate('/student')
+      } else if (response.user.role === 'STAFF') {
+        navigate('/teacher')
+      }
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'خطا در ورود به سیستم')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className='flex flex-col justify-center items-center rounded-[24px] p-[40px] space-y-6 bg-white border-[2px] border-borderColor-1 rounded-b-none'>
+      {error && (
+        <div className='w-full text-right text-red-500 text-sm mb-4'>
+          {error}
+        </div>
+      )}
+      <div className='w-full mb-[16px]'>
+        <p className='mb-[12px] text-right text-[14px] font-extrabold'>نام کاربری</p>
+        <input
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          className='p-[16px] rounded-[16px] w-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-chatButton-1'
+          required
+        />
+      </div>
+      <div className='w-full mb-[40px]'>
+        <p className='mb-[12px] text-right text-[14px] font-extrabold'>کد ورود</p>
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className='p-[16px] rounded-[16px] border border-gray-300 w-full focus:outline-none focus:ring-2 focus:ring-chatButton-1'
+          required
+        />
+      </div>
+      <LoginButton disabled={loading} />
+    </form>
+  )
+}
+
+export default InputGroup
+```
+
+================
+FILE: src\login\HeroSection.tsx
+================
+
+```
+import happyFace from './../assets/images/happyFace.png'
+
+const HeroSection = () => {
+  return (
+    <div className='pb-[32px] pt-[16px]  h-[50vh]'>
+        <div className='flex justify-center  p-4'>
+        <img src={happyFace}/>
+      </div>
+      <p className='text-center font-extrabold'>به کیدو خوش آمدی!</p>
+    </div>
+  )
+}
+
+export default HeroSection
+```
+
+================
+FILE: src\layout\ClassLayout.tsx
+================
+
+```
+import React from 'react';
+import { Outlet } from 'react-router-dom'; // Import Outlet
+import Header from '../components/common/Header';
+import Navbar from '../teacher/components/contentContainer/Navbar';
+import StudentAlert from '../teacher/components/contentContainer/StudentAlert';
+
+const ClassLayout = () => {
+  return (
+    <div>
+      <Header title={'کلاس ششم'} />
+      <Navbar />
+      <div className='bg-backGround-1 min-h-screen'>
+        <div className='mx-[16px] '>
+          <StudentAlert />
+          <main>
+            <Outlet />
+          </main>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ClassLayout;
+```
+
+================
+FILE: src\hooks\useClientInfo.ts
+================
+
+```
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+
+interface ClientInfo {
+  id: string;
+  username: string;
+  first_name: string;
+  last_name: string;
+  role: string;
+}
+
+const fetchClientInfo = async (): Promise<ClientInfo> => {
+  const response = await axios.get('/api/v1/accounts/me/', {
+    headers: {
+      Authorization: `Token ${localStorage.getItem('token')}`,
+    },
+  });
+  console.log(response)
+  return response.data;
+};
+
+export const useClientInfo = () => {
+  return useQuery({
+    queryKey: ['clientInfo'],
+    queryFn: fetchClientInfo,
+  });
+};
+
+```
+
+================
+FILE: src\hooks\useChatSessions.ts
+================
+
+```
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+
+interface ChatSession {
+  id: string;
+  tool: string;
+  title: string;
+  subject: string;
+  updated_at: string;
+}
+
+const fetchChatSessions = async (): Promise<ChatSession[]> => {
+  const response = await axios.get('/api/v1/chat/sessions/', {
+    headers: {
+      Authorization: `Token ${localStorage.getItem('token')}`,
+    },
+  });
+  // Ensure we always return an array
+  return Array.isArray(response.data) ? response.data : [];
+};
+
+export const useChatSessions = () => {
+  return useQuery({
+    queryKey: ['chatSessions'],
+    queryFn: fetchChatSessions,
+    // Initialize with an empty array
+    initialData: [],
+  });
+};
+
+```
+
+================
+FILE: src\constants\studyAssistantConstant.ts
+================
+
+```
+import rocketlogo from './../assets/images/logos/rocketLogo.png'
+import emojiLogo from './../assets/images/logos/emojiLogo.png'
+import alienLogo from './../assets/images/logos/alienLogo.png'
+
+export const studyAssistantConstatnt:studyAssistantType[] = [
+  {
+    logo: rocketlogo,
+    title: "هیچ درسی دیگه سخت نیست",
+    description:
+      "با درس‌یـــار هر مبحث سختی از کتاب رو اینجا به زبون ساده و سریع یاد بگیر.",
+  },
+  {
+    logo:emojiLogo,
+    title: "معلم خصوصی ۲۴ ساعته",
+    description:
+      "درس‌یـــار همیشه همراه تو! هر زمان و هرکجا، برای سوالاتت جواب فوری بگیر.",
+  },
+  {
+    logo: alienLogo,
+    title: "جمع‌بندی آسون برای امتحانات",
+    description:
+      "با خلاصه‌های دقیق و نکته‌های امتحانی، سریع‌تر از همیشه برای امتحانات آماده شو.",
+  },
+];
+export interface studyAssistantType{
+   logo:string ,
+    title: string,
+    description:string
+}
+
+```
+
+================
+FILE: src\components\RecentChats.tsx
+================
+
+```
+import React from 'react';
+import { useChatSessions } from '../hooks/useChatSessions';
+import RecentChatCard from './common/RecentChatCard';
+
+const RecentChats: React.FC = () => {
+  const { data: chatSessions, isLoading, isError } = useChatSessions();
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Error loading recent chats</div>;
+  }
+
+  if (!chatSessions || chatSessions.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center p-6 text-center">
+        <p className="text-gray-500">There are no recent chats here.</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="grid gap-4">
+      {chatSessions.map((session) => (
+        <RecentChatCard
+          key={session.id}
+          title={session.title}
+          tool={session.tool}
+          subject={session.subject}
+          updatedAt={session.updated_at}
+        />
+      ))}
+    </div>
+  );
+};
+
+export default RecentChats;
+
+```
+
+================
 FILE: src\teacher\pages\TeacherHome.tsx
 ================
 
@@ -1848,7 +2052,7 @@ const TeacherHome = () => {
     return chatSessions.some((session) => session.tool === tool);
   };
   const handleClasses=()=>{
-    navigate('teacher/content')
+    navigate('/teacher/students')
   }
 
   return (
@@ -1938,42 +2142,31 @@ export default TeacherHome;
 ```
 
 ================
-FILE: src\teacher\pages\Reports.tsx
+FILE: src\teacher\pages\ReportsPage.tsx
 ================
 
 ```
-import React from 'react'
-import Header from '../../components/common/Header'
-import Navbar from '../components/contentContainer/Navbar'
-import StudentAlert from '../components/contentContainer/StudentAlert'
-import ReportTools from '../components/contentContainer/reports/ReportTools'
-import StudentReports from '../components/contentContainer/reports/StudentReports'
+import React from 'react';
+import ReportTools from '../components/contentContainer/reports/ReportTools';
+import StudentReports from '../components/contentContainer/reports/StudentReports';
 
-const Reports = () => {
+const ReportsPage = () => {
   return (
-    <div>
-        <Header title={'کلاس ششم'}/>
-        <Navbar/>
-        <div className='h-screen bg-backGround-1'>
-          <div className='mx-[16px] '>
-              <StudentAlert/>
-           <div className='flex justify-center items-center gap-[12px] mb-[16px]'>
-            <ReportTools title={'همه درس ها'}/>
-            <ReportTools title={'همه ابزار ها'}/>
-           </div>
-           <div className='border-[2px] border-borderColor-1 rounded-[24px] bg-white p-[16px]'>
-                <StudentReports/>
-                <StudentReports/>
-                <StudentReports/>
-                
-           </div>
-          </div>
-        </div>
-    </div>
-  )
-}
+    <>
+      <div className='flex justify-center items-center gap-[12px] mb-[16px]'>
+        <ReportTools title={'همه درس ها'} />
+        <ReportTools title={'همه ابزار ها'} />
+      </div>
+      <div className='border-[2px] border-borderColor-1 rounded-[24px] bg-white p-[16px]'>
+        <StudentReports />
+        <StudentReports />
+        <StudentReports />
+      </div>
+    </>
+  );
+};
 
-export default Reports
+export default ReportsPage;
 ```
 
 ================
@@ -1981,30 +2174,49 @@ FILE: src\teacher\pages\ContentContainer.tsx
 ================
 
 ```
-import React from 'react'
-import Header from '../../components/common/Header'
-import Navbar from '../components/contentContainer/Navbar'
+
 import StudentsActivities from '../components/contentContainer/students/StudentsActivities'
-import StudentAlert from '../components/contentContainer/StudentAlert'
+
 
 const ContentContainer = () => {
   return (
     <div>
-      <Header title={'کلاس ششم'}/>
-      <Navbar/>
-      
-        <div className='bg-backGround-1 h-screen'>
-          <div className='mx-[16px] '>
-        <StudentAlert/>
+     
       <StudentsActivities/>
       
-      </div>
-        </div>
+     
     </div>
   )
 }
 
 export default ContentContainer
+
+```
+
+================
+FILE: src\teacher\pages\ClassChat.tsx
+================
+
+```
+import React from 'react'
+import Header from '../../components/common/Header'
+import Navbar from '../components/contentContainer/Navbar'
+import StudentAlert from '../components/contentContainer/StudentAlert'
+import RecentChatCard from '../components/home/RecentChat'
+
+const ClassChat = () => {
+  return (
+     <div>
+        
+          <RecentChatCard/>
+          <RecentChatCard/>
+          <RecentChatCard/>
+          
+    </div>
+  )
+}
+
+export default ClassChat
 
 ```
 
@@ -2096,6 +2308,44 @@ export default StudentHome;
 ```
 
 ================
+FILE: src\components\common\Toast.tsx
+================
+
+```
+import React, { useEffect } from 'react';
+
+interface ToastProps {
+  message: string;
+  type: 'success' | 'error';
+  onClose: () => void;
+}
+
+const Toast: React.FC<ToastProps> = ({ message, type, onClose }) => {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onClose();
+    }, 5000); // Close after 5 seconds
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [onClose]);
+
+  const baseClasses = 'fixed top-5 right-5 p-4 rounded-lg shadow-lg text-white z-50 animate-pulse';
+  const typeClasses = type === 'success' ? 'bg-green-500' : 'bg-red-500';
+
+  return (
+    <div className={`${baseClasses} ${typeClasses}`}>
+      <span>{message}</span>
+      <button onClick={onClose} className="ml-4 font-bold">X</button>
+    </div>
+  );
+};
+
+export default Toast;
+```
+
+================
 FILE: src\components\common\RecentChatCard.tsx
 ================
 
@@ -2170,32 +2420,56 @@ FILE: src\components\common\Header.tsx
 
 ```
 import { FC } from "react";
+import React from "react"; // Import React for inline SVG
+import { useNavigate } from "react-router-dom";
 
-interface ButtonType{
-title:string
+interface ButtonType {
+  title: string;
+  onBackClick?: () => void; // Optional prop for handling back button click
 }
 
-const Header: FC<ButtonType> = ({title}) => {
-  
+const Header: FC<ButtonType> = ({ title }) => {
+  const navigate = useNavigate(); // Initialize useNavigate hook
 
-
+  const handleBackClick = () => {
+    navigate(-1); // Go back one step in history
+  };
   return (
     <div>
       <header
         className={`
-          flex items-center justify-center bg-white py-[24px] px-[16px] h-[52px]
-            fixed top-0 w-full z-100
-         
+          flex items-center justify-between bg-white py-[24px] px-[16px] h-[52px]
+          fixed top-0 w-full z-100
         `}
       >
-        <div className=" flex items-center justify-center">
-   
+        {/* Back Button on the left */}
+        <div className="flex items-center ">
+            <button onClick={handleBackClick} className="mr-4 ">
+              {/* Rotated SVG for a left arrow */}
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+               
+              >
+                <path d="M9.29289 4.29289C9.68342 3.90237 10.3166 3.90237 10.7071 4.29289L16.7071 10.2929C17.0976 10.6834 17.0976 11.3166 16.7071 11.7071L10.7071 17.7071C10.3166 18.0976 9.68342 18.0976 9.29289 17.7071C8.90237 17.3166 8.90237 16.6834 9.29289 16.2929L14.5858 11L9.29289 5.70711C8.90237 5.31658 8.90237 4.68342 9.29289 4.29289Z" fill="#333333"/> {/* Adjust fill color if needed */}
+             </svg>
+            </button>
+          
         </div>
-        <div className="text-[16px] font-extrabold">{title} </div>
-        
+
+        {/* Title in the center */}
+        <div className="text-[16px] font-extrabold absolute left-1/2 -translate-x-1/2">
+          {title}
+        </div>
+
+        {/* Right-hand side (can be used for other elements if needed) */}
+        <div className="w-[24px]"></div> {/* Placeholder to balance the left button if no other content */}
       </header>
-      
-       <div className="h-[52px]"></div>
+
+      <div className="h-[52px]"></div>
       <hr className="border-[2px] border-borderColor-1 w-full" />
     </div>
   );
@@ -2289,148 +2563,186 @@ export default ChatButton;
 ```
 
 ================
-FILE: src\teacher\components\contentContainer\StudentAlert.tsx
+FILE: src\components\common\Chat.tsx
 ================
 
 ```
-import React from 'react'
+// src/components/common/Chat.tsx
+import React, { useState, useEffect, useRef } from "react";
+import { sendMessage, getSessionDetails } from "../../api-chat";
+import { ApiMessage, ChatSession } from "../../types/api";
+import Toast from "./Toast";
 
-const StudentAlert = () => {
-  return (
-    <div className='py-[16px]'>
-         <div className='alert-box '>
-            <div className='flex justify-between items-center bg-[#FFF0F0] rounded-[16px] px-[16px] py-[12px] gap-[16px] pl-[24px] text-[#FE4C4A] text-[12px]'>
-              
-                <div className='flex flex-col gap-[4px] '>
-                    <h1 className=' line-clamp-1 '>علی رفتار های خطرناکی دارد</h1>
-                   
-                </div>
-                 <div className='flex flex-col gap-[4px] '>
-                    <h1 className='font-extrabold line-clamp-1  '>بررسی</h1>
-                   
-                </div>
-                
-            </div>
-        </div>
-        
-    </div>
-  )
+interface Message {
+  id: string;
+  sender: "user" | "bot";
+  text: string;
 }
 
-export default StudentAlert
-```
-
-================
-FILE: src\teacher\components\contentContainer\Navbar.tsx
-================
-
-```
-import React from 'react'
-
-const Navbar = () => {
-  return (
-   <div>
-     <div className='flex justify-between items-center bg-white py-[8px] px-[16px] text-[12px] font-extrabold'>
-        <div>
-            <h1>
-                دانش آموزان
-            </h1>
-        </div>
-         <div>
-            <h1>
-                گزارشات
-            </h1>
-        </div>
-         <div>
-            <h1>
-                چت ها
-            </h1>
-        </div>
-      
-    </div>
-    <hr className="border-[2px] border-borderColor-1 w-full" />
-   </div>
-  )
+interface ChatProps {
+  startSession: () => Promise<ChatSession>;
+  setIsChatting: React.Dispatch<React.SetStateAction<boolean>>;
+  onTypingStateChange: (isTyping: boolean) => void;
 }
 
-export default Navbar
+const mapApiMessageToUiMessage = (apiMessage: ApiMessage): Message => ({
+  id: apiMessage.id,
+  sender: apiMessage.sender_type === 'USER' ? 'user' : 'bot',
+  text: apiMessage.content,
+});
 
-```
+const Chat: React.FC<ChatProps> = ({ startSession, setIsChatting,  }) => {
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [inputMessage, setInputMessage] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const [sessionId, setSessionId] = useState<string | null>(null);
 
-================
-FILE: src\teacher\components\contentContainer\Modal.tsx
-================
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-```
-// src/components/Modal.tsx
-import React, { FC, useEffect, useRef } from 'react';
 
-interface ModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  children: React.ReactNode;
-  title?: string; // Optional title for the modal
-}
 
-const Modal: FC<ModalProps> = ({ isOpen, onClose, children, title }) => {
-  const modalRef = useRef<HTMLDivElement>(null);
-
-  // Close modal on escape key press
   useEffect(() => {
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        onClose();
+    const initChat = async () => {
+      setIsChatting(true);
+      setIsLoading(true);
+      try {
+        const response = await startSession();
+        setSessionId(response.id);
+        setMessages(response.messages.map(mapApiMessageToUiMessage));
+      } catch (err) {
+        setError("خطا در شروع گفتگو. لطفاً دوباره تلاش کنید.");
+        console.error('Failed to start chat session:', err);
+      } finally {
+        setIsLoading(false);
       }
     };
+    initChat();
+  }, [startSession, setIsChatting]);
 
-    if (isOpen) {
-      document.addEventListener('keydown', handleEscape);
-    } else {
-      document.removeEventListener('keydown', handleEscape);
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
     }
+  }, [inputMessage]);
 
-    return () => {
-      document.removeEventListener('keydown', handleEscape);
+  const pollForResponse = (sid: string, originalMessageCount: number) => {
+    const timeout = 20000;
+    const interval = 1000;
+    let pollTimeoutId: NodeJS.Timeout;
+
+    const poller = setInterval(async () => {
+      try {
+        const sessionDetails = await getSessionDetails(sid);
+        if (sessionDetails.messages.length > originalMessageCount) {
+          const lastMessage = sessionDetails.messages[sessionDetails.messages.length - 1];
+          if (lastMessage.sender_type === 'AI') {
+            clearInterval(poller);
+            clearTimeout(pollTimeoutId);
+            setMessages(sessionDetails.messages.map(mapApiMessageToUiMessage));
+            setIsLoading(false);
+          }
+        }
+      } catch (err) {
+        console.error("Polling error:", err);
+      }
+    }, interval);
+
+    pollTimeoutId = setTimeout(() => {
+      clearInterval(poller);
+      if (isLoading) {
+          setError("پاسخی از سرور دریافت نشد. لطفاً دوباره تلاش کنید.");
+          setIsLoading(false);
+      }
+    }, timeout);
+  };
+
+  const handleSendMessage = async () => {
+    if (!sessionId || inputMessage.trim() === "") return;
+
+    const userMessageText = inputMessage.trim();
+    const currentMessageCount = messages.length;
+    
+    const tempUserMessage: Message = {
+        id: `temp-${Date.now()}`,
+        sender: "user",
+        text: userMessageText,
     };
-  }, [isOpen, onClose]);
+    setMessages(prev => [...prev, tempUserMessage]);
+    setInputMessage("");
+    setIsLoading(true);
 
-  // Click outside to close (optional, if you want to explicitly close on backdrop click)
-  const handleBackdropClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
-      onClose();
+    try {
+      await sendMessage(sessionId, userMessageText);
+      pollForResponse(sessionId, currentMessageCount + 1);
+    } catch (err) {
+      setError("خطا در ارسال پیام.");
+      setIsLoading(false);
+      setMessages(prev => prev.filter(m => m.id !== tempUserMessage.id));
     }
   };
 
-  if (!isOpen) return null;
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey && !isLoading) {
+      e.preventDefault();
+      handleSendMessage();
+    }
+  };
+
+  const systemMessage = messages.find(m => m.sender === 'bot' && m.text.startsWith('CONTEXT:'));
 
   return (
-    // Backdrop
-    <div
-      className="fixed inset-0 bg-opacity-25 flex items-center justify-center "
-      onClick={handleBackdropClick} // Only close if clicking on the backdrop, not the modal content itself
-      aria-modal="true"
-      role="dialog"
-      aria-labelledby={title ? "modal-title" : undefined}
-    >
-      {/* Modal content */}
-      <div
-        ref={modalRef}
-        className="bg-white rounded-[24px] p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto transform transition-all  rounded-b-none"
-      >
-        <div className="flex justify-center items-center pb-3 mb-4">
-          {title && (
-            <h2 id="modal-title" className="text-xl font-semibold text-gray-900">
-              {title}
-            </h2>
-          )}
+    <div className='flex flex-col flex-grow bg-backGround-1'>
+      {error && <Toast message={error} type="error" onClose={() => setError(null)} />}
+      
+      <div className="flex-1 overflow-y-auto p-4">
+        {systemMessage && (
+            <div className="text-xs text-gray-500 bg-gray-100 p-2 rounded-lg my-2 mx-2 whitespace-pre-wrap">
+                {systemMessage.text}
+            </div>
+        )}
+        {messages.filter(msg => msg.id !== systemMessage?.id).map((msg) => (
+          <div key={msg.id} className={`flex my-2 ${msg.sender === "user" ? "justify-start" : "justify-end"}`}>
+            <div className={`max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg p-3 rounded-2xl mx-2 ${msg.sender === "user" ? "bg-custom-purple text-white" : "bg-white text-gray-800 border border-borderColor-1"}`}>
+              <p className="text-sm sm:text-base whitespace-pre-wrap">{msg.text}</p>
+            </div>
+          </div>
+        ))}
+        {isLoading && (
+          <div className="flex justify-start mx-2 my-2">
+            <div className="p-3 rounded-2xl bg-white border border-borderColor-1">
+              <div className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-gray-600 rounded-full animate-bounce" style={{ animationDelay: "0s" }}></div>
+                <div className="w-2 h-2 bg-gray-600 rounded-full animate-bounce" style={{ animationDelay: "0.2s" }}></div>
+                <div className="w-2 h-2 bg-gray-600 rounded-full animate-bounce" style={{ animationDelay: "0.4s" }}></div>
+              </div>
+            </div>
+          </div>
+        )}
+        <div ref={messagesEndRef} />
+      </div>
+
+      <div className="bg-white p-4 w-full border-t border-borderColor-1">
+        <div className="relative flex items-center">
+          <textarea ref={textareaRef} rows={1} className="w-full py-3 pl-4 pr-14 rounded-full focus:outline-none bg-backGround-1 resize-none overflow-y-auto max-h-40" placeholder="اینجا بنویس ... " value={inputMessage} onChange={(e) => setInputMessage(e.target.value)} onKeyPress={handleKeyPress} disabled={isLoading || !sessionId} />
+          <button onClick={handleSendMessage} disabled={isLoading || inputMessage.trim() === "" || !sessionId} className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center justify-center bg-custom-purple text-white w-10 h-10 rounded-full shadow-lg transition duration-200 ease-in-out transform hover:scale-105 disabled:bg-gray-400 disabled:cursor-not-allowed rotate-90">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" transform="rotate(180)">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+            </svg>
+          </button>
         </div>
-        {children}
       </div>
     </div>
   );
 };
 
-export default Modal;
+export default Chat;
 ```
 
 ================
@@ -2472,7 +2784,7 @@ FILE: src\teacher\components\home\RecentChat.tsx
 
 ```
 import React from 'react'
-import darsYar from './../../../../assets/images/DarsYar.png'
+import darsyar from './../../../assets/images/DarsYar.png'
 
 const RecentChatCard = () => {
   return (
@@ -2480,7 +2792,7 @@ const RecentChatCard = () => {
          <div className='card-box'>
             <div className='flex justify-start items-center bg-white rounded-[22px] p-[16px] gap-[16px] pl-[24px]'>
                 <div>
-                    <img className='w-[56px] h-[56px] ' src={darsYar}/>
+                    <img className='w-[56px] h-[56px] ' src={darsyar}/>
                 </div>
                 <div className='flex flex-col gap-[4px] '>
                     <h1 className='font-extrabold line-clamp-1 w-[215px] text-[14px]'>توضیحات مربوط به فتوسنتز و بقیه اطلاعات مهم و کاربری</h1>
@@ -2647,6 +2959,156 @@ export default Classes;
 ```
 
 ================
+FILE: src\teacher\components\contentContainer\StudentAlert.tsx
+================
+
+```
+import React from 'react'
+
+const StudentAlert = () => {
+  return (
+    <div className='py-[16px]'>
+         <div className='alert-box '>
+            <div className='flex justify-between items-center bg-[#FFF0F0] rounded-[16px] px-[16px] py-[12px] gap-[16px] pl-[24px] text-[#FE4C4A] text-[12px]'>
+              
+                <div className='flex flex-col gap-[4px] '>
+                    <h1 className=' line-clamp-1 '>علی رفتار های خطرناکی دارد</h1>
+                   
+                </div>
+                 <div className='flex flex-col gap-[4px] '>
+                    <h1 className='font-extrabold line-clamp-1  '>بررسی</h1>
+                   
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+  )
+}
+
+export default StudentAlert
+```
+
+================
+FILE: src\teacher\components\contentContainer\Navbar.tsx
+================
+
+```
+import React from 'react';
+import { NavLink } from 'react-router-dom';
+
+const Navbar = () => {
+  // This function will be called by NavLink to determine the className
+  const getNavLinkClass = ({ isActive }) => {
+    // Add a bold style or a different color if the link is active
+    return isActive ? 'font-extrabold text-blue-600' : 'font-extrabold';
+  };
+
+  return (
+    <div>
+      <div className='flex justify-between items-center bg-white py-[8px] px-[16px] text-[12px]'>
+        <div>
+          <NavLink to="/teacher/students" className={getNavLinkClass}>
+            دانش آموزان
+          </NavLink>
+        </div>
+        <div>
+          <NavLink to="/teacher/reports" className={getNavLinkClass}>
+            گزارشات
+          </NavLink>
+        </div>
+        <div>
+          <NavLink to="/teacher/chat" className={getNavLinkClass}>
+            چت ها
+          </NavLink>
+        </div>
+      </div>
+      <hr className="border-[2px] border-borderColor-1 w-full" />
+    </div>
+  );
+};
+
+export default Navbar;
+```
+
+================
+FILE: src\teacher\components\contentContainer\Modal.tsx
+================
+
+```
+// src/components/Modal.tsx
+import React, { FC, useEffect, useRef } from 'react';
+
+interface ModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  children: React.ReactNode;
+  title?: string; // Optional title for the modal
+}
+
+const Modal: FC<ModalProps> = ({ isOpen, onClose, children, title }) => {
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  // Close modal on escape key press
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('keydown', handleEscape);
+    } else {
+      document.removeEventListener('keydown', handleEscape);
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, [isOpen, onClose]);
+
+  // Click outside to close (optional, if you want to explicitly close on backdrop click)
+  const handleBackdropClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+      onClose();
+    }
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    // Backdrop
+    <div
+      className="fixed inset-0 bg-opacity-25 flex items-center justify-center "
+      onClick={handleBackdropClick} // Only close if clicking on the backdrop, not the modal content itself
+      aria-modal="true"
+      role="dialog"
+      aria-labelledby={title ? "modal-title" : undefined}
+    >
+      {/* Modal content */}
+      <div
+        ref={modalRef}
+        className="bg-white rounded-[24px] p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto transform transition-all  rounded-b-none"
+      >
+        <div className="flex justify-center items-center pb-3 mb-4">
+          {title && (
+            <h2 id="modal-title" className="text-xl font-semibold text-gray-900">
+              {title}
+            </h2>
+          )}
+        </div>
+        {children}
+      </div>
+    </div>
+  );
+};
+
+export default Modal;
+```
+
+================
 FILE: src\student\pages\tarkibKon\TarkibkonWelcome.tsx
 ================
 
@@ -2689,35 +3151,29 @@ FILE: src\student\pages\tarkibKon\TarkibkonStudySelection.tsx
 ================
 
 ```
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "../../../store";
-import { setSelectedStudy } from "../../../slice/tarkibkonSlice";
 import Header from "../../../components/common/Header";
 import DisableChatButton from "../../../components/common/DisableChatButton";
 import ChatButton from "../../../components/common/ChatButton";
 import HeroSection from "../../components/tarkibKon/studySelection/HeroSection";
 import MainContent from "../../components/tarkibKon/studySelection/MainContent";
 
-const KonjkavStudySelection = () => {
+const TarkibkonStudySelection = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const infoButton = useSelector((state: RootState) => state.konjkav.studySelectionButton);
+  const infoButton = useSelector((state: RootState) => state.tarkibkon.studySelectionButton);
 
   const handleNext = () => {
     navigate('/student/tarkibkon/learn-topic-selection');
   };
 
-  const handleLessonSelect = (selectedLessonValue: string) => {
-    dispatch(setSelectedStudy(selectedLessonValue));
-  };
-
   return (
     <div className="h-screen">
-      <Header title={'کنجکاو'} />
+      <Header title={'ترکیب‌کن'} />
       <div className='font-yekanBakh bg-backGround-1 pb-20'>
         <HeroSection />
-        <MainContent onLessonSelect={handleLessonSelect} />
+        <MainContent />
       </div>
       {infoButton ? (
         <ChatButton textButton='بعدی' onClick={handleNext} />
@@ -2728,7 +3184,7 @@ const KonjkavStudySelection = () => {
   );
 };
 
-export default KonjkavStudySelection;
+export default TarkibkonStudySelection;
 ```
 
 ================
@@ -2979,18 +3435,328 @@ FILE: src\student\pages\tarkibKon\TarkibkonChatBot.tsx
 ================
 
 ```
-import React from 'react'
+import { useState, useEffect, useCallback } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import Header from "../../../components/common/Header";
+import Chat from "../../../components/common/Chat";
+import { startTarkibkonSession } from "../../../api-chat";
+import { ChatSession } from "../../../types/api";
+
+interface Study {
+    id: string;
+    name: string;
+}
+
+interface RootState {
+  tarkibkon: {
+    selectedStudy: Study | null;
+    learnTopic: string;
+    favoriteTopic: string;
+  };
+}
 
 const TarkibkonChatBot = () => {
+  const navigate = useNavigate();
+  const [isChatting, setIsChatting] = useState(false);
+  const { selectedStudy, learnTopic, favoriteTopic } = useSelector((state: RootState) => state.tarkibkon);
+
+  useEffect(() => {
+    if (!selectedStudy || !learnTopic || !favoriteTopic) {
+      navigate('/student/tarkibkon/study-selection');
+    }
+  }, [selectedStudy, learnTopic, favoriteTopic, navigate]);
+  
+  const startSessionCallback = useCallback((): Promise<ChatSession> => {
+    if (!selectedStudy || !learnTopic || !favoriteTopic) {
+      return Promise.reject("Selections are not valid.");
+    }
+    return startTarkibkonSession(selectedStudy.id, learnTopic, favoriteTopic);
+  }, [selectedStudy, learnTopic, favoriteTopic]);
+
+  if (!selectedStudy || !learnTopic || !favoriteTopic) {
+    return null;
+  }
+
+  return (
+    <div className="bg-backGround-1 h-screen flex flex-col">
+      <Header title={'ترکیب‌کن'} />
+      <div className="flex-grow flex flex-col">
+          <Chat 
+            startSession={startSessionCallback}
+            setIsChatting={setIsChatting} 
+          />
+      </div>
+    </div>
+  );
+};
+
+export default TarkibkonChatBot;
+```
+
+================
+FILE: src\student\pages\darsYar\DarsyarStudySelection.tsx
+================
+
+```
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import Header from '../../../components/common/Header';
+import HeroSection from '../../components/darsYar/studySelection/HeroSection';
+import MainContent from '../../components/darsYar/studySelection/MainContent';
+import ChatButton from '../../../components/common/ChatButton';
+import DisableChatButton from '../../../components/common/DisableChatButton';
+
+
+const DarsyarStudySelection = () => {
+  const navigate = useNavigate();
+  const infoButton: boolean = useSelector((state: any) => state?.darsyar?.studySelectionButton);
+   
+  const handleNext = () => {
+    navigate('/student/darsyar/lesson-selection');
+  };
+
+  return (
+    <div className="h-screen">
+      <Header title={'درس‌یار'} />
+      <div className='font-yekanBakh bg-backGround-1 pb-20'> {/* Increased pb to avoid overlap with draggable MainContent */}
+        <HeroSection />
+         <MainContent />
+      </div>
+      {infoButton ? (
+        <ChatButton textButton='بعدی' onClick={handleNext} />
+      ) : (
+        <DisableChatButton textButton='بعدی' />
+      )}
+    </div>
+  );
+};
+
+export default DarsyarStudySelection;
+```
+
+================
+FILE: src\student\pages\darsYar\DarsyarStudyAssistant.tsx
+================
+
+```
+import { FC } from "react";
+import { useNavigate } from "react-router-dom";
+import Header from "../../../components/common/Header";
+import HeroSection from "../../components/darsYar/studyAssistant/HeroSection";
+import CardSection from "../../components/darsYar/studyAssistant/CardSection";
+import ChatButton from "../../../components/common/ChatButton";
+
+const DarsyarWelcome: FC = () => {
+  const navigate = useNavigate();
+  
+
+  const handleNewChat = () => {
+    navigate("/student/darsyar/study-selection");
+  };
+
   return (
     <div>
-      رزیبلابلابلابلا
+      <Header title={'درس‌یار'} />
+      <div className="bg-backGround-1 h-full pb-10">
+        <div className="mx-[32px]">
+          <HeroSection />
+          <CardSection />
+        </div>
+      </div>
+      <ChatButton textButton='ساخت چت جدید' onClick={handleNewChat} />
     </div>
+  );
+};
+
+export default DarsyarWelcome;
+```
+
+================
+FILE: src\student\pages\darsYar\DarsyarRecentChat.tsx
+================
+
+```
+import ChatButton from "../../../components/common/ChatButton"
+import Header from "../../../components/common/Header"
+import RecentChatCard from "../../../components/common/RecentChatCard"
+import RecentChats from "../../../components/RecentChats"
+
+
+const DarsyarRecentChat = () => {
+  return (
+    <>
+      <div className='bg-backGround-1'>
+        <Header title={'درس‌یار'}/>
+        {/* Changed gap to 16px here */}
+        <div className='gap-[16px] m-[16px]'> 
+          <h1 className=' font-extrabold text-[14px] '>چت های اخیر</h1>
+        </div>
+        <div className=' flex flex-col gap-[12px] mx-[16px]'>
+         <RecentChats/>
+        </div>
+      </div>
+      <ChatButton textButton='ساخت چت جدید'/>
+    </>
   )
 }
 
-export default TarkibkonChatBot
+export default DarsyarRecentChat
+```
 
+================
+FILE: src\student\pages\darsYar\DarsyarLessonSelection.tsx
+================
+
+```
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import ChatButton from "../../../components/common/ChatButton";
+import DisableChatButton from "../../../components/common/DisableChatButton";
+import Header from "../../../components/common/Header";
+import MainContent from "../../components/darsYar/lessonSelection/MainContent";
+import HeroSection from "../../components/darsYar/lessonSelection/HeroSection";
+
+interface RootState {
+  darsyar: {
+    studySelectionButton: boolean;
+    selectedStudy: string | null;
+    selectedLessons: string[];
+    hasSelectedLessons: boolean;
+  };
+}
+
+const DarsyarLessonSelection = () => {
+  const navigate = useNavigate();
+  const [shouldNavigate, setShouldNavigate] = useState(false);
+  const selectedStudy = useSelector((state: RootState) => state.darsyar.selectedStudy);
+  const selectedLessons = useSelector((state: RootState) => state.darsyar.selectedLessons);
+
+    useEffect(() => {
+    // Navigate to login page if selections are missing
+    if (!selectedStudy ) {
+      navigate('/'); 
+    }
+  }, [selectedStudy, navigate]);
+  useEffect(() => {
+    if (shouldNavigate && selectedStudy && selectedLessons.length > 0) {
+      navigate('/student/darsyar/chat');
+    }
+  }, [shouldNavigate, selectedStudy, selectedLessons, navigate]);
+
+  const handleStartChat = () => {
+    setShouldNavigate(true);
+  };
+
+  // Check both conditions for button activation
+  const isButtonActive = selectedStudy !== null && selectedLessons.length > 0;
+
+  return (
+    <div>
+      <div>
+        <Header title={'درس‌یار'} />
+        <div className='bg-backGround-1'>
+          <HeroSection />
+          <MainContent />
+        </div>
+        {isButtonActive ? (
+          <ChatButton textButton='ساخت چت جدید' onClick={handleStartChat} />
+        ) : (
+          <DisableChatButton textButton='ساخت چت جدید' />
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default DarsyarLessonSelection;
+
+```
+
+================
+FILE: src\student\pages\darsYar\DarsyarChatWithBot.tsx
+================
+
+```
+// src/student/pages/darsYar/DarsyarChatWithBot.tsx
+import { useState, useEffect, useCallback } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import LessonInformation from "../../components/darsYar/chatWithBot/LessonInformation";
+import Header from "../../../components/common/Header";
+import Chat from "../../../components/common/Chat";
+import { startDarsYarSession } from "../../../api-chat";
+import { ChatSession } from "../../../types/api";
+
+interface Study {
+  id: string;
+  name: string;
+}
+
+interface RootState {
+  darsyar: {
+    selectedStudy: Study | null;
+    selectedLessons: { id: string; name: string; }[];
+  };
+}
+
+const DarsyarChatWithBot = () => {
+  const navigate = useNavigate();
+  const [isChatting, setIsChatting] = useState(false);
+  const [showLessonInfo, setShowLessonInfo] = useState(true);
+  const selectedStudy = useSelector((state: RootState) => state.darsyar.selectedStudy);
+  const selectedLessons = useSelector((state: RootState) => state.darsyar.selectedLessons);
+
+  useEffect(() => {
+    // Navigate to login page if selections are missing
+    if (!selectedStudy || selectedLessons.length === 0) {
+      navigate('/'); 
+    }
+  }, [selectedStudy, selectedLessons, navigate]);
+  
+  const startSessionCallback = useCallback((): Promise<ChatSession> => {
+    if (!selectedStudy || selectedLessons.length === 0) {
+      return Promise.reject("Selections are not valid.");
+    }
+    return startDarsYarSession(
+      selectedStudy.id,
+      selectedLessons.map(lesson => lesson.id)
+    );
+  }, [selectedStudy, selectedLessons]);
+
+  // const handleTypingStateChange = (isTyping: boolean) => {
+  //   if(isTyping){
+  //     setShowLessonInfo(!isTyping);
+  //   }
+  // };
+
+  // Render nothing while redirecting
+  if (!selectedStudy || selectedLessons.length === 0) {
+    return null;
+  }
+
+  return (
+    <div className="bg-backGround-1 h-screen flex flex-col">
+      <Header title={'درس‌یار'} />
+      {showLessonInfo && (
+        <LessonInformation 
+          study={selectedStudy.name}
+          lesson={selectedLessons.map(l => l.name).join('، ')}
+        />
+      )}
+      <main className={`flex-grow flex flex-col transition-all duration-300 ${showLessonInfo ? 'pt-[92px]' : 'pt-[52px]'}`}>
+          <Chat 
+            startSession={startSessionCallback}
+            setIsChatting={setIsChatting} 
+            // onTypingStateChange={handleTypingStateChange}
+          />
+      </main>
+    </div>
+  );
+};
+
+export default DarsyarChatWithBot;
 ```
 
 ================
@@ -3141,50 +3907,56 @@ FILE: src\student\pages\konjKav\KonjkavTopicBot.tsx
 ================
 
 ```
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Header from "../../../components/common/Header";
+import Chat from "../../../components/common/Chat";
+import { startKonjkavSession } from "../../../api-chat";
+import { ChatSession } from "../../../types/api";
 
-import ChatBot from "../../components/konjKav/chatWithBot/ChatBot";
+interface Study {
+    id: string;
+    name: string;
+}
 
 interface RootState {
   konjkav: {
-    selectedStudy: string | null;
-    selectedTopic: string[];
+    selectedStudy: Study | null;
+    selectedTopic: string;
   };
 }
 
 const KonjkavTopicBot = () => {
   const navigate = useNavigate();
-  const [isChatting, setIsChatting] = useState<boolean>(false);
-  const selectedStudy = useSelector((state: RootState) => state.konjkav.selectedStudy);
-  const selectedTopic = useSelector((state: RootState) => state.konjkav.selectedTopic);
-  console.log(selectedStudy,selectedTopic)
+  const [isChatting, setIsChatting] = useState(false);
+  const { selectedStudy, selectedTopic } = useSelector((state: RootState) => state.konjkav);
+
   useEffect(() => {
-    if (!selectedStudy || selectedTopic.length === 0) {
+    if (!selectedStudy || !selectedTopic) {
       navigate('/student/konjkav/study-selection');
     }
   }, [selectedStudy, selectedTopic, navigate]);
+  
+  const startSessionCallback = useCallback((): Promise<ChatSession> => {
+    if (!selectedStudy || !selectedTopic) {
+      return Promise.reject("Selections are not valid.");
+    }
+    return startKonjkavSession(selectedStudy.id, selectedTopic);
+  }, [selectedStudy, selectedTopic]);
 
-  // If no study or topics are selected, don't render anything while redirecting
-  if (!selectedStudy || selectedTopic.length === 0) {
+  if (!selectedStudy || !selectedTopic) {
     return null;
   }
 
-  // Create the first message using selected study and topics
-  const firstMessage = `${selectedStudy} میخواهم درباره ${selectedTopic} بیشتر بدانم.`;
-
   return (
-    <div className="bg-backGround-1">
+    <div className="bg-backGround-1 h-screen flex flex-col">
       <Header title={'کنج‌کاو'} />
-      <div>
-        
-        <ChatBot 
-          setIsChatting={setIsChatting} 
-          isChatting={isChatting}
-          firstMessage={firstMessage}
-        />
+      <div className="flex-grow flex flex-col">
+          <Chat 
+            startSession={startSessionCallback}
+            setIsChatting={setIsChatting} 
+          />
       </div>
     </div>
   );
@@ -3198,27 +3970,21 @@ FILE: src\student\pages\konjKav\KonjkavStudySelection.tsx
 ================
 
 ```
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../../components/common/Header';
 import HeroSection from '../../components/konjKav/studySelection/HeroSection';
 import MainContent from '../../components/konjKav/studySelection/MainContent';
 import ChatButton from '../../../components/common/ChatButton';
 import DisableChatButton from '../../../components/common/DisableChatButton';
-import { setSelectedStudy } from '../../../slice/konjkavSlice';
 import { RootState } from '../../../store';
 
 const KonjkavStudySelection = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const infoButton = useSelector((state: RootState) => state.konjkav.studySelectionButton);
 
   const handleNext = () => {
     navigate('/student/konjkav/topic-selection');
-  };
-
-  const handleLessonSelect = (selectedLessonValue: string) => {
-    dispatch(setSelectedStudy(selectedLessonValue));
   };
 
   return (
@@ -3226,7 +3992,7 @@ const KonjkavStudySelection = () => {
       <Header title={'کنجکاو'} />
       <div className='font-yekanBakh bg-backGround-1 pb-20'>
         <HeroSection />
-        <MainContent onLessonSelect={handleLessonSelect} />
+        <MainContent />
       </div>
       {infoButton ? (
         <ChatButton textButton='بعدی' onClick={handleNext} />
@@ -3270,242 +4036,6 @@ const KonjkavRecentChat = () => {
 }
 
 export default KonjkavRecentChat
-```
-
-================
-FILE: src\student\pages\darsYar\DarsyarStudySelection.tsx
-================
-
-```
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import Header from '../../../components/common/Header';
-import HeroSection from '../../components/darsYar/studySelection/HeroSection';
-import MainContent from '../../components/darsYar/studySelection/MainContent';
-import ChatButton from '../../../components/common/ChatButton';
-import DisableChatButton from '../../../components/common/DisableChatButton';
-import { setSelectedLesson } from '../../../slice/darsyarSlice';
-
-const DarsyarStudySelection = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const infoButton: boolean = useSelector((state) => state?.darsyar?.studySelectionButton);
-
-  const handleNext = () => {
-    navigate('/student/darsyar/lesson-selection');
-  };
-
-  // When a lesson is selected:
-  const handleLessonSelect = (selectedLessonValue) => {
-    dispatch(setSelectedLesson(selectedLessonValue));
-  };
-
-  return (
-    <div className="h-screen">
-      <Header title={'درس‌یار'} />
-      <div className='font-yekanBakh bg-backGround-1 pb-20'> {/* Increased pb to avoid overlap with draggable MainContent */}
-        <HeroSection />
-         <MainContent onLessonSelect={handleLessonSelect} />
-      </div>
-      {infoButton ? (
-        <ChatButton textButton='بعدی' onClick={handleNext} />
-      ) : (
-        <DisableChatButton textButton='بعدی' />
-      )}
-    </div>
-  );
-};
-
-export default DarsyarStudySelection;
-```
-
-================
-FILE: src\student\pages\darsYar\DarsyarStudyAssistant.tsx
-================
-
-```
-import { FC } from "react";
-import { useNavigate } from "react-router-dom";
-import Header from "../../../components/common/Header";
-import HeroSection from "../../components/darsYar/studyAssistant/HeroSection";
-import CardSection from "../../components/darsYar/studyAssistant/CardSection";
-import ChatButton from "../../../components/common/ChatButton";
-
-const DarsyarWelcome: FC = () => {
-  const navigate = useNavigate();
-
-  const handleNewChat = () => {
-    navigate("/student/darsyar/study-selection");
-  };
-
-  return (
-    <div>
-      <Header title={'درس‌یار'} />
-      <div className="bg-backGround-1 h-full pb-10">
-        <div className="mx-[32px]">
-          <HeroSection />
-          <CardSection />
-        </div>
-      </div>
-      <ChatButton textButton='ساخت چت جدید' onClick={handleNewChat} />
-    </div>
-  );
-};
-
-export default DarsyarWelcome;
-```
-
-================
-FILE: src\student\pages\darsYar\DarsyarRecentChat.tsx
-================
-
-```
-import ChatButton from "../../../components/common/ChatButton"
-import Header from "../../../components/common/Header"
-import RecentChatCard from "../../../components/common/RecentChatCard"
-import RecentChats from "../../../components/RecentChats"
-
-
-const DarsyarRecentChat = () => {
-  return (
-    <>
-      <div className='bg-backGround-1'>
-        <Header title={'درس‌یار'}/>
-        {/* Changed gap to 16px here */}
-        <div className='gap-[16px] m-[16px]'> 
-          <h1 className=' font-extrabold text-[14px] '>چت های اخیر</h1>
-        </div>
-        <div className=' flex flex-col gap-[12px] mx-[16px]'>
-         <RecentChats/>
-        </div>
-      </div>
-      <ChatButton textButton='ساخت چت جدید'/>
-    </>
-  )
-}
-
-export default DarsyarRecentChat
-```
-
-================
-FILE: src\student\pages\darsYar\DarsyarLessonSelection.tsx
-================
-
-```
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import ChatButton from "../../../components/common/ChatButton";
-import DisableChatButton from "../../../components/common/DisableChatButton";
-import Header from "../../../components/common/Header";
-import MainContent from "../../components/darsYar/lessonSelection/MainContent";
-import HeroSection from "../../components/darsYar/lessonSelection/HeroSection";
-
-interface RootState {
-  darsyar: {
-    studySelectionButton: boolean;
-    selectedStudy: string | null;
-    selectedLessons: string[];
-    hasSelectedLessons: boolean;
-  };
-}
-
-const DarsyarLessonSelection = () => {
-  const navigate = useNavigate();
-  const [shouldNavigate, setShouldNavigate] = useState(false);
-  const selectedStudy = useSelector((state: RootState) => state.darsyar.selectedStudy);
-  const selectedLessons = useSelector((state: RootState) => state.darsyar.selectedLessons);
-
-  useEffect(() => {
-    if (shouldNavigate && selectedStudy && selectedLessons.length > 0) {
-      navigate('/student/darsyar/chat');
-    }
-  }, [shouldNavigate, selectedStudy, selectedLessons, navigate]);
-
-  const handleStartChat = () => {
-    setShouldNavigate(true);
-  };
-
-  // Check both conditions for button activation
-  const isButtonActive = selectedStudy !== null && selectedLessons.length > 0;
-
-  return (
-    <div>
-      <div>
-        <Header title={'درس‌یار'} />
-        <div className='bg-backGround-1'>
-          <HeroSection />
-          <MainContent />
-        </div>
-        {isButtonActive ? (
-          <ChatButton textButton='ساخت چت جدید' onClick={handleStartChat} />
-        ) : (
-          <DisableChatButton textButton='ساخت چت جدید' />
-        )}
-      </div>
-    </div>
-  );
-};
-
-export default DarsyarLessonSelection;
-
-```
-
-================
-FILE: src\student\pages\darsYar\DarsyarChatWithBot.tsx
-================
-
-```
-import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-import LessonInformation from "../../components/darsYar/chatWithBot/LessonInformation";
-import ChatBot from "../../components/darsYar/chatWithBot/ChatBot";
-import Header from "../../../components/common/Header";
-import { useNavigate } from "react-router-dom";
-
-interface RootState {
-  darsyar: {
-    selectedStudy: string | null;
-    selectedLessons: string[];
-  };
-}
-
-const DarsyarChatWithBot = () => {
-  const navigate = useNavigate();
-  const [isChatting, setIsChatting] = useState<boolean>(false);
-  const selectedStudy = useSelector((state: RootState) => state.darsyar.selectedStudy);
-  const selectedLessons = useSelector((state: RootState) => state.darsyar.selectedLessons);
-
-  useEffect(() => {
-    if (!selectedStudy || selectedLessons.length === 0) {
-      navigate('/student/darsyar/study-assistant');
-    }
-  }, [selectedStudy, selectedLessons, navigate]);
-
-  // If no study or lessons are selected, don't render anything while redirecting
-  if (!selectedStudy || selectedLessons.length === 0) {
-    return null;
-  }
-
-  return (
-    <div className="bg-backGround-1">
-      <Header title={'درس‌یار'} />
-      <div>
-        {!isChatting && (
-          <div>
-            <LessonInformation 
-              study={selectedStudy}
-              lesson={selectedLessons.join(', ')}
-            />
-          </div>
-        )}
-        <ChatBot setIsChatting={setIsChatting} isChatting={isChatting} />
-      </div>
-    </div>
-  );
-};
-
-export default DarsyarChatWithBot;
 ```
 
 ================
@@ -3778,7 +4308,7 @@ FILE: src\teacher\components\contentContainer\reports\StudentReports.tsx
 
 ```
 import React, { useState } from "react";
-import Modal from "../Modal";
+
 import StudentModal from "./modals/StudentModal";
 
 const StudentReports = () => {
@@ -3793,10 +4323,10 @@ const StudentReports = () => {
   };
   return (
     <div className="mb-[32px]">
-      <div className="mb-[8px]">
+      <div className="mb-[8px] flex justify-between">
         <h1> امیر علی</h1>
         <img src={""} />
-        <button onClick={handleOpenModal}>باز کردن modal</button>
+        <button className="rounded-[24px] px-[8px] py-[2px] " onClick={handleOpenModal}>  مشاهده</button>
       </div>
       <div>
         <h1 className="text-[12px]">
@@ -3857,185 +4387,6 @@ export default ReportTools;
 ```
 
 ================
-FILE: src\student\components\tarkibKon\studySelection\MainContent.tsx
-================
-
-```
-// MainContent.tsx
-import React from 'react';
-import CardSelector from './CardSelector';
-
-interface MainContentProps {
-  onLessonSelect: (selectedLessonValue: string) => void;
-}
-
-const MainContent: React.FC<MainContentProps> = ({ onLessonSelect }) => {
-  return (
-    <div
-      className='
-        border-2 border-borderColor-1 bg-white rounded-[16px]
-        p-4 
-        h-full w-full 
-        overflow-y-auto 
-        flex flex-col 
-      '
-    >
-      <div> 
-        <CardSelector onLessonSelect={onLessonSelect} />
-      </div>
-    </div>
-  );
-};
-
-export default MainContent;
-```
-
-================
-FILE: src\student\components\tarkibKon\studySelection\HeroSection.tsx
-================
-
-```
-import React from 'react'
-import darsYar from './../../../../assets/images/DarsYar.png'
-
-const HeroSection = () => {
-  return (
-    <div className='flex justify-center items-center flex-col '>
-      <img src={darsYar} className='w-[104px] h-[104px] mb-10 mt-5'/>
-      <h1 className='mb-10'>
-        لطفا یکی از درس ها را انتخاب کنید
-      </h1>
-    </div>
-  )
-}
-
-export default HeroSection
-
-```
-
-================
-FILE: src\student\components\tarkibKon\studySelection\CardSelector.tsx
-================
-
-```
-// CardSelector.tsx
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { activeButtonReducer, disableButtonReducer } from '../../../../slice/tarkibkonSlice';
-import CardContent from './CardContent';
-
-interface Card {
-  id: string;
-  title: string;
-}
-
-interface CardSelectorProps {
-  onLessonSelect: (selectedLessonValue: string) => void;
-}
-
-const CardSelector: React.FC<CardSelectorProps> = ({ onLessonSelect }) => {
-  const dispatch = useDispatch();
-  const cards: Card[] = [
-    { id: 'math', title: 'ریاضی' },
-    { id: 'science', title: 'علوم' },
-    { id: 'social', title: 'مطالعات اجتماعی' },
-    { id: 'literature', title: 'ادبیات فارسی' },
-  ];
-
-  const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
-
-  const handleCardClick = (clickedId: string, title: string) => {
-    if (selectedCardId === clickedId) {
-      setSelectedCardId(null);
-      onLessonSelect('');
-      dispatch(disableButtonReducer());
-    } else {
-      setSelectedCardId(clickedId);
-      onLessonSelect(title);
-      dispatch(activeButtonReducer());
-    }
-  };
-
-  return (
-    <div className="grid grid-cols-2 gap-[12px]">
-      {cards.map((card) => (
-        <CardContent
-          key={card.id}
-          name={card.title}
-          isSelected={selectedCardId === card.id}
-          onClick={() => handleCardClick(card.id, card.title)}
-        />
-      ))}
-    </div>
-  );
-};
-
-export default CardSelector;
-```
-
-================
-FILE: src\student\components\tarkibKon\studySelection\CardContent.tsx
-================
-
-```
-// CardContent.tsx
-import React from "react";
-import riazi from "./../../../../assets/images/riazi.png";
-
-interface CardContentProps {
-  name: string;
-  isSelected: boolean;
-  onClick: () => void;
-}
-
-const CardContent: React.FC<CardContentProps> = ({
-  name,
-  isSelected,
-  onClick,
-}) => {
-  return (
-    <div className={`${isSelected ? `onClickedCard-box transform translate-y-1` : "card-box"}`}>
-      <div
-        className={`
-          rounded-[22px] cursor-pointer
-          transition-colors duration-200 
-          flex flex-col 
-          overflow-hidden 
-          h-full 
-          ${isSelected ? `bg-backGroundCard` : "bg-white"}
-        `}
-        onClick={onClick}
-      >
-        <img
-          src={riazi}
-          className="w-full h-auto object-contain"
-          alt={name}
-        />
-        <div
-          className="
-            p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12 
-            text-center flex flex-col justify-center items-center 
-          "
-        >
-          <h1
-            className="
-              text-sm 
-              font-semibold
-              pb-0 mt-0 
-            "
-          >
-            {name}
-          </h1>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default CardContent;
-```
-
-================
 FILE: src\student\components\tarkibKon\welcome\HeroSection.tsx
 ================
 
@@ -4089,6 +4440,154 @@ const CardSection:React.FC = () => {
 }
 
 export default CardSection
+```
+
+================
+FILE: src\student\components\tarkibKon\studySelection\MainContent.tsx
+================
+
+```
+import React from 'react';
+import CardSelector from './CardSelector';
+
+const MainContent: React.FC = () => {
+  return (
+    <div className='border-2 border-borderColor-1 bg-white rounded-[16px] p-4 h-full w-full overflow-y-auto flex flex-col'>
+      <div> 
+        <CardSelector />
+      </div>
+    </div>
+  );
+};
+
+export default MainContent;
+```
+
+================
+FILE: src\student\components\tarkibKon\studySelection\HeroSection.tsx
+================
+
+```
+import React from 'react'
+import darsYar from './../../../../assets/images/DarsYar.png'
+
+const HeroSection = () => {
+  return (
+    <div className='flex justify-center items-center flex-col '>
+      <img src={darsYar} className='w-[104px] h-[104px] mb-10 mt-5'/>
+      <h1 className='mb-10'>
+        لطفا یکی از درس ها را انتخاب کنید
+      </h1>
+    </div>
+  )
+}
+
+export default HeroSection
+
+```
+
+================
+FILE: src\student\components\tarkibKon\studySelection\CardSelector.tsx
+================
+
+```
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { setSelectedStudy } from '../../../../slice/tarkibkonSlice';
+import CardContent from './CardContent';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+
+interface Subject {
+  id: string;
+  name: string;
+}
+
+const CardSelector: React.FC = () => {
+    const dispatch = useDispatch();
+    const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
+
+    const { data: subjects, isLoading, isError } = useQuery<Subject[]>({
+        queryKey: ['subjects'],
+        queryFn: async () => {
+            const response = await axios.get<Subject[]>(`https://kiddo2.pythonanywhere.com/api/v1/academics/subjects`);
+            return response.data;
+        },
+    });
+
+    const handleCardClick = (subject: Subject) => {
+        if (selectedCardId === subject.id) {
+            setSelectedCardId(null);
+            dispatch(setSelectedStudy(null));
+        } else {
+            setSelectedCardId(subject.id);
+            dispatch(setSelectedStudy(subject));
+        }
+    };
+
+    if (isLoading) return <div>در حال بارگذاری دروس...</div>;
+    if (isError) return <div>خطا در بارگذاری دروس.</div>;
+
+    return (
+        <div className="grid grid-cols-2 gap-[12px]">
+            {subjects?.map((subject) => (
+                <CardContent
+                    key={subject.id}
+                    name={subject.name}
+                    isSelected={selectedCardId === subject.id}
+                    onClick={() => handleCardClick(subject)}
+                />
+            ))}
+        </div>
+    );
+};
+
+export default CardSelector;
+```
+
+================
+FILE: src\student\components\tarkibKon\studySelection\CardContent.tsx
+================
+
+```
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import riazi from "./../../../../assets/images/riazi.png";
+import { activeButtonReducer, disableButtonReducer } from "../../../../slice/tarkibkonSlice";
+
+interface CardContentProps {
+  name: string;
+  isSelected: boolean;
+  onClick: () => void;
+}
+
+const CardContent: React.FC<CardContentProps> = ({ name, isSelected, onClick }) => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (isSelected) {
+      dispatch(activeButtonReducer());
+    } else {
+      dispatch(disableButtonReducer());
+    }
+  }, [isSelected, dispatch]);
+
+  return (
+    <div className={`${isSelected ? `onClickedCard-box transform translate-y-1` : "card-box"}`}>
+      <div
+        className={`rounded-[22px] cursor-pointer transition-colors duration-200 flex flex-col overflow-hidden h-full ${isSelected ? `bg-backGroundCard` : "bg-white"}`}
+        onClick={onClick}
+      >
+        <img src={riazi} className="w-full h-auto object-contain" alt={name}/>
+        <div className="p-4 text-center">
+          <h1 className="text-sm font-semibold">{name}</h1>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default CardContent;
 ```
 
 ================
@@ -5010,15 +5509,10 @@ FILE: src\student\components\konjKav\studySelection\MainContent.tsx
 ================
 
 ```
-// MainContent.tsx
 import React from 'react';
 import CardSelector from './CardSelector';
 
-interface MainContentProps {
-  onLessonSelect: (selectedLessonValue: string) => void;
-}
-
-const MainContent: React.FC<MainContentProps> = ({ onLessonSelect }) => {
+const MainContent: React.FC = () => {
   return (
     <div
       className='
@@ -5030,7 +5524,7 @@ const MainContent: React.FC<MainContentProps> = ({ onLessonSelect }) => {
       '
     >
       <div> 
-        <CardSelector onLessonSelect={onLessonSelect} />
+        <CardSelector />
       </div>
     </div>
   );
@@ -5067,52 +5561,62 @@ FILE: src\student\components\konjKav\studySelection\CardSelector.tsx
 ================
 
 ```
-// CardSelector.tsx
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { activeButtonReducer, disableButtonReducer } from '../../../../slice/konjkavSlice';
+import { setSelectedStudy } from '../../../../slice/konjkavSlice';
 import CardContent from './CardContent';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-interface Card {
+interface Subject {
   id: string;
-  title: string;
+  name: string;
 }
 
-interface CardSelectorProps {
-  onLessonSelect: (selectedLessonValue: string) => void;
-}
-
-const CardSelector: React.FC<CardSelectorProps> = ({ onLessonSelect }) => {
+const CardSelector: React.FC = () => {
+  const navigate=useNavigate()
   const dispatch = useDispatch();
-  const cards: Card[] = [
-    { id: 'math', title: 'ریاضی' },
-    { id: 'science', title: 'علوم' },
-    { id: 'social', title: 'مطالعات اجتماعی' },
-    { id: 'literature', title: 'ادبیات فارسی' },
-  ];
-
   const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
 
-  const handleCardClick = (clickedId: string, title: string) => {
-    if (selectedCardId === clickedId) {
+  const { data: subjects, isLoading, isError } = useQuery<Subject[]>({
+    queryKey: ['subjects'],
+    queryFn: async () => {
+      const response = await axios.get<Subject[]>(`https://kiddo2.pythonanywhere.com/api/v1/academics/subjects`);
+      console.log(response)
+      return response.data;
+    },
+  });
+
+  // if(subjects?.status===401){
+     
+  //     // Navigate to login page if selections are missing
+     
+  //       navigate('/'); 
+    
+  // }
+
+  const handleCardClick = (subject: Subject) => {
+    if (selectedCardId === subject.id) {
       setSelectedCardId(null);
-      onLessonSelect('');
-      dispatch(disableButtonReducer());
+      dispatch(setSelectedStudy(null));
     } else {
-      setSelectedCardId(clickedId);
-      onLessonSelect(title);
-      dispatch(activeButtonReducer());
+      setSelectedCardId(subject.id);
+      dispatch(setSelectedStudy(subject));
     }
   };
 
+  if (isLoading) return <div>در حال بارگذاری دروس...</div>;
+  if (isError) return <div>خطا در بارگذاری دروس.</div>;
+
   return (
     <div className="grid grid-cols-2 gap-[12px]">
-      {cards.map((card) => (
+      {subjects?.map((subject) => (
         <CardContent
-          key={card.id}
-          title={card.title}
-          isSelected={selectedCardId === card.id}
-          onClick={() => handleCardClick(card.id, card.title)}
+          key={subject.id}
+          title={subject.name}
+          isSelected={selectedCardId === subject.id}
+          onClick={() => handleCardClick(subject)}
         />
       ))}
     </div>
@@ -5127,9 +5631,10 @@ FILE: src\student\components\konjKav\studySelection\CardContent.tsx
 ================
 
 ```
-// CardContent.tsx
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import riazi from "./../../../../assets/images/riazi.png";
+import { activeButtonReducer, disableButtonReducer } from "../../../../slice/konjkavSlice";
 
 interface CardContentProps {
   title: string;
@@ -5137,22 +5642,21 @@ interface CardContentProps {
   onClick: () => void;
 }
 
-const CardContent: React.FC<CardContentProps> = ({
-  title,
-  isSelected,
-  onClick,
-}) => {
+const CardContent: React.FC<CardContentProps> = ({ title, isSelected, onClick }) => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (isSelected) {
+      dispatch(activeButtonReducer());
+    } else {
+      dispatch(disableButtonReducer());
+    }
+  }, [isSelected, dispatch]);
+
   return (
     <div className={`${isSelected ? `onClickedCard-box transform translate-y-1` : "card-box"}`}>
       <div
-        className={`
-          rounded-[22px] cursor-pointer
-          transition-colors duration-200 
-          flex flex-col 
-          overflow-hidden 
-          h-full 
-          ${isSelected ? `bg-backGroundCard` : "bg-white"}
-        `}
+        className={`rounded-[22px] cursor-pointer transition-colors duration-200 flex flex-col overflow-hidden h-full ${isSelected ? `bg-backGroundCard` : "bg-white"}`}
         onClick={onClick}
       >
         <img
@@ -5160,21 +5664,8 @@ const CardContent: React.FC<CardContentProps> = ({
           className="w-full h-auto object-contain"
           alt={title}
         />
-        <div
-          className="
-            p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12 
-            text-center flex flex-col justify-center items-center 
-          "
-        >
-          <h1
-            className="
-              text-sm 
-              font-semibold
-              pb-0 mt-0 
-            "
-          >
-            {title}
-          </h1>
+        <div className="p-4 text-center">
+          <h1 className="text-sm font-semibold">{title}</h1>
         </div>
       </div>
     </div>
@@ -5190,270 +5681,6 @@ FILE: src\student\components\konjKav\recentChat\RecentChat.tsx
 
 ```
 
-```
-
-================
-FILE: src\student\components\konjKav\chatWithBot\ChatBot.tsx
-================
-
-```
-import React, { useState, useEffect, useRef } from "react";
-
-// Define the structure for a chat message
-interface Message {
-  sender: "user" | "bot";
-  text: string;
-}
-interface ChatBotType{
-  firstMessage:string,
-  isChatting:Boolean,
-  setIsChatting:()=>void
-}
-
-
-const ChatBot: React.FC<ChatBotType> = ({firstMessage,isChatting,setIsChatting}) => {
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [inputMessage, setInputMessage] = useState<string>("");
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isInputFocused, setIsInputFocused] = useState<boolean>(false);
-
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
- 
-  // Scroll to the latest message whenever messages state changes
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
-  }, [messages]);
-
-  // Auto-resize textarea height
-  useEffect(() => {
-    if (textareaRef.current) {
-      textareaRef.current.style.height = "auto";
-      textareaRef.current.style.height = textareaRef.current.scrollHeight + "px";
-    }
-  }, [inputMessage]);
-
-
-
-  const getBotResponse = async (userPrompt: string): Promise<string> => {
-    setIsLoading(true);
-    try {
-      const chatHistory = [];
-      chatHistory.push({ role: "user", parts: [{ text: userPrompt }] });
-
-      const payload = { contents: chatHistory };
-      const apiKey = ""; // Canvas will automatically provide the API key at runtime
-      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-
-      const response = await fetch(apiUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      const result = await response.json();
-
-      if (
-        result.candidates &&
-        result.candidates.length > 0 &&
-        result.candidates[0].content &&
-        result.candidates[0].content.parts &&
-        result.candidates[0].content.parts.length > 0
-      ) {
-        return result.candidates[0].content.parts[0].text;
-      } else {
-        console.error("Unexpected API response structure:", result);
-        return "Sorry, I couldn't get a response. Please try again.";
-      }
-    } catch (error) {
-      console.error("Error fetching bot response:", error);
-      return "Oops! Something went wrong. Please try again later.";
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleSendMessage = async () => {
-    if (inputMessage.trim() === "") return;
-
-    const newUserMessage: Message = {
-      sender: "user",
-      text: inputMessage.trim(),
-    };
-    setMessages((prevMessages) => [...prevMessages, newUserMessage]);
-    setInputMessage("");
-
-    const botResponseText = await getBotResponse(newUserMessage.text);
-
-    const newBotMessage: Message = { sender: "bot", text: botResponseText };
-    setMessages((prevMessages) => [...prevMessages, newBotMessage]);
-  };
-
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter" && !e.shiftKey && !isLoading) {
-      e.preventDefault();
-      handleSendMessage();
-    }
-  };
-
-  return (
-    <div
-      className='flex flex-col antialiased fixed bottom-0 left-0 right-0 
-        h-screen bg-backGround-1'
-      
-    >
-      {/* Messages Display Area */}
-   <div className="flex-1 overflow-y-auto pt-[52px]">
-       <div
-        className=" rounded-[16px] bg-backGroundCard text-gray-900 border-2 border-chatButton-1 p-[16px] m-[16px] flex justify-start "
-    >
-        {firstMessage}
-    </div>
-    {messages.map((msg, index) => (
-        <div
-            key={index}
-            className={`flex ${
-                msg.sender === "user" ? "justify-start" : "justify-end"
-            }`}
-        >
-            <div>
-                <div
-                    className={`max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg p-3 rounded-[16px] ${
-                        msg.sender === "user"
-                            ? "bg-backGroundCard text-gray-900 border-2 border-chatButton-1 p-[16px] m-[16px]"
-                            : "bg-white text-gray-800 ml-[8px] border-borderColor-1 border-2"
-                    }`}
-                >
-                    <p className="text-sm sm:text-base">{msg.text}</p>
-                </div>
-            </div>
-        </div>
-    ))}
-    {isLoading && (
-        <div className="flex justify-end">
-            <div className="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg p-3 rounded-xl shadow-md bg-gray-300 text-gray-800 rounded-bl-none">
-                <div className="flex items-center space-x-2">
-                    <div
-                        className="w-3 h-3 bg-gray-600 rounded-full animate-bounce"
-                        style={{ animationDelay: "0s" }}
-                    ></div>
-                    <div
-                        className="w-3 h-3 bg-gray-600 rounded-full animate-bounce"
-                        style={{ animationDelay: "0.2s" }}
-                    ></div>
-                    <div
-                        className="w-3 h-3 bg-gray-600 rounded-full animate-bounce"
-                        style={{ animationDelay: "0.4s" }}
-                    ></div>
-                </div>
-            </div>
-        </div>
-    )}
-    <div ref={messagesEndRef} />
-</div>
-
-      {/* Message Input Area */}
-      <div>
-        <div className="px-[24px] py-[16px] flex items-center gap-2 ">
-          <div className="relative flex-1">
-            <div
-              className="absolute inset-0 rounded-full p-[2px]"
-              style={{
-                background: "linear-gradient(to right, #8B5CF6, #F97316)",
-                mask: "url(#mask)",
-                WebkitMask: "url(#mask)",
-                maskComposite: "exclude",
-                WebkitMaskComposite: "exclude",
-              }}
-            >
-              <svg width="0" height="0">
-                <defs>
-                  <mask id="mask">
-                    <rect x="0" y="0" width="100%" height="100%" fill="white" />
-                    <rect
-                      x="2px"
-                      y="2px"
-                      width="calc(100% - 4px)"
-                      height="calc(100% - 4px)"
-                      rx="9999px"
-                      ry="9999px"
-                      fill="black"
-                    />
-                  </mask>
-                </defs>
-              </svg>
-            </div>
-
-            <div className="relative rounded-[26px] p-[2px] bg-gradient-to-l from-custom-purple via-custom-orange-1 to-custom-orange-2 flex items-center ">
-              <textarea
-                ref={textareaRef}
-                rows={1}
-                className="w-full py-4 px-[12px] pr-[64px] rounded-[24px] focus:outline-none transition duration-200 bg-white min-h-[64px] max-h-[150px] resize-none overflow-hidden text-[14px] pt-5" // Changed p-[12px] to py-4 and px-[12px] for better vertical centering
-                placeholder="اینجا بنویس ... "
-                value={inputMessage}
-                onChange={(e) => setInputMessage(e.target.value)}
-                onKeyPress={handleKeyPress}
-                disabled={isLoading}
-                
-                onFocus={() => setIsInputFocused(true)}
-                onBlur={() => setIsInputFocused(false)}
-              />
-              <button
-                onClick={handleSendMessage}
-                disabled={isLoading || inputMessage.trim() === ""}
-                className={`absolute bottom-4 right-0 flex items-center justify-center
-                                 bg-chatButton-1 text-white w-10 h-10 my-auto mr-4 rounded-full shadow-lg
-                                 transition duration-200 ease-in-out transform hover:scale-105
-                                 disabled:bg-gray-400 disabled:cursor-not-allowed
-                                 rotate-270`}
-              >
-                {isLoading ? (
-                  <svg
-                    className="animate-spin h-5 w-5 text-white"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    ></circle>
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    ></path>
-                  </svg>
-                ) : (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M14 5l7 7m0 0l-7 7m7-7H3"
-                    />
-                  </svg>
-                )}
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default ChatBot;
 ```
 
 ================
@@ -5521,7 +5748,7 @@ FILE: src\student\components\darsYar\studySelection\CardSelector.tsx
 // CardSelector.tsx
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { setSelectedStudy } from '../../../../slice/darsyarSlice';
+import { setSelectedStudy, clearSelections } from '../../../../slice/darsyarSlice';
 import CardContent from './CardContent';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
@@ -5553,15 +5780,18 @@ const CardSelector: React.FC = () => {
 
   const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
 
-  const handleCardClick = (clickedId: string, title: string) => {
+  const handleCardClick = (clickedId: string, name: string) => {
     const newSelectedId = selectedCardId === clickedId ? null : clickedId;
     setSelectedCardId(newSelectedId);
     
-    // Now properly dispatch the action with a payload
     if (newSelectedId) {
-      dispatch(setSelectedStudy(title));
+      dispatch(setSelectedStudy({
+        id: clickedId,
+        name: name
+      }));
     } else {
-      dispatch(setSelectedStudy(''));
+      // When deselecting, we set the study to null
+      dispatch(clearSelections());
     }
   };
 
@@ -5725,28 +5955,40 @@ FILE: src\student\components\darsYar\lessonSelection\MainContent.tsx
 ```
 // MainContent.tsx
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setSelectedLesson } from "../../../../slice/darsyarSlice";
 import CardContent from "./CardContent";
+import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
 
-interface Lesson {
+// Interface for the API response
+interface LessonResponse {
   id: string;
   title: string;
 }
 
+
 const MainContent: React.FC = () => {
   const dispatch = useDispatch();
   const [selectedLessons, setSelectedLessons] = useState<string[]>([]);
-  console.log(selectedLessons);
+  const subject = useSelector((state: any) => state.darsyar.selectedStudy?.id);
+  console.log('Selected subject:', subject);
+  console.log('Selected lessons:', selectedLessons);
+   const {
+    data,
+    isLoading,
+    isError, 
+    error,   
+  } = useQuery<LessonResponse[]>({ 
+    queryKey: ['classes', subject],
+    queryFn: async () => { 
+      const response = await axios.get<LessonResponse[]>(`https://kiddo2.pythonanywhere.com/api/v1/academics/subjects/${subject}/chapters/`);
+      return response.data; 
+    },
+    enabled: !!subject
+    });
+  
 
-  const lessons: Lesson[] = [
-    { id: 'lesson1', title: 'درس اول' },
-    { id: 'lesson2', title: 'درس دوم' },
-    { id: 'lesson3', title: 'درس سوم' },
-    { id: 'lesson4', title: 'درس چهارم' },
-    { id: 'lesson5', title: 'درس پنجم' },
-    { id: 'lesson6', title: 'درس ششم' },
-  ];
 
   const handleLessonSelect = (id: string) => {
     setSelectedLessons(prev => {
@@ -5755,29 +5997,35 @@ const MainContent: React.FC = () => {
         ? prev.filter(lessonId => lessonId !== id)
         : [...prev, id];
       
-      // Update Redux state with all selected lesson titles
-      const selectedTitles = newSelection.map(selectedId => 
-        lessons.find(lesson => lesson.id === selectedId)?.title || ''
-      ).filter(title => title !== '');
+      // Update Redux state with selected lessons including both id and name
+      const selectedLessonsData = newSelection
+        .map(selectedId => data?.find(l => l.id === selectedId))
+        .filter((lesson): lesson is LessonResponse => lesson !== undefined)
+        .map(lesson => ({
+          id: lesson.id,
+          name: lesson.title
+        }));
       
-      dispatch(setSelectedLesson(selectedTitles));
+      dispatch(setSelectedLesson(selectedLessonsData));
       return newSelection;
     });
   };
 
   return (
-    <div className="border-borderColor-1 bg-white h-screen flex flex-col gap-[12px]">
-      <div className="bg-white gap-[16px] mt-[16px] mx-[16px]">
-        {lessons.map((lesson) => (
-          <CardContent
-            key={lesson.id}
-            title={lesson.title}
-            isSelected={selectedLessons.includes(lesson.id)}
-            onClick={() => handleLessonSelect(lesson.id)}
-          />
-        ))}
+    (!isLoading) && (
+      <div className="border-borderColor-1 bg-white h-screen flex flex-col gap-[12px]">
+        <div className="bg-white gap-[16px] mt-[16px] mx-[16px]">
+          {data?.map((lesson) => (
+            <CardContent
+              key={lesson.id}
+              title={lesson.title} // CardContent still expects title prop
+              isSelected={selectedLessons.includes(lesson.id)}
+              onClick={() => handleLessonSelect(lesson.id)}
+            />
+          ))}
+        </div>
       </div>
-    </div>
+    ) 
   );
 };
 
@@ -5874,6 +6122,7 @@ FILE: src\student\components\darsYar\chatWithBot\LessonInformation.tsx
 ================
 
 ```
+// src/student/components/darsYar/chatWithBot/LessonInformation.tsx
 import React from "react";
 
 interface LessonInformationProps {
@@ -5883,7 +6132,7 @@ interface LessonInformationProps {
 
 const LessonInformation: React.FC<LessonInformationProps> = ({ study, lesson }) => {
   return (
-    <div className="flex justify-between items-center py-[8px] infoGradient px-[16px] fixed w-full">
+    <div className="flex justify-between items-center py-[8px] infoGradient px-[16px] fixed w-full top-[52px] z-40">
       <div>
         <h1 className="text-[14px]">پاسخ گویی با توجه به کتاب {study}</h1>
       </div>
@@ -5895,7 +6144,6 @@ const LessonInformation: React.FC<LessonInformationProps> = ({ study, lesson }) 
 };
 
 export default LessonInformation;
-
 ```
 
 ================
@@ -5920,1867 +6168,16 @@ export default HeroSection
 ```
 
 ================
-FILE: src\student\components\darsYar\chatWithBot\ChatBot.tsx
-================
-
-```
-import React, { useState, useEffect, useRef } from "react";
-
-// Define the structure for a chat message
-interface Message {
-  sender: "user" | "bot";
-  text: string;
-}
-interface ChatType {
-  isChatting: boolean;
-  setIsChatting: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const ChatBot: React.FC<ChatType> = ({ isChatting, setIsChatting }) => {
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [inputMessage, setInputMessage] = useState<string>("");
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isInputFocused, setIsInputFocused] = useState<boolean>(false);
-
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-
-  
-
-  // Scroll to the latest message whenever messages state changes
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
-  }, [messages]);
-
-  // Auto-resize textarea height
-  useEffect(() => {
-    if (textareaRef.current) {
-      textareaRef.current.style.height = "auto";
-      textareaRef.current.style.height = textareaRef.current.scrollHeight + "px";
-    }
-  }, [inputMessage]);
-
-  const handleChatting = () => {
-    setIsChatting(true);
-  };
-
-  const getBotResponse = async (userPrompt: string): Promise<string> => {
-    setIsLoading(true);
-    try {
-      const chatHistory = [];
-      chatHistory.push({ role: "user", parts: [{ text: userPrompt }] });
-
-      const payload = { contents: chatHistory };
-      const apiKey = ""; // Canvas will automatically provide the API key at runtime
-      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-console.log(chatHistory)
-      const response = await fetch(apiUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      const result = await response.json();
-
-      if (
-        result.candidates &&
-        result.candidates.length > 0 &&
-        result.candidates[0].content &&
-        result.candidates[0].content.parts &&
-        result.candidates[0].content.parts.length > 0
-      ) {
-        return result.candidates[0].content.parts[0].text;
-      } else {
-        console.error("Unexpected API response structure:", result);
-        return "Sorry, I couldn't get a response. Please try again.";
-      }
-    } catch (error) {
-      console.error("Error fetching bot response:", error);
-      return "Oops! Something went wrong. Please try again later.";
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleSendMessage = async () => {
-    if (inputMessage.trim() === "") return;
-
-    const newUserMessage: Message = {
-      sender: "user",
-      text: inputMessage.trim(),
-    };
-    setMessages((prevMessages) => [...prevMessages, newUserMessage]);
-    setInputMessage("");
-
-    const botResponseText = await getBotResponse(newUserMessage.text);
-
-    const newBotMessage: Message = { sender: "bot", text: botResponseText };
-    setMessages((prevMessages) => [...prevMessages, newBotMessage]);
-  };
-
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter" && !e.shiftKey && !isLoading) {
-      e.preventDefault();
-      handleSendMessage();
-    }
-  };
-
-  return (
-    <div
-      className={`flex flex-col antialiased fixed bottom-0 left-0 right-0 ${
-        isChatting && "h-screen bg-backGround-1"
-      }`}
-    >
-      {/* Messages Display Area */}
-      <div className="flex-1 overflow-y-auto">
-        {messages.map((msg, index) => (
-          <div
-            key={index}
-            className={`flex ${
-              msg.sender === "user" ? "justify-start" : "justify-end"
-            }`}
-          >
-            <div>
-              <div
-                className={`max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg p-3 rounded-[16px] ${
-                  msg.sender === "user"
-                    ? "bg-backGroundCard text-gray-900 border-2 border-chatButton-1 p-[16px] m-[16px] mt-[55px]"
-                    : "bg-white text-gray-800 ml-[8px] border-borderColor-1 border-2"
-                }`}
-              >
-                <p className="text-sm sm:text-base">{msg.text}</p>
-              </div>
-            </div>
-          </div>
-        ))}
-        {isLoading && (
-          <div className="flex justify-end">
-            <div className="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg p-3 rounded-xl shadow-md bg-gray-300 text-gray-800 rounded-bl-none">
-              <div className="flex items-center space-x-2">
-                <div
-                  className="w-3 h-3 bg-gray-600 rounded-full animate-bounce"
-                  style={{ animationDelay: "0s" }}
-                ></div>
-                <div
-                  className="w-3 h-3 bg-gray-600 rounded-full animate-bounce"
-                  style={{ animationDelay: "0.2s" }}
-                ></div>
-                <div
-                  className="w-3 h-3 bg-gray-600 rounded-full animate-bounce"
-                  style={{ animationDelay: "0.4s" }}
-                ></div>
-              </div>
-            </div>
-          </div>
-        )}
-        <div ref={messagesEndRef} />
-      </div>
-
-      {/* Message Input Area */}
-      <div>
-        <div className="px-[24px] py-[16px] flex items-center gap-2 ">
-          <div className="relative flex-1">
-            <div
-              className="absolute inset-0 rounded-full p-[2px]"
-              style={{
-                background: "linear-gradient(to right, #8B5CF6, #F97316)",
-                mask: "url(#mask)",
-                WebkitMask: "url(#mask)",
-                maskComposite: "exclude",
-                WebkitMaskComposite: "exclude",
-              }}
-            >
-              <svg width="0" height="0">
-                <defs>
-                  <mask id="mask">
-                    <rect x="0" y="0" width="100%" height="100%" fill="white" />
-                    <rect
-                      x="2px"
-                      y="2px"
-                      width="calc(100% - 4px)"
-                      height="calc(100% - 4px)"
-                      rx="9999px"
-                      ry="9999px"
-                      fill="black"
-                    />
-                  </mask>
-                </defs>
-              </svg>
-            </div>
-
-            <div className="relative rounded-[26px] p-[2px] bg-gradient-to-l from-custom-purple via-custom-orange-1 to-custom-orange-2 flex items-center ">
-              <textarea
-                ref={textareaRef}
-                rows={1}
-                className="w-full py-4 px-[12px] pr-[64px] rounded-[24px] focus:outline-none transition duration-200 bg-white min-h-[64px] max-h-[150px] resize-none overflow-hidden text-[14px] pt-5" // Changed p-[12px] to py-4 and px-[12px] for better vertical centering
-                placeholder="اینجا بنویس ... "
-                value={inputMessage}
-                onChange={(e) => setInputMessage(e.target.value)}
-                onKeyPress={handleKeyPress}
-                disabled={isLoading}
-                onClick={handleChatting}
-                onFocus={() => setIsInputFocused(true)}
-                onBlur={() => setIsInputFocused(false)}
-              />
-              <button
-                onClick={handleSendMessage}
-                disabled={isLoading || inputMessage.trim() === ""}
-                className={`absolute bottom-4 right-0 flex items-center justify-center
-                                 bg-chatButton-1 text-white w-10 h-10 my-auto mr-4 rounded-full shadow-lg
-                                 transition duration-200 ease-in-out transform hover:scale-105
-                                 disabled:bg-gray-400 disabled:cursor-not-allowed
-                                 rotate-270`}
-              >
-                {isLoading ? (
-                  <svg
-                    className="animate-spin h-5 w-5 text-white"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    ></circle>
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    ></path>
-                  </svg>
-                ) : (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M14 5l7 7m0 0l-7 7m7-7H3"
-                    />
-                  </svg>
-                )}
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default ChatBot;
-```
-
-================
-FILE: src\assets\fonts\Yekan Bakh NoEn\webfonts\fontiran.css
-================
-
-```
-/**
-/**
-*
-*	Name:			Yekan Bakh Fonts
-*	Version:			3.1
-*	Author:			Reza Bakhtiarifard, Majan Jafarzadeh
-*	Created on:		Oct 2024
-*	Updated on:		Oct 2024
-*	Vendor:			http://fontiran.com
-*	Copyright:		Commercial/Proprietary Software
---------------------------------------------------------------------------------------
-فونت یکان‌بخ یک نرم افزار مالکیتی محسوب می شود. جهت آگاهی از قوانین استفاده از این فونت ها لطفا به وب سایت (فونت ایران دات کام) مراجعه نمایید
---------------------------------------------------------------------------------------
-Yekan Bakh NoEn fonts are considered a proprietary software. To gain information about the laws regarding the use of these fonts, please visit www.fontiran.com 
---------------------------------------------------------------------------------------
-This set of fonts are used in this project under the license: (.....)
-------------------------------------------------------------------------------------- fonts/-
-*	
-**/
-
-
-@font-face {
-	font-family: Yekan Bakh NoEn ExtraCondensed;
-	font-style: normal;
-	font-weight: 100;
-	font-stretch: extra-condensed;
-	src: url('woff/YekanBakhNoEn-ThinExtraCondensed.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-ThinExtraCondensed.woff2') format('woff2');		
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn ExtraCondensed;
-	font-style: normal;
-	font-weight: 300;
-	font-stretch: extra-condensed;
-	src: url('woff/YekanBakhNoEn-LightExtraCondensed.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-LightExtraCondensed.woff2') format('woff2');	
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn ExtraCondensed;
-	font-style: normal;
-	font-weight: normal;
-	font-stretch: extra-condensed;
-	src: url('woff/YekanBakhNoEn-RegularExtraCondensed.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-RegularExtraCondensed.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn ExtraCondensed;
-	font-style: normal;
-	font-weight: 600;
-	font-stretch: extra-condensed;
-	src: url('woff/YekanBakhNoEn-SemiBoldExtraCondensed.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-SemiBoldExtraCondensed.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn ExtraCondensed;
-	font-style: normal;
-	font-weight: bold;
-	font-stretch: extra-condensed;
-	src: url('woff/YekanBakhNoEn-BoldExtraCondensed.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-BoldExtraCondensed.woff2') format('woff2'); 
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn ExtraCondensed;
-	font-style: normal;
-	font-weight: 800;
-	font-stretch: extra-condensed;
-	src: url('woff/YekanBakhNoEn-ExtraBoldExtraCondensed.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-ExtraBoldExtraCondensed.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn ExtraCondensed;
-	font-style: normal;
-	font-weight: 900;
-	font-stretch: extra-condensed;
-	src: url('woff/YekanBakhNoEn-BlackExtraCondensed.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-BlackExtraCondensed.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn ExtraCondensed;
-	font-style: normal;
-	font-weight: 950;
-	font-stretch: extra-condensed;
-	src: url('woff/YekanBakhNoEn-ExtraBlackExtraCondensed.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-ExtraBlackExtraCondensed.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn Condensed;
-	font-style: normal;
-	font-weight: 100;
-	font-stretch: condensed;
-	src: url('woff/YekanBakhNoEn-ThinCondensed.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-ThinCondensed.woff2') format('woff2');		
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn Condensed;
-	font-style: normal;
-	font-weight: 300;
-	font-stretch: condensed;
-	src: url('woff/YekanBakhNoEn-LightCondensed.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-LightCondensed.woff2') format('woff2');	
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn Condensed;
-	font-style: normal;
-	font-weight: normal;
-	font-stretch: condensed;
-	src: url('woff/YekanBakhNoEn-RegularCondensed.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-RegularCondensed.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn Condensed;
-	font-style: normal;
-	font-weight: 600;
-	font-stretch: condensed;
-	src: url('woff/YekanBakhNoEn-SemiBoldCondensed.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-SemiBoldCondensed.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn Condensed;
-	font-style: normal;
-	font-weight: bold;
-	font-stretch: condensed;
-	src: url('woff/YekanBakhNoEn-BoldCondensed.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-BoldCondensed.woff2') format('woff2'); 
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn Condensed;
-	font-style: normal;
-	font-weight: 800;
-	font-stretch: condensed;
-	src: url('woff/YekanBakhNoEn-ExtraBoldCondensed.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-ExtraBoldCondensed.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn Condensed;
-	font-style: normal;
-	font-weight: 900;
-	font-stretch: condensed;
-	src: url('woff/YekanBakhNoEn-BlackCondensed.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-BlackCondensed.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn Condensed;
-	font-style: normal;
-	font-weight: 950;
-	font-stretch: condensed;
-	src: url('woff/YekanBakhNoEn-ExtraBlackCondensed.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-ExtraBlackCondensed.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn SemiCondensed;
-	font-style: normal;
-	font-weight: 100;
-	font-stretch: semi-condensed;
-	src: url('woff/YekanBakhNoEn-ThinSemiCondensed.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-ThinSemiCondensed.woff2') format('woff2');		
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn SemiCondensed;
-	font-style: normal;
-	font-weight: 300;
-	font-stretch: semi-condensed;
-	src: url('woff/YekanBakhNoEn-LightSemiCondensed.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-LightSemiCondensed.woff2') format('woff2');	
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn SemiCondensed;
-	font-style: normal;
-	font-weight: normal;
-	font-stretch: semi-condensed;
-	src: url('woff/YekanBakhNoEn-RegularSemiCondensed.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-RegularSemiCondensed.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn SemiCondensed;
-	font-style: normal;
-	font-weight: 600;
-	font-stretch: semi-condensed;
-	src: url('woff/YekanBakhNoEn-SemiBoldSemiCondensed.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-SemiBoldSemiCondensed.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn SemiCondensed;
-	font-style: normal;
-	font-weight: bold;
-	font-stretch: semi-condensed;
-	src: url('woff/YekanBakhNoEn-BoldSemiCondensed.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-BoldSemiCondensed.woff2') format('woff2'); 
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn SemiCondensed;
-	font-style: normal;
-	font-weight: 800;
-	font-stretch: semi-condensed;
-	src: url('woff/YekanBakhNoEn-ExtraBoldSemiCondensed.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-ExtraBoldSemiCondensed.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn SemiCondensed;
-	font-style: normal;
-	font-weight: 900;
-	font-stretch: semi-condensed;
-	src: url('woff/YekanBakhNoEn-BlackSemiCondensed.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-BlackSemiCondensed.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn SemiCondensed;
-	font-style: normal;
-	font-weight: 950;
-	font-stretch: semi-condensed;
-	src: url('woff/YekanBakhNoEn-ExtraBlackSemiCondensed.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-ExtraBlackSemiCondensed.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn;
-	font-style: normal;
-	font-weight: 100;
-	font-stretch: normal;
-	src: url('woff/YekanBakhNoEn-Thin.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-Thin.woff2') format('woff2');		
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn;
-	font-style: normal;
-	font-weight: 300;
-	font-stretch: normal;
-	src: url('woff/YekanBakhNoEn-Light.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-Light.woff2') format('woff2');	
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn;
-	font-style: normal;
-	font-weight: normal;
-	font-stretch: normal;
-	src: url('woff/YekanBakhNoEn-Regular.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-Regular.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn;
-	font-style: normal;
-	font-weight: 600;
-	font-stretch: normal;
-	src: url('woff/YekanBakhNoEn-SemiBold.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-SemiBold.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn;
-	font-style: normal;
-	font-weight: bold;
-	font-stretch: normal;
-	src: url('woff/YekanBakhNoEn-Bold.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-Bold.woff2') format('woff2'); 
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn;
-	font-style: normal;
-	font-weight: 800;
-	font-stretch: normal;
-	src: url('woff/YekanBakhNoEn-ExtraBold.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-ExtraBold.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn;
-	font-style: normal;
-	font-weight: 900;
-	font-stretch: normal;
-	src: url('woff/YekanBakhNoEn-Black.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-Black.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn;
-	font-style: normal;
-	font-weight: 950;
-	font-stretch: normal;
-	src: url('woff/YekanBakhNoEn-ExtraBlack.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-ExtraBlack.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn SemiExpanded;
-	font-style: normal;
-	font-weight: 100;
-	font-stretch: semi-expanded;
-	src: url('woff/YekanBakhNoEn-ThinSemiExpanded.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-ThinSemiExpanded.woff2') format('woff2');		
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn SemiExpanded;
-	font-style: normal;
-	font-weight: 300;
-	font-stretch: semi-expanded;
-	src: url('woff/YekanBakhNoEn-LightSemiExpanded.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-LightSemiExpanded.woff2') format('woff2');	
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn SemiExpanded;
-	font-style: normal;
-	font-weight: normal;
-	font-stretch: semi-expanded;
-	src: url('woff/YekanBakhNoEn-RegularSemiExpanded.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-RegularSemiExpanded.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn SemiExpanded;
-	font-style: normal;
-	font-weight: 600;
-	font-stretch: semi-expanded;
-	src: url('woff/YekanBakhNoEn-SemiBoldSemiExpanded.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-SemiBoldSemiExpanded.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn SemiExpanded;
-	font-style: normal;
-	font-weight: bold;
-	font-stretch: semi-expanded;
-	src: url('woff/YekanBakhNoEn-BoldSemiExpanded.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-BoldSemiExpanded.woff2') format('woff2'); 
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn SemiExpanded;
-	font-style: normal;
-	font-weight: 800;
-	font-stretch: semi-expanded;
-	src: url('woff/YekanBakhNoEn-ExtraBoldSemiExpanded.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-ExtraBoldSemiExpanded.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn SemiExpanded;
-	font-style: normal;
-	font-weight: 900;
-	font-stretch: semi-expanded;
-	src: url('woff/YekanBakhNoEn-BlackSemiExpanded.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-BlackSemiExpanded.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn SemiExpanded;
-	font-style: normal;
-	font-weight: 950;
-	font-stretch: semi-expanded;
-	src: url('woff/YekanBakhNoEn-ExtraBlackSemiExpanded.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-ExtraBlackSemiExpanded.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn Expanded;
-	font-style: normal;
-	font-weight: 100;
-	font-stretch: expanded;
-	src: url('woff/YekanBakhNoEn-ThinExpanded.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-ThinExpanded.woff2') format('woff2');		
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn Expanded;
-	font-style: normal;
-	font-weight: 300;
-	font-stretch: expanded;
-	src: url('woff/YekanBakhNoEn-LightExpanded.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-LightExpanded.woff2') format('woff2');	
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn Expanded;
-	font-style: normal;
-	font-weight: normal;
-	font-stretch: expanded;
-	src: url('woff/YekanBakhNoEn-RegularExpanded.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-RegularExpanded.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn Expanded;
-	font-style: normal;
-	font-weight: 600;
-	font-stretch: expanded;
-	src: url('woff/YekanBakhNoEn-SemiBoldExpanded.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-SemiBoldExpanded.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn Expanded;
-	font-style: normal;
-	font-weight: bold;
-	font-stretch: expanded;
-	src: url('woff/YekanBakhNoEn-BoldExpanded.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-BoldExpanded.woff2') format('woff2'); 
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn Expanded;
-	font-style: normal;
-	font-weight: 800;
-	font-stretch: expanded;
-	src: url('woff/YekanBakhNoEn-ExtraBoldExpanded.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-ExtraBoldExpanded.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn Expanded;
-	font-style: normal;
-	font-weight: 900;
-	font-stretch: expanded;
-	src: url('woff/YekanBakhNoEn-BlackExpanded.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-BlackExpanded.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn Expanded;
-	font-style: normal;
-	font-weight: 950;
-	font-stretch: expanded;
-	src: url('woff/YekanBakhNoEn-ExtraBlackExpanded.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-ExtraBlackExpanded.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn ExtraExpanded;
-	font-style: normal;
-	font-weight: 100;
-	font-stretch: extra-expanded;
-	src: url('woff/YekanBakhNoEn-ThinExtraExpanded.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-ThinExtraExpanded.woff2') format('woff2');		
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn ExtraExpanded;
-	font-style: normal;
-	font-weight: 300;
-	font-stretch: extra-expanded;
-	src: url('woff/YekanBakhNoEn-LightExtraExpanded.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-LightExtraExpanded.woff2') format('woff2');	
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn ExtraExpanded;
-	font-style: normal;
-	font-weight: normal;
-	font-stretch: extra-expanded;
-	src: url('woff/YekanBakhNoEn-RegularExtraExpanded.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-RegularExtraExpanded.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn ExtraExpanded;
-	font-style: normal;
-	font-weight: 600;
-	font-stretch: extra-expanded;
-	src: url('woff/YekanBakhNoEn-SemiBoldExtraExpanded.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-SemiBoldExtraExpanded.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn ExtraExpanded;
-	font-style: normal;
-	font-weight: bold;
-	font-stretch: extra-expanded;
-	src: url('woff/YekanBakhNoEn-BoldExtraExpanded.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-BoldExtraExpanded.woff2') format('woff2'); 
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn ExtraExpanded;
-	font-style: normal;
-	font-weight: 800;
-	font-stretch: extra-expanded;
-	src: url('woff/YekanBakhNoEn-ExtraBoldExtraExpanded.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-ExtraBoldExtraExpanded.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn ExtraExpanded;
-	font-style: normal;
-	font-weight: 900;
-	font-stretch: extra-expanded;
-	src: url('woff/YekanBakhNoEn-BlackExtraExpanded.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-BlackExtraExpanded.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh NoEn ExtraExpanded;
-	font-style: normal;
-	font-weight: 950;
-	font-stretch: extra-expanded;
-	src: url('woff/YekanBakhNoEn-ExtraBlackExtraExpanded.woff') format('woff'),   
-	url('woff2/YekanBakhNoEn-ExtraBlackExtraExpanded.woff2') format('woff2');		 
-}
-```
-
-================
-FILE: src\assets\fonts\YekanBakhFaNum\webfonts\fontiran.css
-================
-
-```
-/**
-*
-*	Name:			Yekan Bakh Fonts
-*	Version:			3.1
-*	Author:			Reza Bakhtiarifard, Majan Jafarzadeh
-*	Created on:		Oct 2024
-*	Updated on:		Oct 2024
-*	Vendor:			http://fontiran.com
-*	Copyright:		Commercial/Proprietary Software
---------------------------------------------------------------------------------------
-فونت یکان‌بخ یک نرم افزار مالکیتی محسوب می شود. جهت آگاهی از قوانین استفاده از این فونت ها لطفا به وب سایت (فونت ایران دات کام) مراجعه نمایید
---------------------------------------------------------------------------------------
-Yekan Bakh FaNum fonts are considered a proprietary software. To gain information about the laws regarding the use of these fonts, please visit www.fontiran.com 
---------------------------------------------------------------------------------------
-This set of fonts are used in this project under the license: (.....)
-------------------------------------------------------------------------------------- fonts/-
-*	
-**/
-
-
-@font-face {
-	font-family: Yekan Bakh FaNum ExtraCondensed;
-	font-style: normal;
-	font-weight: 100;
-	font-stretch: extra-condensed;
-	src: url('woff/YekanBakhFaNum-ThinExtraCondensed.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-ThinExtraCondensed.woff2') format('woff2');		
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum ExtraCondensed;
-	font-style: normal;
-	font-weight: 300;
-	font-stretch: extra-condensed;
-	src: url('woff/YekanBakhFaNum-LightExtraCondensed.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-LightExtraCondensed.woff2') format('woff2');	
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum ExtraCondensed;
-	font-style: normal;
-	font-weight: normal;
-	font-stretch: extra-condensed;
-	src: url('woff/YekanBakhFaNum-RegularExtraCondensed.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-RegularExtraCondensed.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum ExtraCondensed;
-	font-style: normal;
-	font-weight: 600;
-	font-stretch: extra-condensed;
-	src: url('woff/YekanBakhFaNum-SemiBoldExtraCondensed.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-SemiBoldExtraCondensed.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum ExtraCondensed;
-	font-style: normal;
-	font-weight: bold;
-	font-stretch: extra-condensed;
-	src: url('woff/YekanBakhFaNum-BoldExtraCondensed.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-BoldExtraCondensed.woff2') format('woff2'); 
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum ExtraCondensed;
-	font-style: normal;
-	font-weight: 800;
-	font-stretch: extra-condensed;
-	src: url('woff/YekanBakhFaNum-ExtraBoldExtraCondensed.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-ExtraBoldExtraCondensed.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum ExtraCondensed;
-	font-style: normal;
-	font-weight: 900;
-	font-stretch: extra-condensed;
-	src: url('woff/YekanBakhFaNum-BlackExtraCondensed.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-BlackExtraCondensed.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum ExtraCondensed;
-	font-style: normal;
-	font-weight: 950;
-	font-stretch: extra-condensed;
-	src: url('woff/YekanBakhFaNum-ExtraBlackExtraCondensed.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-ExtraBlackExtraCondensed.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum Condensed;
-	font-style: normal;
-	font-weight: 100;
-	font-stretch: condensed;
-	src: url('woff/YekanBakhFaNum-ThinCondensed.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-ThinCondensed.woff2') format('woff2');		
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum Condensed;
-	font-style: normal;
-	font-weight: 300;
-	font-stretch: condensed;
-	src: url('woff/YekanBakhFaNum-LightCondensed.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-LightCondensed.woff2') format('woff2');	
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum Condensed;
-	font-style: normal;
-	font-weight: normal;
-	font-stretch: condensed;
-	src: url('woff/YekanBakhFaNum-RegularCondensed.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-RegularCondensed.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum Condensed;
-	font-style: normal;
-	font-weight: 600;
-	font-stretch: condensed;
-	src: url('woff/YekanBakhFaNum-SemiBoldCondensed.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-SemiBoldCondensed.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum Condensed;
-	font-style: normal;
-	font-weight: bold;
-	font-stretch: condensed;
-	src: url('woff/YekanBakhFaNum-BoldCondensed.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-BoldCondensed.woff2') format('woff2'); 
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum Condensed;
-	font-style: normal;
-	font-weight: 800;
-	font-stretch: condensed;
-	src: url('woff/YekanBakhFaNum-ExtraBoldCondensed.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-ExtraBoldCondensed.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum Condensed;
-	font-style: normal;
-	font-weight: 900;
-	font-stretch: condensed;
-	src: url('woff/YekanBakhFaNum-BlackCondensed.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-BlackCondensed.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum Condensed;
-	font-style: normal;
-	font-weight: 950;
-	font-stretch: condensed;
-	src: url('woff/YekanBakhFaNum-ExtraBlackCondensed.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-ExtraBlackCondensed.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum SemiCondensed;
-	font-style: normal;
-	font-weight: 100;
-	font-stretch: semi-condensed;
-	src: url('woff/YekanBakhFaNum-ThinSemiCondensed.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-ThinSemiCondensed.woff2') format('woff2');		
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum SemiCondensed;
-	font-style: normal;
-	font-weight: 300;
-	font-stretch: semi-condensed;
-	src: url('woff/YekanBakhFaNum-LightSemiCondensed.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-LightSemiCondensed.woff2') format('woff2');	
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum SemiCondensed;
-	font-style: normal;
-	font-weight: normal;
-	font-stretch: semi-condensed;
-	src: url('woff/YekanBakhFaNum-RegularSemiCondensed.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-RegularSemiCondensed.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum SemiCondensed;
-	font-style: normal;
-	font-weight: 600;
-	font-stretch: semi-condensed;
-	src: url('woff/YekanBakhFaNum-SemiBoldSemiCondensed.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-SemiBoldSemiCondensed.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum SemiCondensed;
-	font-style: normal;
-	font-weight: bold;
-	font-stretch: semi-condensed;
-	src: url('woff/YekanBakhFaNum-BoldSemiCondensed.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-BoldSemiCondensed.woff2') format('woff2'); 
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum SemiCondensed;
-	font-style: normal;
-	font-weight: 800;
-	font-stretch: semi-condensed;
-	src: url('woff/YekanBakhFaNum-ExtraBoldSemiCondensed.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-ExtraBoldSemiCondensed.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum SemiCondensed;
-	font-style: normal;
-	font-weight: 900;
-	font-stretch: semi-condensed;
-	src: url('woff/YekanBakhFaNum-BlackSemiCondensed.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-BlackSemiCondensed.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum SemiCondensed;
-	font-style: normal;
-	font-weight: 950;
-	font-stretch: semi-condensed;
-	src: url('woff/YekanBakhFaNum-ExtraBlackSemiCondensed.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-ExtraBlackSemiCondensed.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum;
-	font-style: normal;
-	font-weight: 100;
-	font-stretch: normal;
-	src: url('woff/YekanBakhFaNum-Thin.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-Thin.woff2') format('woff2');		
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum;
-	font-style: normal;
-	font-weight: 300;
-	font-stretch: normal;
-	src: url('woff/YekanBakhFaNum-Light.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-Light.woff2') format('woff2');	
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum;
-	font-style: normal;
-	font-weight: normal;
-	font-stretch: normal;
-	src: url('woff/YekanBakhFaNum-Regular.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-Regular.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum;
-	font-style: normal;
-	font-weight: 600;
-	font-stretch: normal;
-	src: url('woff/YekanBakhFaNum-SemiBold.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-SemiBold.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum;
-	font-style: normal;
-	font-weight: bold;
-	font-stretch: normal;
-	src: url('woff/YekanBakhFaNum-Bold.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-Bold.woff2') format('woff2'); 
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum;
-	font-style: normal;
-	font-weight: 800;
-	font-stretch: normal;
-	src: url('woff/YekanBakhFaNum-ExtraBold.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-ExtraBold.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum;
-	font-style: normal;
-	font-weight: 900;
-	font-stretch: normal;
-	src: url('woff/YekanBakhFaNum-Black.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-Black.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum;
-	font-style: normal;
-	font-weight: 950;
-	font-stretch: normal;
-	src: url('woff/YekanBakhFaNum-ExtraBlack.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-ExtraBlack.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum SemiExpanded;
-	font-style: normal;
-	font-weight: 100;
-	font-stretch: semi-expanded;
-	src: url('woff/YekanBakhFaNum-ThinSemiExpanded.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-ThinSemiExpanded.woff2') format('woff2');		
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum SemiExpanded;
-	font-style: normal;
-	font-weight: 300;
-	font-stretch: semi-expanded;
-	src: url('woff/YekanBakhFaNum-LightSemiExpanded.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-LightSemiExpanded.woff2') format('woff2');	
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum SemiExpanded;
-	font-style: normal;
-	font-weight: normal;
-	font-stretch: semi-expanded;
-	src: url('woff/YekanBakhFaNum-RegularSemiExpanded.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-RegularSemiExpanded.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum SemiExpanded;
-	font-style: normal;
-	font-weight: 600;
-	font-stretch: semi-expanded;
-	src: url('woff/YekanBakhFaNum-SemiBoldSemiExpanded.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-SemiBoldSemiExpanded.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum SemiExpanded;
-	font-style: normal;
-	font-weight: bold;
-	font-stretch: semi-expanded;
-	src: url('woff/YekanBakhFaNum-BoldSemiExpanded.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-BoldSemiExpanded.woff2') format('woff2'); 
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum SemiExpanded;
-	font-style: normal;
-	font-weight: 800;
-	font-stretch: semi-expanded;
-	src: url('woff/YekanBakhFaNum-ExtraBoldSemiExpanded.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-ExtraBoldSemiExpanded.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum SemiExpanded;
-	font-style: normal;
-	font-weight: 900;
-	font-stretch: semi-expanded;
-	src: url('woff/YekanBakhFaNum-BlackSemiExpanded.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-BlackSemiExpanded.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum SemiExpanded;
-	font-style: normal;
-	font-weight: 950;
-	font-stretch: semi-expanded;
-	src: url('woff/YekanBakhFaNum-ExtraBlackSemiExpanded.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-ExtraBlackSemiExpanded.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum Expanded;
-	font-style: normal;
-	font-weight: 100;
-	font-stretch: expanded;
-	src: url('woff/YekanBakhFaNum-ThinExpanded.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-ThinExpanded.woff2') format('woff2');		
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum Expanded;
-	font-style: normal;
-	font-weight: 300;
-	font-stretch: expanded;
-	src: url('woff/YekanBakhFaNum-LightExpanded.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-LightExpanded.woff2') format('woff2');	
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum Expanded;
-	font-style: normal;
-	font-weight: normal;
-	font-stretch: expanded;
-	src: url('woff/YekanBakhFaNum-RegularExpanded.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-RegularExpanded.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum Expanded;
-	font-style: normal;
-	font-weight: 600;
-	font-stretch: expanded;
-	src: url('woff/YekanBakhFaNum-SemiBoldExpanded.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-SemiBoldExpanded.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum Expanded;
-	font-style: normal;
-	font-weight: bold;
-	font-stretch: expanded;
-	src: url('woff/YekanBakhFaNum-BoldExpanded.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-BoldExpanded.woff2') format('woff2'); 
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum Expanded;
-	font-style: normal;
-	font-weight: 800;
-	font-stretch: expanded;
-	src: url('woff/YekanBakhFaNum-ExtraBoldExpanded.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-ExtraBoldExpanded.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum Expanded;
-	font-style: normal;
-	font-weight: 900;
-	font-stretch: expanded;
-	src: url('woff/YekanBakhFaNum-BlackExpanded.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-BlackExpanded.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum Expanded;
-	font-style: normal;
-	font-weight: 950;
-	font-stretch: expanded;
-	src: url('woff/YekanBakhFaNum-ExtraBlackExpanded.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-ExtraBlackExpanded.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum ExtraExpanded;
-	font-style: normal;
-	font-weight: 100;
-	font-stretch: extra-expanded;
-	src: url('woff/YekanBakhFaNum-ThinExtraExpanded.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-ThinExtraExpanded.woff2') format('woff2');		
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum ExtraExpanded;
-	font-style: normal;
-	font-weight: 300;
-	font-stretch: extra-expanded;
-	src: url('woff/YekanBakhFaNum-LightExtraExpanded.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-LightExtraExpanded.woff2') format('woff2');	
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum ExtraExpanded;
-	font-style: normal;
-	font-weight: normal;
-	font-stretch: extra-expanded;
-	src: url('woff/YekanBakhFaNum-RegularExtraExpanded.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-RegularExtraExpanded.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum ExtraExpanded;
-	font-style: normal;
-	font-weight: 600;
-	font-stretch: extra-expanded;
-	src: url('woff/YekanBakhFaNum-SemiBoldExtraExpanded.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-SemiBoldExtraExpanded.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum ExtraExpanded;
-	font-style: normal;
-	font-weight: bold;
-	font-stretch: extra-expanded;
-	src: url('woff/YekanBakhFaNum-BoldExtraExpanded.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-BoldExtraExpanded.woff2') format('woff2'); 
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum ExtraExpanded;
-	font-style: normal;
-	font-weight: 800;
-	font-stretch: extra-expanded;
-	src: url('woff/YekanBakhFaNum-ExtraBoldExtraExpanded.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-ExtraBoldExtraExpanded.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum ExtraExpanded;
-	font-style: normal;
-	font-weight: 900;
-	font-stretch: extra-expanded;
-	src: url('woff/YekanBakhFaNum-BlackExtraExpanded.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-BlackExtraExpanded.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh FaNum ExtraExpanded;
-	font-style: normal;
-	font-weight: 950;
-	font-stretch: extra-expanded;
-	src: url('woff/YekanBakhFaNum-ExtraBlackExtraExpanded.woff') format('woff'),   
-	url('woff2/YekanBakhFaNum-ExtraBlackExtraExpanded.woff2') format('woff2');		 
-}
-```
-
-================
-FILE: src\assets\fonts\Yekan Bakh Family\webfonts\fontiran.css
-================
-
-```
-/**
-*
-*	Name:			Yekan Bakh Fonts
-*	Version:			3.1
-*	Author:			Reza Bakhtiarifard, Majan Jafarzadeh
-*	Created on:		Oct 2024
-*	Updated on:		Oct 2024
-*	Vendor:			http://fontiran.com
-*	Copyright:		Commercial/Proprietary Software
---------------------------------------------------------------------------------------
-فونت یکان‌بخ یک نرم افزار مالکیتی محسوب می شود. جهت آگاهی از قوانین استفاده از این فونت ها لطفا به وب سایت (فونت ایران دات کام) مراجعه نمایید
---------------------------------------------------------------------------------------
-Yekan Bakh fonts are considered a proprietary software. To gain information about the laws regarding the use of these fonts, please visit www.fontiran.com 
---------------------------------------------------------------------------------------
-This set of fonts are used in this project under the license: (.....)
-------------------------------------------------------------------------------------- fonts/-
-*	
-**/
-
-
-@font-face {
-	font-family: Yekan Bakh ExtraCondensed;
-	font-style: normal;
-	font-weight: 100;
-	font-stretch: extra-condensed;
-	src: url('woff/YekanBakh-ThinExtraCondensed.woff') format('woff'),   
-	url('woff2/YekanBakh-ThinExtraCondensed.woff2') format('woff2');		
-}
-
-@font-face {
-	font-family: Yekan Bakh ExtraCondensed;
-	font-style: normal;
-	font-weight: 300;
-	font-stretch: extra-condensed;
-	src: url('woff/YekanBakh-LightExtraCondensed.woff') format('woff'),   
-	url('woff2/YekanBakh-LightExtraCondensed.woff2') format('woff2');	
-}
-
-@font-face {
-	font-family: Yekan Bakh ExtraCondensed;
-	font-style: normal;
-	font-weight: normal;
-	font-stretch: extra-condensed;
-	src: url('woff/YekanBakh-RegularExtraCondensed.woff') format('woff'),   
-	url('woff2/YekanBakh-RegularExtraCondensed.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh ExtraCondensed;
-	font-style: normal;
-	font-weight: 600;
-	font-stretch: extra-condensed;
-	src: url('woff/YekanBakh-SemiBoldExtraCondensed.woff') format('woff'),   
-	url('woff2/YekanBakh-SemiBoldExtraCondensed.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh ExtraCondensed;
-	font-style: normal;
-	font-weight: bold;
-	font-stretch: extra-condensed;
-	src: url('woff/YekanBakh-BoldExtraCondensed.woff') format('woff'),   
-	url('woff2/YekanBakh-BoldExtraCondensed.woff2') format('woff2'); 
-}
-
-@font-face {
-	font-family: Yekan Bakh ExtraCondensed;
-	font-style: normal;
-	font-weight: 800;
-	font-stretch: extra-condensed;
-	src: url('woff/YekanBakh-ExtraBoldExtraCondensed.woff') format('woff'),   
-	url('woff2/YekanBakh-ExtraBoldExtraCondensed.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh ExtraCondensed;
-	font-style: normal;
-	font-weight: 900;
-	font-stretch: extra-condensed;
-	src: url('woff/YekanBakh-BlackExtraCondensed.woff') format('woff'),   
-	url('woff2/YekanBakh-BlackExtraCondensed.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh ExtraCondensed;
-	font-style: normal;
-	font-weight: 950;
-	font-stretch: extra-condensed;
-	src: url('woff/YekanBakh-ExtraBlackExtraCondensed.woff') format('woff'),   
-	url('woff2/YekanBakh-ExtraBlackExtraCondensed.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh Condensed;
-	font-style: normal;
-	font-weight: 100;
-	font-stretch: condensed;
-	src: url('woff/YekanBakh-ThinCondensed.woff') format('woff'),   
-	url('woff2/YekanBakh-ThinCondensed.woff2') format('woff2');		
-}
-
-@font-face {
-	font-family: Yekan Bakh Condensed;
-	font-style: normal;
-	font-weight: 300;
-	font-stretch: condensed;
-	src: url('woff/YekanBakh-LightCondensed.woff') format('woff'),   
-	url('woff2/YekanBakh-LightCondensed.woff2') format('woff2');	
-}
-
-@font-face {
-	font-family: Yekan Bakh Condensed;
-	font-style: normal;
-	font-weight: normal;
-	font-stretch: condensed;
-	src: url('woff/YekanBakh-RegularCondensed.woff') format('woff'),   
-	url('woff2/YekanBakh-RegularCondensed.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh Condensed;
-	font-style: normal;
-	font-weight: 600;
-	font-stretch: condensed;
-	src: url('woff/YekanBakh-SemiBoldCondensed.woff') format('woff'),   
-	url('woff2/YekanBakh-SemiBoldCondensed.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh Condensed;
-	font-style: normal;
-	font-weight: bold;
-	font-stretch: condensed;
-	src: url('woff/YekanBakh-BoldCondensed.woff') format('woff'),   
-	url('woff2/YekanBakh-BoldCondensed.woff2') format('woff2'); 
-}
-
-@font-face {
-	font-family: Yekan Bakh Condensed;
-	font-style: normal;
-	font-weight: 800;
-	font-stretch: condensed;
-	src: url('woff/YekanBakh-ExtraBoldCondensed.woff') format('woff'),   
-	url('woff2/YekanBakh-ExtraBoldCondensed.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh Condensed;
-	font-style: normal;
-	font-weight: 900;
-	font-stretch: condensed;
-	src: url('woff/YekanBakh-BlackCondensed.woff') format('woff'),   
-	url('woff2/YekanBakh-BlackCondensed.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh Condensed;
-	font-style: normal;
-	font-weight: 950;
-	font-stretch: condensed;
-	src: url('woff/YekanBakh-ExtraBlackCondensed.woff') format('woff'),   
-	url('woff2/YekanBakh-ExtraBlackCondensed.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh SemiCondensed;
-	font-style: normal;
-	font-weight: 100;
-	font-stretch: semi-condensed;
-	src: url('woff/YekanBakh-ThinSemiCondensed.woff') format('woff'),   
-	url('woff2/YekanBakh-ThinSemiCondensed.woff2') format('woff2');		
-}
-
-@font-face {
-	font-family: Yekan Bakh SemiCondensed;
-	font-style: normal;
-	font-weight: 300;
-	font-stretch: semi-condensed;
-	src: url('woff/YekanBakh-LightSemiCondensed.woff') format('woff'),   
-	url('woff2/YekanBakh-LightSemiCondensed.woff2') format('woff2');	
-}
-
-@font-face {
-	font-family: Yekan Bakh SemiCondensed;
-	font-style: normal;
-	font-weight: normal;
-	font-stretch: semi-condensed;
-	src: url('woff/YekanBakh-RegularSemiCondensed.woff') format('woff'),   
-	url('woff2/YekanBakh-RegularSemiCondensed.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh SemiCondensed;
-	font-style: normal;
-	font-weight: 600;
-	font-stretch: semi-condensed;
-	src: url('woff/YekanBakh-SemiBoldSemiCondensed.woff') format('woff'),   
-	url('woff2/YekanBakh-SemiBoldSemiCondensed.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh SemiCondensed;
-	font-style: normal;
-	font-weight: bold;
-	font-stretch: semi-condensed;
-	src: url('woff/YekanBakh-BoldSemiCondensed.woff') format('woff'),   
-	url('woff2/YekanBakh-BoldSemiCondensed.woff2') format('woff2'); 
-}
-
-@font-face {
-	font-family: Yekan Bakh SemiCondensed;
-	font-style: normal;
-	font-weight: 800;
-	font-stretch: semi-condensed;
-	src: url('woff/YekanBakh-ExtraBoldSemiCondensed.woff') format('woff'),   
-	url('woff2/YekanBakh-ExtraBoldSemiCondensed.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh SemiCondensed;
-	font-style: normal;
-	font-weight: 900;
-	font-stretch: semi-condensed;
-	src: url('woff/YekanBakh-BlackSemiCondensed.woff') format('woff'),   
-	url('woff2/YekanBakh-BlackSemiCondensed.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh SemiCondensed;
-	font-style: normal;
-	font-weight: 950;
-	font-stretch: semi-condensed;
-	src: url('woff/YekanBakh-ExtraBlackSemiCondensed.woff') format('woff'),   
-	url('woff2/YekanBakh-ExtraBlackSemiCondensed.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh;
-	font-style: normal;
-	font-weight: 100;
-	font-stretch: normal;
-	src: url('woff/YekanBakh-Thin.woff') format('woff'),   
-	url('woff2/YekanBakh-Thin.woff2') format('woff2');		
-}
-
-@font-face {
-	font-family: Yekan Bakh;
-	font-style: normal;
-	font-weight: 300;
-	font-stretch: normal;
-	src: url('woff/YekanBakh-Light.woff') format('woff'),   
-	url('woff2/YekanBakh-Light.woff2') format('woff2');	
-}
-
-@font-face {
-	font-family: Yekan Bakh;
-	font-style: normal;
-	font-weight: normal;
-	font-stretch: normal;
-	src: url('woff/YekanBakh-Regular.woff') format('woff'),   
-	url('woff2/YekanBakh-Regular.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh;
-	font-style: normal;
-	font-weight: 600;
-	font-stretch: normal;
-	src: url('woff/YekanBakh-SemiBold.woff') format('woff'),   
-	url('woff2/YekanBakh-SemiBold.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh;
-	font-style: normal;
-	font-weight: bold;
-	font-stretch: normal;
-	src: url('woff/YekanBakh-Bold.woff') format('woff'),   
-	url('woff2/YekanBakh-Bold.woff2') format('woff2'); 
-}
-
-@font-face {
-	font-family: Yekan Bakh;
-	font-style: normal;
-	font-weight: 800;
-	font-stretch: normal;
-	src: url('woff/YekanBakh-ExtraBold.woff') format('woff'),   
-	url('woff2/YekanBakh-ExtraBold.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh;
-	font-style: normal;
-	font-weight: 900;
-	font-stretch: normal;
-	src: url('woff/YekanBakh-Black.woff') format('woff'),   
-	url('woff2/YekanBakh-Black.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh;
-	font-style: normal;
-	font-weight: 950;
-	font-stretch: normal;
-	src: url('woff/YekanBakh-ExtraBlack.woff') format('woff'),   
-	url('woff2/YekanBakh-ExtraBlack.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh SemiExpanded;
-	font-style: normal;
-	font-weight: 100;
-	font-stretch: semi-expanded;
-	src: url('woff/YekanBakh-ThinSemiExpanded.woff') format('woff'),   
-	url('woff2/YekanBakh-ThinSemiExpanded.woff2') format('woff2');		
-}
-
-@font-face {
-	font-family: Yekan Bakh SemiExpanded;
-	font-style: normal;
-	font-weight: 300;
-	font-stretch: semi-expanded;
-	src: url('woff/YekanBakh-LightSemiExpanded.woff') format('woff'),   
-	url('woff2/YekanBakh-LightSemiExpanded.woff2') format('woff2');	
-}
-
-@font-face {
-	font-family: Yekan Bakh SemiExpanded;
-	font-style: normal;
-	font-weight: normal;
-	font-stretch: semi-expanded;
-	src: url('woff/YekanBakh-RegularSemiExpanded.woff') format('woff'),   
-	url('woff2/YekanBakh-RegularSemiExpanded.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh SemiExpanded;
-	font-style: normal;
-	font-weight: 600;
-	font-stretch: semi-expanded;
-	src: url('woff/YekanBakh-SemiBoldSemiExpanded.woff') format('woff'),   
-	url('woff2/YekanBakh-SemiBoldSemiExpanded.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh SemiExpanded;
-	font-style: normal;
-	font-weight: bold;
-	font-stretch: semi-expanded;
-	src: url('woff/YekanBakh-BoldSemiExpanded.woff') format('woff'),   
-	url('woff2/YekanBakh-BoldSemiExpanded.woff2') format('woff2'); 
-}
-
-@font-face {
-	font-family: Yekan Bakh SemiExpanded;
-	font-style: normal;
-	font-weight: 800;
-	font-stretch: semi-expanded;
-	src: url('woff/YekanBakh-ExtraBoldSemiExpanded.woff') format('woff'),   
-	url('woff2/YekanBakh-ExtraBoldSemiExpanded.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh SemiExpanded;
-	font-style: normal;
-	font-weight: 900;
-	font-stretch: semi-expanded;
-	src: url('woff/YekanBakh-BlackSemiExpanded.woff') format('woff'),   
-	url('woff2/YekanBakh-BlackSemiExpanded.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh SemiExpanded;
-	font-style: normal;
-	font-weight: 950;
-	font-stretch: semi-expanded;
-	src: url('woff/YekanBakh-ExtraBlackSemiExpanded.woff') format('woff'),   
-	url('woff2/YekanBakh-ExtraBlackSemiExpanded.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh Expanded;
-	font-style: normal;
-	font-weight: 100;
-	font-stretch: expanded;
-	src: url('woff/YekanBakh-ThinExpanded.woff') format('woff'),   
-	url('woff2/YekanBakh-ThinExpanded.woff2') format('woff2');		
-}
-
-@font-face {
-	font-family: Yekan Bakh Expanded;
-	font-style: normal;
-	font-weight: 300;
-	font-stretch: expanded;
-	src: url('woff/YekanBakh-LightExpanded.woff') format('woff'),   
-	url('woff2/YekanBakh-LightExpanded.woff2') format('woff2');	
-}
-
-@font-face {
-	font-family: Yekan Bakh Expanded;
-	font-style: normal;
-	font-weight: normal;
-	font-stretch: expanded;
-	src: url('woff/YekanBakh-RegularExpanded.woff') format('woff'),   
-	url('woff2/YekanBakh-RegularExpanded.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh Expanded;
-	font-style: normal;
-	font-weight: 600;
-	font-stretch: expanded;
-	src: url('woff/YekanBakh-SemiBoldExpanded.woff') format('woff'),   
-	url('woff2/YekanBakh-SemiBoldExpanded.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh Expanded;
-	font-style: normal;
-	font-weight: bold;
-	font-stretch: expanded;
-	src: url('woff/YekanBakh-BoldExpanded.woff') format('woff'),   
-	url('woff2/YekanBakh-BoldExpanded.woff2') format('woff2'); 
-}
-
-@font-face {
-	font-family: Yekan Bakh Expanded;
-	font-style: normal;
-	font-weight: 800;
-	font-stretch: expanded;
-	src: url('woff/YekanBakh-ExtraBoldExpanded.woff') format('woff'),   
-	url('woff2/YekanBakh-ExtraBoldExpanded.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh Expanded;
-	font-style: normal;
-	font-weight: 900;
-	font-stretch: expanded;
-	src: url('woff/YekanBakh-BlackExpanded.woff') format('woff'),   
-	url('woff2/YekanBakh-BlackExpanded.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh Expanded;
-	font-style: normal;
-	font-weight: 950;
-	font-stretch: expanded;
-	src: url('woff/YekanBakh-ExtraBlackExpanded.woff') format('woff'),   
-	url('woff2/YekanBakh-ExtraBlackExpanded.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh ExtraExpanded;
-	font-style: normal;
-	font-weight: 100;
-	font-stretch: extra-expanded;
-	src: url('woff/YekanBakh-ThinExtraExpanded.woff') format('woff'),   
-	url('woff2/YekanBakh-ThinExtraExpanded.woff2') format('woff2');		
-}
-
-@font-face {
-	font-family: Yekan Bakh ExtraExpanded;
-	font-style: normal;
-	font-weight: 300;
-	font-stretch: extra-expanded;
-	src: url('woff/YekanBakh-LightExtraExpanded.woff') format('woff'),   
-	url('woff2/YekanBakh-LightExtraExpanded.woff2') format('woff2');	
-}
-
-@font-face {
-	font-family: Yekan Bakh ExtraExpanded;
-	font-style: normal;
-	font-weight: normal;
-	font-stretch: extra-expanded;
-	src: url('woff/YekanBakh-RegularExtraExpanded.woff') format('woff'),   
-	url('woff2/YekanBakh-RegularExtraExpanded.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh ExtraExpanded;
-	font-style: normal;
-	font-weight: 600;
-	font-stretch: extra-expanded;
-	src: url('woff/YekanBakh-SemiBoldExtraExpanded.woff') format('woff'),   
-	url('woff2/YekanBakh-SemiBoldExtraExpanded.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh ExtraExpanded;
-	font-style: normal;
-	font-weight: bold;
-	font-stretch: extra-expanded;
-	src: url('woff/YekanBakh-BoldExtraExpanded.woff') format('woff'),   
-	url('woff2/YekanBakh-BoldExtraExpanded.woff2') format('woff2'); 
-}
-
-@font-face {
-	font-family: Yekan Bakh ExtraExpanded;
-	font-style: normal;
-	font-weight: 800;
-	font-stretch: extra-expanded;
-	src: url('woff/YekanBakh-ExtraBoldExtraExpanded.woff') format('woff'),   
-	url('woff2/YekanBakh-ExtraBoldExtraExpanded.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh ExtraExpanded;
-	font-style: normal;
-	font-weight: 900;
-	font-stretch: extra-expanded;
-	src: url('woff/YekanBakh-BlackExtraExpanded.woff') format('woff'),   
-	url('woff2/YekanBakh-BlackExtraExpanded.woff2') format('woff2');		 
-}
-
-@font-face {
-	font-family: Yekan Bakh ExtraExpanded;
-	font-style: normal;
-	font-weight: 950;
-	font-stretch: extra-expanded;
-	src: url('woff/YekanBakh-ExtraBlackExtraExpanded.woff') format('woff'),   
-	url('woff2/YekanBakh-ExtraBlackExtraExpanded.woff2') format('woff2');		 
-}
-```
-
-================
 FILE: src\teacher\components\contentContainer\reports\modals\ToolsModal.tsx
 ================
 
 ```
 // src/components/ToolsModal/ToolsModal.tsx
 import React, { useState } from 'react';
-import Modal from '../../Modal';
+
 import Tools from './Tools';
 import ChatButton from '../../../../../components/common/ChatButton';
+import Modal from '../../Modal';
 
 interface StudentModalProps {
   isModalOpen: boolean;
@@ -7876,12 +6273,12 @@ interface StudentModalProps {
 
 const StudentModal:React.FC<StudentModalProps> = ({isModalOpen,handleCloseModal}) => {
   return (
-    <div>
+    <div >
       <Modal isOpen={isModalOpen} onClose={handleCloseModal} title="">
-       <div className='flex flex-col justify-center items-center gap-[8px] pb-40'>
+       <div className='flex flex-col justify-center items-center gap-[8px] '>
         <img src={''}/>
         <h1>نرگس شریفی</h1>
-        <div className='flex '>
+        <div className='flex justify-between'>
           <p className=' bg-backGround-1 gap-[8px] px-[8px] rounded-[16px] text-[10px] py-[2px]'>22 دانش آموز</p>
           <p className=' bg-backGround-1 gap-[8px] px-[8px] rounded-[16px] text-[10px] py-[2px]'>22 دانش آموز</p>
         </div>

@@ -1,30 +1,31 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface KonjkavState {
-  selectedStudy: string;
+interface Study {
+    id: string;
+    name: string;
+}
+
+interface TarkibkonState {
+  selectedStudy: Study | null;
   learnTopic: string;
   favoriteTopic: string;
   studySelectionButton: boolean;
 }
 
-const initialState: KonjkavState = {
-  selectedStudy: "",
+const initialState: TarkibkonState = {
+  selectedStudy: null,
   learnTopic: "",
-  favoriteTopic:'',
+  favoriteTopic: '',
   studySelectionButton: false,
 };
 
 const tarkibkonSlice = createSlice({
-  name: "konjkav",
+  name: "tarkibkon",
   initialState,
   reducers: {
-    setSelectedStudy: (state, action: PayloadAction<string>) => {
+    setSelectedStudy: (state, action: PayloadAction<Study | null>) => {
       state.selectedStudy = action.payload;
-      if (action.payload) {
-        state.studySelectionButton = true;
-      } else {
-        state.studySelectionButton = false;
-      }
+      state.studySelectionButton = !!action.payload;
     },
     setLearnTopic: (state, action: PayloadAction<string>) => {
       state.learnTopic = action.payload;
@@ -33,7 +34,7 @@ const tarkibkonSlice = createSlice({
       state.favoriteTopic = action.payload;
     },
     resetSelection: (state) => {
-      state.selectedStudy = "";
+      state.selectedStudy = null;
       state.learnTopic = "";
       state.favoriteTopic='';
       state.studySelectionButton = false;

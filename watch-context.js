@@ -21,6 +21,7 @@ const IGNORE_PATTERNS = [
   'build/**',
   'dist/**',
   '.git/**',
+  'src/assets/**',
   OUTPUT_FILE,
   '*.log',
 ];

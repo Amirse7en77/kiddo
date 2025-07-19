@@ -1,3 +1,4 @@
+// src/student/components/darsYar/chatWithBot/LessonInformation.tsx
 import React from "react";
 
 interface LessonInformationProps {
@@ -7,7 +8,7 @@ interface LessonInformationProps {
 
 const LessonInformation: React.FC<LessonInformationProps> = ({ study, lesson }) => {
   return (
-    <div className="flex justify-between items-center py-[8px] infoGradient px-[16px] fixed w-full">
+    <div className="flex justify-between items-center py-[8px] infoGradient px-[16px] fixed w-full top-[52px] z-40">
       <div>
         <h1 className="text-[14px]">پاسخ گویی با توجه به کتاب {study}</h1>
       </div>

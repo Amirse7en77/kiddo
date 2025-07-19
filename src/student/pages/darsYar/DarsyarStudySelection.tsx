@@ -6,10 +6,11 @@ import MainContent from '../../components/darsYar/studySelection/MainContent';
 import ChatButton from '../../../components/common/ChatButton';
 import DisableChatButton from '../../../components/common/DisableChatButton';
 
+
 const DarsyarStudySelection = () => {
   const navigate = useNavigate();
   const infoButton: boolean = useSelector((state: any) => state?.darsyar?.studySelectionButton);
-
+   
   const handleNext = () => {
     navigate('/student/darsyar/lesson-selection');
   };

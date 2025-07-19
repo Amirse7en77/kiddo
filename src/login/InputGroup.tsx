@@ -55,7 +55,7 @@ const InputGroup = () => {
         <input
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          className='p-[16px] rounded-[16px] w-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500'
+          className='p-[16px] rounded-[16px] w-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-chatButton-1'
           required
         />
       </div>
@@ -65,7 +65,7 @@ const InputGroup = () => {
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className='p-[16px] rounded-[16px] border border-gray-300 w-full focus:outline-none focus:ring-2 focus:ring-blue-500'
+          className='p-[16px] rounded-[16px] border border-gray-300 w-full focus:outline-none focus:ring-2 focus:ring-chatButton-1'
           required
         />
       </div>

@@ -7,6 +7,7 @@ import ChatButton from "../../../components/common/ChatButton";
 
 const DarsyarWelcome: FC = () => {
   const navigate = useNavigate();
+  
 
   const handleNewChat = () => {
     navigate("/student/darsyar/study-selection");

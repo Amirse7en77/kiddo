@@ -1,12 +1,7 @@
-// MainContent.tsx
 import React from 'react';
 import CardSelector from './CardSelector';
 
-interface MainContentProps {
-  onLessonSelect: (selectedLessonValue: string) => void;
-}
-
-const MainContent: React.FC<MainContentProps> = ({ onLessonSelect }) => {
+const MainContent: React.FC = () => {
   return (
     <div
       className='
@@ -18,7 +13,7 @@ const MainContent: React.FC<MainContentProps> = ({ onLessonSelect }) => {
       '
     >
       <div> 
-        <CardSelector onLessonSelect={onLessonSelect} />
+        <CardSelector />
       </div>
     </div>
   );

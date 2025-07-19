@@ -1,16 +1,12 @@
+// src/router/index.tsx
 import { createBrowserRouter, Outlet } from "react-router-dom";
 
-// Layouts and Pages
+// ... (all other imports remain the same)
 import App from "../App";
 import Login from "../login/Login";
 
-// Teacher Pages & Layout
+// ... (import all your other components)
 import TeacherHome from "../teacher/pages/TeacherHome";
-
-
-
-
-// Student Pages & Layout
 import StudentHome from "../student/pages/StudentHome";
 import ClassLayout from "../layout/ClassLayout";
 import StudentsActivities from "../teacher/components/contentContainer/students/StudentsActivities";
@@ -32,60 +28,51 @@ import TarkibkonFavoriteTopic from "../student/pages/tarkibKon/TarkibkonFavorite
 import TarkibkonChatBot from "../student/pages/tarkibKon/TarkibkonChatBot";
 import TarkibkonStudySelection from "../student/pages/tarkibKon/TarkibkonStudySelection";
 import ReportsPage from "../teacher/pages/ReportsPage";
-// You might want a StudentLayout for all student pages
-// const StudentLayout = () => <Outlet />; 
 
-// ... import all your other student components
-
+// The only change is to export the router instance
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />, // Your main app shell (e.g., with a context provider)
+    element: <App />, 
     children: [
-      // Login is the default page at the root path "/"
       {
         index: true,
         element: <Login />,
       },
-             {
-        path: "teacher", // This is specifically for TeacherHome
+      // ... (all other routes remain exactly the same)
+      {
+        path: "teacher", 
         element: <TeacherHome />,
       },
       {
-        path: "teacher", // A new base path for routes under ClassLayout
+        path: "teacher", 
         element: <ClassLayout />,
         children: [
-          // All these paths are now relative to "teacher/class"
           {
-            path: "students", // Corresponds to "/teacher/class/students"
+            path: "students", 
             element: <StudentsActivities />,
           },
           {
-            path: "reports", // Corresponds to "/teacher/class/reports"
+            path: "reports",
             element: <ReportsPage />,
           },
           {
-            path: "chat", // Corresponds to "/teacher/class/chat"
+            path: "chat", 
             element: <ClassChat />,
           },
           
         ],
       },
-
-
-      // ===== STUDENT ROUTES =====
       {
         path: "student",
-        // element: <StudentLayout />, // You could add a shared layout for all students here
         children: [
           {
-            index: true, // Corresponds to "/student"
+            index: true,
             element: <StudentHome />,
           },
-          // --- DarsYar Sub-Routes ---
           {
             path: "darsyar",
-            element: <Outlet />, // Use Outlet to nest further
+            element: <Outlet />,
             children: [
               { path: "recent-chat", element: <DarsyarRecentChat /> },
               { path: "study-assistant", element: <DarsyarWelcome /> },
@@ -94,7 +81,6 @@ export const router = createBrowserRouter([
               { path: "chat", element: <DarsyarChatWithBot /> },
             ],
           },
-          // --- KonjKav Sub-Routes ---
           {
             path: "konjkav",
             element: <Outlet />,
@@ -106,7 +92,6 @@ export const router = createBrowserRouter([
               { path: "chat", element: <KonjkavTopicBot /> },
             ],
           },
-          // --- Tarkibkon Sub-Routes ---
           {
             path: "tarkibkon",
             element: <Outlet />,

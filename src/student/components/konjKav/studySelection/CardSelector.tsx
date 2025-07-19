@@ -1,49 +1,59 @@
-// CardSelector.tsx
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { activeButtonReducer, disableButtonReducer } from '../../../../slice/konjkavSlice';
+import { setSelectedStudy } from '../../../../slice/konjkavSlice';
 import CardContent from './CardContent';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-interface Card {
+interface Subject {
   id: string;
-  title: string;
+  name: string;
 }
 
-interface CardSelectorProps {
-  onLessonSelect: (selectedLessonValue: string) => void;
-}
-
-const CardSelector: React.FC<CardSelectorProps> = ({ onLessonSelect }) => {
+const CardSelector: React.FC = () => {
+  const navigate=useNavigate()
   const dispatch = useDispatch();
-  const cards: Card[] = [
-    { id: 'math', title: 'ریاضی' },
-    { id: 'science', title: 'علوم' },
-    { id: 'social', title: 'مطالعات اجتماعی' },
-    { id: 'literature', title: 'ادبیات فارسی' },
-  ];
-
   const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
 
-  const handleCardClick = (clickedId: string, title: string) => {
-    if (selectedCardId === clickedId) {
+  const { data: subjects, isLoading, isError } = useQuery<Subject[]>({
+    queryKey: ['subjects'],
+    queryFn: async () => {
+      const response = await axios.get<Subject[]>(`https://kiddo2.pythonanywhere.com/api/v1/academics/subjects`);
+      console.log(response)
+      return response.data;
+    },
+  });
+
+  // if(subjects?.status===401){
+     
+  //     // Navigate to login page if selections are missing
+     
+  //       navigate('/'); 
+    
+  // }
+
+  const handleCardClick = (subject: Subject) => {
+    if (selectedCardId === subject.id) {
       setSelectedCardId(null);
-      onLessonSelect('');
-      dispatch(disableButtonReducer());
+      dispatch(setSelectedStudy(null));
     } else {
-      setSelectedCardId(clickedId);
-      onLessonSelect(title);
-      dispatch(activeButtonReducer());
+      setSelectedCardId(subject.id);
+      dispatch(setSelectedStudy(subject));
     }
   };
 
+  if (isLoading) return <div>در حال بارگذاری دروس...</div>;
+  if (isError) return <div>خطا در بارگذاری دروس.</div>;
+
   return (
     <div className="grid grid-cols-2 gap-[12px]">
-      {cards.map((card) => (
+      {subjects?.map((subject) => (
         <CardContent
-          key={card.id}
-          title={card.title}
-          isSelected={selectedCardId === card.id}
-          onClick={() => handleCardClick(card.id, card.title)}
+          key={subject.id}
+          title={subject.name}
+          isSelected={selectedCardId === subject.id}
+          onClick={() => handleCardClick(subject)}
         />
       ))}
     </div>
