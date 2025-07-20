@@ -19,7 +19,14 @@ const ReportDetailModal: React.FC<ReportDetailModalProps> = ({ eventId, onClose 
     queryFn: () => fetchEventDetails(eventId!), // The '!' asserts eventId is not null here
     enabled: !!eventId, // Only run query if eventId is not null
   });
-
+  let level
+  if(event?.level==='DANGER'){
+    level='هشدار جدی'
+  }else if(event?.level==='CONCERN'){
+    level='نیاز به توجه'
+  } else{
+    level='اطلاع‌رسانی'
+  }
   const handleViewChat = () => {
     if (event?.session_id) {
       // This route might need to be adjusted based on your final routing for specific chats
@@ -36,11 +43,11 @@ const ReportDetailModal: React.FC<ReportDetailModalProps> = ({ eventId, onClose 
         {event && (
           <div className='flex flex-col justify-center gap-4 pb-20'>
             <div className='flex flex-col items-center gap-2'>
-               <FluentEmoji emoji="🤪" size={70} type="anim" />
+               <FluentEmoji emoji={event.emoji} size={70} type="anim" />
                 <h1 className='font-bold text-lg'>{event.student_name}</h1>
                 <div className='flex justify-center gap-2'>
                   <p className='bg-backGround-1 px-3 py-1 rounded-full text-xs'>{event.subject_name}</p>
-                  <p className='bg-backGround-1 px-3 py-1 rounded-full text-xs'>{event.level}</p>
+                  <p className='bg-backGround-1 px-3 py-1 rounded-full text-xs'>{level}</p>
                 </div>
             </div>
             

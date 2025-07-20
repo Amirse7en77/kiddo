@@ -120,3 +120,38 @@
       /* #FF6B48 with 10% opacity */
   );
 }
+
+/* Custom styles for react-markdown output */
+.prose {
+  --tw-prose-body: #333;
+  --tw-prose-headings: #111;
+  --tw-prose-links: var(--color-custom-purple);
+  --tw-prose-bold: #000;
+  --tw-prose-bullets: #666;
+  --tw-prose-hr: var(--color-borderColor-1);
+  --tw-prose-quotes: #444;
+  --tw-prose-quote-borders: var(--color-borderColor-1);
+  --tw-prose-code: #111;
+  --tw-prose-pre-code: #111;
+  --tw-prose-pre-bg: var(--color-backGround-1);
+}
+
+.prose-invert {
+  --tw-prose-body: #e5e7eb;
+  --tw-prose-headings: #fff;
+  --tw-prose-links: #fff;
+  --tw-prose-bold: #fff;
+  --tw-prose-bullets: #a1a1aa;
+  --tw-prose-hr: #4b5563;
+  --tw-prose-quotes: #d1d5db;
+  --tw-prose-quote-borders: #4b5563;
+  --tw-prose-code: #fff;
+  --tw-prose-pre-code: #e5e7eb;
+  --tw-prose-pre-bg: rgba(0,0,0,0.2);
+}
+
+/* Fix for RTL list indentation */
+.prose :where(ul, ol):not(:where([class~="not-prose"] *)) {
+  padding-right: 1.625em;
+  padding-left: 0;
+}

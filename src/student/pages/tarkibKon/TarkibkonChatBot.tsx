@@ -41,13 +41,17 @@ const TarkibkonChatBot = () => {
     return null;
   }
 
+  const initialMessage = `...در حال ترکیب کردن ${learnTopic} با ${favoriteTopic}`;
+
   return (
     <div className="bg-backGround-1 h-screen flex flex-col">
       <Header title={'ترکیب‌کن'} />
       <div className="flex-grow flex flex-col">
           <Chat 
             startSession={startSessionCallback}
-            setIsChatting={setIsChatting} 
+            setIsChatting={setIsChatting}
+            tool="TARKIB_KON"
+            initialUserActionText={initialMessage}
           />
       </div>
     </div>

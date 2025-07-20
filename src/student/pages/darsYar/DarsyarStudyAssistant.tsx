@@ -16,7 +16,7 @@ const DarsyarWelcome: FC = () => {
   return (
     <div>
       <Header title={'درس‌یار'} />
-      <div className="bg-backGround-1 h-full pb-10">
+      <div className="bg-backGround-1 h-full ">
         <div className="mx-[32px]">
           <HeroSection />
           <CardSection />

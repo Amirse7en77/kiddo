@@ -1,7 +1,7 @@
 import React from 'react';
 import smallhappyface from './../../../../assets/images/smallhappyface.png';
 import recent from './../../../../assets/images/recent.png';
-
+import { FluentEmoji } from '@lobehub/ui';
 // Define the shape of the student data we expect as a prop
 interface Student {
   id: string;
@@ -55,18 +55,18 @@ const StudentActivity: React.FC<StudentActivityProps> = ({ student }) => {
                 {activityStatusMap[student.activity_status] || student.activity_status}
               </p>
               {/* Only render the mood tag if current_mood is not null */}
-              {student.current_mood && (
+              
                 <p className="bg-backGround-1 px-[8px] rounded-[16px] text-[10px] py-[2px]">
-                  {student.current_mood.text}
+                  <p><FluentEmoji emoji="🙂" type="anim" size={16}/></p>
                 </p>
-              )}
+             
             </div>
           </div>
           {/* Bottom row with last activity date */}
           <div className="flex justify-between items-center">
             <div className="flex">
               <h1 className="font-extrabold text-[10px]">
-                آخرین فعالیت : {formatDate(student.last_activity_at)}
+                آخرین فعالیت : {(student.last_activity_at)?(formatDate(student.last_activity_at)):(<span>بدون فعالیت</span>)}
               </h1>
             </div>
            <div>

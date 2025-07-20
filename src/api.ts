@@ -1,8 +1,8 @@
-// src/api.ts
 import axios, { AxiosError } from 'axios';
-import { router } from './router'; // Import router for navigation
-import { store } from './store'; // Import store to dispatch actions
-import { clearUser } from './slice/userSlice'; // Import the action to clear user data
+import { router } from './router'; 
+import { store } from './store'; 
+import { clearUser, setUser } from './slice/userSlice'; 
+import { UserState } from './slice/userSlice';
 
 const API_BASE_URL = 'https://kiddo2.pythonanywhere.com';
 
@@ -24,37 +24,62 @@ export const login = async (username: string, password: string): Promise<LoginRe
       username,
       password,
     });
-    // Store token for future requests
+    
+    // Store token for future requests and persistence
     axios.defaults.headers.common['Authorization'] = `Token ${response.data.token}`;
+    localStorage.setItem('authToken', response.data.token); // <-- Store token in localStorage
+
     console.log("API RESPONSE: login success", response.data.user);
     return response.data;
   } catch (error) {
     const axiosError = error as AxiosError;
      console.error("API ERROR: login", axiosError.response?.data);
-    if (axiosError.response?.status === 400) { // Django REST Framework returns 400 for bad credentials
+    if (axiosError.response?.status === 400) {
       throw new Error('نام کاربری یا رمز عبور اشتباه است');
     }
     throw new Error('خطا در ارتباط با سرور');
   }
 };
 
+/**
+ * Fetches the current user's data using the stored token.
+ * @returns A promise that resolves to the user data.
+ */
+export const getMe = async (): Promise<UserState> => {
+    console.log("API CALL: getMe");
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+      return Promise.reject("No token found");
+    }
+    axios.defaults.headers.common['Authorization'] = `Token ${token}`;
+    const response = await axios.get(`${API_BASE_URL}/api/v1/accounts/me/`);
+    const user = response.data;
+    console.log("API RESPONSE: getMe success", user);
+    // Return the full UserState structure including the token
+    return { ...user, token };
+};
+
+/**
+ * Logs the user out by clearing credentials.
+ */
+export const logout = () => {
+    console.log("ACTION: Logging out");
+    localStorage.removeItem('authToken'); // <-- Clear token from localStorage
+    delete axios.defaults.headers.common['Authorization'];
+    store.dispatch(clearUser()); // Clear user from redux
+    router.navigate('/'); // Redirect to login
+};
+
 // This function sets up the global interceptor
 export const setupAxiosInterceptors = () => {
   axios.interceptors.response.use(
-    // On successful response, just return it
     (response) => response,
-    // On error, check for 401
     (error: AxiosError) => {
       if (error.response?.status === 401) {
-        console.log('Global 401 Unauthorized error detected. Logging out and redirecting.');
-        // Clear user data from Redux
-        store.dispatch(clearUser());
-        // Clear auth header
-        delete axios.defaults.headers.common['Authorization'];
-        // Redirect to login page
-        router.navigate('/');
+        console.log('Global 401 Unauthorized error detected. Logging out.');
+        // If a 401 happens, it means the token is invalid, so perform a full logout
+        logout();
       }
-      // Important: return the error so that the original caller (e.g., useQuery) can handle it too
       return Promise.reject(error);
     }
   );

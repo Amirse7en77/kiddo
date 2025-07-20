@@ -9,10 +9,11 @@ import { useNavigate } from 'react-router-dom';
 interface Subject {
   id: string;
   name: string;
+  image_url: string;
 }
 
 const CardSelector: React.FC = () => {
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
 
@@ -52,6 +53,7 @@ const CardSelector: React.FC = () => {
         <CardContent
           key={subject.id}
           title={subject.name}
+          image={subject.image_url}
           isSelected={selectedCardId === subject.id}
           onClick={() => handleCardClick(subject)}
         />

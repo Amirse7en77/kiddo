@@ -8,6 +8,7 @@ import axios from 'axios';
 interface Subject {
   id: string;
   name: string;
+  image_url:string
 }
 
 const CardSelector: React.FC = () => {
@@ -41,6 +42,7 @@ const CardSelector: React.FC = () => {
                 <CardContent
                     key={subject.id}
                     name={subject.name}
+                    image={subject.image_url}
                     isSelected={selectedCardId === subject.id}
                     onClick={() => handleCardClick(subject)}
                 />

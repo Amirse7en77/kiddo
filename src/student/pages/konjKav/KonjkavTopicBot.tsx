@@ -47,6 +47,8 @@ const KonjkavTopicBot = () => {
           <Chat 
             startSession={startSessionCallback}
             setIsChatting={setIsChatting} 
+            tool="KONJKAV_SHO"
+            initialUserActionText={selectedTopic}
           />
       </div>
     </div>

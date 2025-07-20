@@ -21,7 +21,7 @@ const getToolRoute = (tool: string, hasRecentChats: boolean) => {
     case "SOALYAR":
       return hasRecentChats ? "/student/soalyar/recent-chat" : "/student/soalyar/welcome";
     case "AZMOON_SAZ":
-      return hasRecentChats ? "/student/azmoon/recent-chat" : "/student/azmoon/welcome";
+      return "#";
     default:
       return "/student";
   }

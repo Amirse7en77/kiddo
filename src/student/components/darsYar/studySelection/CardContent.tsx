@@ -6,6 +6,7 @@ import { activeButtonReducer, disableButtonReducer } from "../../../../slice/dar
 
 interface CardContentProps {
   name: string;
+  image:string;
   isSelected: boolean;
   onClick: () => void;
 }
@@ -13,6 +14,7 @@ interface CardContentProps {
 const CardContent: React.FC<CardContentProps> = ({
   name,
   isSelected,
+  image,
   onClick,
 }) => {
   const dispatch = useDispatch();
@@ -41,7 +43,7 @@ const CardContent: React.FC<CardContentProps> = ({
         onClick={onClick}
       >
         <img
-          src={riazi}
+          src={image || riazi}
           className=" w-full h-auto object-contain"
           alt={name}
         />

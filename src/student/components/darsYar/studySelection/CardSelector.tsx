@@ -9,6 +9,7 @@ import axios from 'axios';
 interface Card {
   id: string;
   name: string;
+  image_url: string;
 }
 
 const CardSelector: React.FC = () => {
@@ -16,8 +17,7 @@ const CardSelector: React.FC = () => {
    const {
     data,
     isLoading,
-    isError, 
-    error,   
+      
   } = useQuery<Card[]>({ 
     queryKey: ['classes'],
     queryFn: async () => { 
@@ -54,6 +54,7 @@ const CardSelector: React.FC = () => {
         <CardContent
           key={card.id}
           name={card.name}
+          image={card.image_url}
           isSelected={selectedCardId === card.id}
           onClick={() => handleCardClick(card.id, card.name)}
         />

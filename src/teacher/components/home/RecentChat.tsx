@@ -4,7 +4,7 @@ import darsyar from './../../../assets/images/DarsYar.png'
 const RecentChatCard = () => {
   return (
     <div>
-         <div className='card-box'>
+         <div className='card-box mb-[12px]'>
             <div className='flex justify-start items-center bg-white rounded-[22px] p-[16px] gap-[16px] pl-[24px]'>
                 <div>
                     <img className='w-[56px] h-[56px] ' src={darsyar}/>

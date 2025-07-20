@@ -1,52 +1,65 @@
 import { FC, useState, useEffect } from "react";
-import darsYar from './../../../assets/images/DarsYar.png'
+import { logout } from "../../../api"; // Import the logout function
+import darsYar from './../../../assets/images/DarsYar.png';
+
 const Header: FC = () => {
-  const [isSticky, setIsSticky] = useState(false); // State to track stickiness
+  const [isSticky, setIsSticky] = useState(false);
+
+  const handleLogout = () => {
+    logout(); // Call the centralized logout function
+  };
 
   useEffect(() => {
     const handleScroll = () => {
-      // Determine the scroll position at which the header should become sticky.
-      // A common approach is to make it sticky once it scrolls past its initial position.
-      // For simplicity, let's say 10 pixels from the top. You might adjust this.
       const offset = window.scrollY;
-      if (offset > 10) { // Or headerRef.current.offsetTop if you want it exact
+      if (offset > 10) {
         setIsSticky(true);
       } else {
         setIsSticky(false);
       }
     };
-
-    // Add the scroll event listener when the component mounts
     window.addEventListener("scroll", handleScroll);
-
-    // Clean up the event listener when the component unmounts
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []); // Empty dependency array means this effect runs once on mount and cleans up on unmount
+  }, []);
 
   return (
     <div>
       <header
         className={`
-          flex items-center justify-center bg-white py-[24px] px-[16px] h-[52px]
+          flex items-center justify-between bg-white py-[24px] px-[16px] h-[52px]
           transition-all duration-300 ease-in-out z-50
           ${isSticky ? "fixed top-0 w-full shadow-md" : ""}
         `}
       >
-        <div className="rounded-md flex items-center justify-center ">
-          {/* Your left content (e.g., menu icon) */}
-        </div>
-        <img src={darsYar} className="h-[24px] w-[24px] ml-[8px]"/>
-        <div className="text-xl font-bold">کیدو</div>
+        {/* Logout Icon Button on the left */}
+        <button onClick={handleLogout} className="text-gray-600 hover:text-red-500 transition-colors">
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            className="h-6 w-6" 
+            fill="none" 
+            viewBox="0 0 24 24" 
+            stroke="currentColor" 
+            strokeWidth={2}
+          >
+            <path 
+              strokeLinecap="round" 
+              strokeLinejoin="round" 
+              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" 
+            />
+          </svg>
+        </button>
         
-        {/* Your right content (e.g., user icon) */}
+        <div className="flex items-center">
+            <img src={darsYar} className="h-[24px] w-[24px] ml-[8px]"/>
+            <div className="text-xl font-bold">کیدو</div>
+        </div>
+        
+        {/* Placeholder to balance the layout */}
+        <div className="w-6"></div>
       </header>
-      {/*
-        This div acts as a "spacer" to prevent content from jumping up
-        when the header becomes `position: fixed`.
-        Its height should match the header's height (52px in your case).
-      */}
+      
       {isSticky && <div className="h-[52px]"></div>}
       <hr className="border-[1.5px] border-borderColor-1 w-full" />
     </div>

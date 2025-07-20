@@ -6,10 +6,11 @@ import { activeButtonReducer, disableButtonReducer } from "../../../../slice/kon
 interface CardContentProps {
   title: string;
   isSelected: boolean;
+  image: string;
   onClick: () => void;
 }
 
-const CardContent: React.FC<CardContentProps> = ({ title, isSelected, onClick }) => {
+const CardContent: React.FC<CardContentProps> = ({ image,title, isSelected, onClick }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -27,7 +28,7 @@ const CardContent: React.FC<CardContentProps> = ({ title, isSelected, onClick })
         onClick={onClick}
       >
         <img
-          src={riazi}
+          src={image || riazi}
           className="w-full h-auto object-contain"
           alt={title}
         />

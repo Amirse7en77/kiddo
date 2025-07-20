@@ -1,5 +1,7 @@
 // src/components/common/Chat.tsx
 import React, { useState, useEffect, useRef } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { sendMessage, getSessionDetails } from "../../api-chat";
 import { ApiMessage, ChatSession } from "../../types/api";
 import Toast from "./Toast";
@@ -13,6 +15,8 @@ interface Message {
 interface ChatProps {
   startSession: () => Promise<ChatSession>;
   setIsChatting: React.Dispatch<React.SetStateAction<boolean>>;
+  tool: 'DARS_YAR' | 'KONJKAV_SHO' | 'TARKIB_KON' | string;
+  initialUserActionText?: string;
 }
 
 const mapApiMessageToUiMessage = (apiMessage: ApiMessage): Message => ({
@@ -21,61 +25,17 @@ const mapApiMessageToUiMessage = (apiMessage: ApiMessage): Message => ({
   text: apiMessage.content,
 });
 
-const Chat: React.FC<ChatProps> = ({ startSession, setIsChatting }) => {
+const Chat: React.FC<ChatProps> = ({ startSession, setIsChatting, tool, initialUserActionText }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState<string>("");
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [sessionId, setSessionId] = useState<string | null>(null);
-  const [inputAreaHeight, setInputAreaHeight] = useState(0); // For dynamic padding
+  const [inputAreaHeight, setInputAreaHeight] = useState(0);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const inputAreaRef = useRef<HTMLDivElement>(null); // Ref for the input container
-
-  useEffect(() => {
-    const initChat = async () => {
-      setIsChatting(true);
-      setIsLoading(true);
-      try {
-        const response = await startSession();
-        setSessionId(response.id);
-        setMessages(
-          response.messages
-            .filter(msg => msg.sender_type !== 'SYSTEM')
-            .map(mapApiMessageToUiMessage)
-        );
-      } catch (err) {
-        setError("خطا در شروع گفتگو. لطفاً دوباره تلاش کنید.");
-        console.error('Failed to start chat session:', err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    initChat();
-  }, [startSession, setIsChatting]);
-
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
-
-  // Adjust textarea height and update container height for padding
-  useEffect(() => {
-    if (textareaRef.current) {
-      textareaRef.current.style.height = "auto";
-      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
-    }
-    if (inputAreaRef.current) {
-        setInputAreaHeight(inputAreaRef.current.offsetHeight);
-    }
-  }, [inputMessage]);
-
-  // Set initial height of input area on mount
-  useEffect(() => {
-    if (inputAreaRef.current) {
-      setInputAreaHeight(inputAreaRef.current.offsetHeight);
-    }
-  }, []);
+  const inputAreaRef = useRef<HTMLDivElement>(null);
 
   const pollForResponse = (sid: string, originalMessageCount: number) => {
     const timeout = 20000;
@@ -90,6 +50,7 @@ const Chat: React.FC<ChatProps> = ({ startSession, setIsChatting }) => {
           if (lastMessage.sender_type === 'AI') {
             clearInterval(poller);
             clearTimeout(pollTimeoutId);
+            // Replace all local messages with the definitive list from the server
             setMessages(
               sessionDetails.messages
                 .filter(msg => msg.sender_type !== 'SYSTEM')
@@ -111,6 +72,75 @@ const Chat: React.FC<ChatProps> = ({ startSession, setIsChatting }) => {
       }
     }, timeout);
   };
+
+  useEffect(() => {
+    const initChat = async () => {
+      setIsChatting(true);
+
+      const isToolWithInitialMessage = (tool === 'KONJKAV_SHO' || tool === 'TARKIB_KON') && initialUserActionText;
+
+      if (isToolWithInitialMessage) {
+        const tempMessage: Message = {
+          id: 'temp-initial-message',
+          sender: 'user', // Show as user's action
+          text: initialUserActionText
+        };
+        setMessages([tempMessage]);
+        setIsLoading(true);
+      }
+
+      try {
+        const initialSession = await startSession();
+        setSessionId(initialSession.id);
+        
+        const hasAiMessage = initialSession.messages.some(m => m.sender_type === 'AI');
+
+        if (hasAiMessage) {
+          setMessages(
+            initialSession.messages
+              .filter(msg => msg.sender_type !== 'SYSTEM')
+              .map(mapApiMessageToUiMessage)
+          );
+          setIsLoading(false);
+        } else {
+          if (tool !== 'DARS_YAR') {
+            pollForResponse(initialSession.id, initialSession.messages.length);
+          } else {
+            setMessages([]);
+            setIsLoading(false);
+          }
+        }
+      } catch (err) {
+        setError("خطا در شروع گفتگو. لطفاً دوباره تلاش کنید.");
+        console.error('Failed to start chat session:', err);
+        setMessages([]);
+        setIsLoading(false);
+      }
+    };
+
+    initChat();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [startSession, setIsChatting, tool, initialUserActionText]);
+  
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, isLoading]);
+
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    }
+    if (inputAreaRef.current) {
+        setInputAreaHeight(inputAreaRef.current.offsetHeight);
+    }
+  }, [inputMessage]);
+
+  useEffect(() => {
+    if (inputAreaRef.current) {
+      setInputAreaHeight(inputAreaRef.current.offsetHeight);
+    }
+  }, []);
 
   const handleSendMessage = async () => {
     if (!sessionId || inputMessage.trim() === "") return;
@@ -143,21 +173,38 @@ const Chat: React.FC<ChatProps> = ({ startSession, setIsChatting }) => {
       handleSendMessage();
     }
   };
+  
+  const showTypingIndicator = isLoading && messages.length > 0 && messages[messages.length - 1].sender === 'user';
 
   return (
-    <div className='flex flex-col flex-grow bg-backGround-1'>
+    <div className='flex flex-col flex-grow bg-backGround-1 relative'>
       {error && <Toast message={error} type="error" onClose={() => setError(null)} />}
       
       <div className="flex-1 overflow-y-auto p-4" style={{ paddingBottom: `${inputAreaHeight}px` }}>
         {messages.map((msg) => (
-          <div key={msg.id} className={`flex my-2 ${msg.sender === "user" ? "justify-start" : "justify-end"}`}>
-            <div className={`max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg p-3 rounded-2xl mx-2 ${msg.sender === "user" ? "bg-custom-purple text-white" : "bg-white text-gray-800 border border-borderColor-1"}`}>
-              <p className="text-sm sm:text-base whitespace-pre-wrap break-words">{msg.text}</p>
+          <div key={msg.id} className={`w-full flex my-2 ${msg.sender === "user" ? "justify-start" : "justify-end"}`}>
+            <div 
+              dir="auto" 
+              className={`
+                prose prose-sm break-words max-w-[85%]
+                ${msg.sender === 'user' ? 'prose-invert' : ''}
+                p-3 rounded-[16px] mt-2 
+                ${msg.sender === "user" ? "bg-custom-purple text-white" : "bg-white text-gray-800 border border-borderColor-1"}
+              `}>
+              <ReactMarkdown
+                  remarkPlugins={[remarkGfm]}
+                  components={{
+                      a: ({ node, ...props }) => <a {...props} target="_blank" rel="noopener noreferrer" />
+                  }}
+              >
+                  {msg.text}
+              </ReactMarkdown>
             </div>
           </div>
         ))}
-        {isLoading && (
-          <div className="flex justify-start mx-2 my-2">
+
+        {showTypingIndicator && (
+          <div className="w-full flex my-2 justify-start">
             <div className="p-3 rounded-2xl bg-white border border-borderColor-1">
               <div className="flex items-center space-x-2">
                 <div className="w-2 h-2 bg-gray-600 rounded-full animate-bounce" style={{ animationDelay: "0s" }}></div>

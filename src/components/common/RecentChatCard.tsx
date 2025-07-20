@@ -35,9 +35,9 @@ const RecentChatCard: React.FC<RecentChatCardProps> = ({ title, tool, subject, u
   };
 
   return (
-    <div>
-         <div className='card-box'>
-            <div className='flex justify-start items-center bg-white rounded-[22px] p-[16px] gap-[16px] pl-[24px]'>
+    <div >
+         <div className='card-box mb-10'>
+            <div className='flex justify-start items-center bg-white rounded-[22px] p-[16px] gap-[16px] pl-[24px] '>
                 <div>
                     <img className='w-[56px] h-[56px] ' src={darsYar} alt={tool} />
                 </div>

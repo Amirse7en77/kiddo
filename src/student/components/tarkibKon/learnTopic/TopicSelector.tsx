@@ -1,6 +1,6 @@
-// src/student/pages/konjKav/topicSelection/TopicSelector.tsx
+// src/student/components/tarkibKon/favoriteTopic/TopicSelector.tsx
 import React from 'react';
-import TopicCard from './TopicCard'; // Assuming TopicCard is in the same directory
+import TopicCard from './TopicCard';
 
 interface Card {
   id: string;
@@ -9,23 +9,22 @@ interface Card {
 
 interface TopicSelectorProps {
   onSelectCard: (id: string | null) => void;
-  selectedCardId: string | null; // This will now reflect the single selected card
+  selectedCardId: string | null;
   isDisabled: boolean;
 }
 
 const TopicSelector: React.FC<TopicSelectorProps> = ({ onSelectCard, selectedCardId, isDisabled }) => {
   const cards: Card[] = [
-    { id: 'math', title: 'ریاضی' },
-    { id: 'science', title: 'علوم' },
-    { id: 'history', title: 'تاریخ' },
-    { id: 'geography', title: 'جغرافیا' },
-    { id: 'literature', title: 'ادبیات فارسی طولانی تر' },
-    { id: 'art', title: 'هنر' },
+    { id: 'فوتبال', title: 'فوتبال' },
+    { id: 'ماینکرفت', title: 'ماینکرفت' },
+    { id: 'دایناسورها', title: 'دایناسورها' },
+    { id: 'سفر به فضا', title: 'سفر به فضا' },
+    { id: 'داستان‌های شاهنامه', title: 'داستان‌های شاهنامه' },
+    { id: 'ابرقهرمان‌ها', title: 'ابرقهرمان‌ها' },
   ];
 
   const handleCardClick = (clickedId: string) => {
     if (!isDisabled) {
-      // If the clicked card is already selected, deselect it. Otherwise, select it.
       onSelectCard(selectedCardId === clickedId ? null : clickedId);
     }
   };
@@ -34,14 +33,14 @@ const TopicSelector: React.FC<TopicSelectorProps> = ({ onSelectCard, selectedCar
     <div
       className={`
         flex flex-wrap gap-[12px]
-        ${isDisabled ? 'opacity-60 pointer-events-none' : ''} // Visual feedback and prevent clicks
+        ${isDisabled ? 'opacity-60 pointer-events-none' : ''}
       `}
     >
       {cards.map((card) => (
         <TopicCard
           key={card.id}
           title={card.title}
-          isSelected={selectedCardId === card.id} // Pass down the actual selected ID
+          isSelected={selectedCardId === card.id}
           onClick={() => handleCardClick(card.id)}
           isDisabled={isDisabled}
         />

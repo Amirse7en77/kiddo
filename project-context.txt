@@ -4,7 +4,7 @@ PROJECT CONTEXT
 DIRECTORY STRUCTURE
 ================
 
-kiddo-project
+kiddo
 ├── README.md
 ├── backend
 │   └── api-docs.md
@@ -15,6 +15,7 @@ kiddo-project
 │   └── vite.svg
 ├── src
 │   ├── App.tsx
+│   ├── api
 │   ├── api-chat-details.ts
 │   ├── api-chat.ts
 │   ├── api-teacher.ts
@@ -62,13 +63,14 @@ kiddo-project
 │   │   └── react.svg
 │   ├── components
 │   │   ├── RecentChats.tsx
-│   │   └── common
-│   │       ├── Chat.tsx
-│   │       ├── ChatButton.tsx
-│   │       ├── DisableChatButton.tsx
-│   │       ├── Header.tsx
-│   │       ├── RecentChatCard.tsx
-│   │       └── Toast.tsx
+│   │   ├── common
+│   │   │   ├── Chat.tsx
+│   │   │   ├── ChatButton.tsx
+│   │   │   ├── DisableChatButton.tsx
+│   │   │   ├── Header.tsx
+│   │   │   ├── RecentChatCard.tsx
+│   │   │   └── Toast.tsx
+│   │   └── login
 │   ├── constants
 │   │   └── studyAssistantConstant.ts
 │   ├── hooks
@@ -98,7 +100,6 @@ kiddo-project
 │   │   │   ├── darsYar
 │   │   │   │   ├── chatWithBot
 │   │   │   │   ├── lessonSelection
-│   │   │   │   ├── recentChat
 │   │   │   │   ├── studyAssistant
 │   │   │   │   └── studySelection
 │   │   │   ├── home
@@ -107,15 +108,14 @@ kiddo-project
 │   │   │   │   ├── RecentItem.tsx
 │   │   │   │   └── ToolCard.tsx
 │   │   │   ├── konjKav
+│   │   │   │   ├── chatWithBot
 │   │   │   │   ├── recentChat
 │   │   │   │   ├── studySelection
 │   │   │   │   ├── topicSelection
 │   │   │   │   └── welcome
 │   │   │   └── tarkibKon
-│   │   │       ├── chatBot
 │   │   │       ├── favoriteTopic
 │   │   │       ├── learnTopic
-│   │   │       ├── recentChat
 │   │   │       ├── studySelection
 │   │   │       └── welcome
 │   │   └── pages
@@ -145,7 +145,6 @@ kiddo-project
 │   │   │   │   ├── Modal.tsx
 │   │   │   │   ├── Navbar.tsx
 │   │   │   │   ├── StudentAlert.tsx
-│   │   │   │   ├── chats
 │   │   │   │   ├── reports
 │   │   │   │   └── students
 │   │   │   └── home
@@ -185,6 +184,7 @@ FILE: package.json
     "preview": "vite preview"
   },
   "dependencies": {
+    "@lobehub/fluent-emoji": "^2.0.0",
     "@react-spring/web": "^10.0.1",
     "@reduxjs/toolkit": "^2.8.2",
     "@tailwindcss/vite": "^4.1.11",
@@ -194,12 +194,16 @@ FILE: package.json
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-draggable": "^4.5.0",
+    "react-fluentui-emoji": "^1.2.1",
+    "react-markdown": "^10.1.0",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.6.3",
+    "remark-gfm": "^4.0.1",
     "tailwindcss": "^4.1.11"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
+    "@tailwindcss/typography": "^0.5.16",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react": "^4.3.4",
@@ -234,6 +238,69 @@ FILE: tsconfig.json
 ```
 
 ================
+FILE: README.md
+================
+
+```
+# React + TypeScript + Vite
+
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+
+Currently, two official plugins are available:
+
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+
+## Expanding the ESLint configuration
+
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+
+```js
+export default tseslint.config({
+  extends: [
+    // Remove ...tseslint.configs.recommended and replace with this
+    ...tseslint.configs.recommendedTypeChecked,
+    // Alternatively, use this for stricter rules
+    ...tseslint.configs.strictTypeChecked,
+    // Optionally, add this for stylistic rules
+    ...tseslint.configs.stylisticTypeChecked,
+  ],
+  languageOptions: {
+    // other options...
+    parserOptions: {
+      project: ['./tsconfig.node.json', './tsconfig.app.json'],
+      tsconfigRootDir: import.meta.dirname,
+    },
+  },
+})
+```
+
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
+
+export default tseslint.config({
+  plugins: {
+    // Add the react-x and react-dom plugins
+    'react-x': reactX,
+    'react-dom': reactDom,
+  },
+  rules: {
+    // other rules...
+    // Enable its recommended typescript rules
+    ...reactX.configs['recommended-typescript'].rules,
+    ...reactDom.configs.recommended.rules,
+  },
+})
+```
+#   k i d d o  
+ 
+```
+
+================
 FILE: src\vite-env.d.ts
 ================
 
@@ -247,31 +314,48 @@ FILE: src\main.tsx
 ================
 
 ```
-// src/main.tsx
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import { RouterProvider } from 'react-router-dom'
-import { router } from './router' // Removed App import as it's handled by router
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { Provider } from 'react-redux'
-import { store } from './store'
-import { setupAxiosInterceptors } from './api' // Import the setup function
-
-// Call the setup function once when the app starts
-setupAxiosInterceptors();
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import './index.css';
+import { RouterProvider } from 'react-router-dom';
+import { router } from './router';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Provider } from 'react-redux';
+import { store } from './store';
+import { setupAxiosInterceptors, getMe } from './api';
+import { setUser } from './slice/userSlice';
 
 const queryClient = new QueryClient();
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-     <QueryClientProvider client={queryClient}>
-      <Provider store={store}>
-        <RouterProvider router={router}/>
-      </Provider>
-    </QueryClientProvider>
-  </StrictMode>,
-)
+// Function to initialize the app state
+const initializeApp = async () => {
+  setupAxiosInterceptors();
+
+  const token = localStorage.getItem('authToken');
+  if (token) {
+    try {
+      // Fetch user data if token exists
+      const userData = await getMe();
+      store.dispatch(setUser(userData));
+    } catch (error) {
+      console.error("Failed to restore session:", error);
+      // If getMe fails (e.g., expired token), the interceptor will handle logout.
+    }
+  }
+
+  // Render the app after attempting to restore session
+  createRoot(document.getElementById('root')!).render(
+    <StrictMode>
+       <QueryClientProvider client={queryClient}>
+        <Provider store={store}>
+          <RouterProvider router={router}/>
+        </Provider>
+      </QueryClientProvider>
+    </StrictMode>,
+  );
+};
+
+initializeApp();
 ```
 
 ================
@@ -402,6 +486,40 @@ FILE: src\index.css
   );
 }
 
+/* Custom styles for react-markdown output */
+.prose {
+  --tw-prose-body: #333;
+  --tw-prose-headings: #111;
+  --tw-prose-links: var(--color-custom-purple);
+  --tw-prose-bold: #000;
+  --tw-prose-bullets: #666;
+  --tw-prose-hr: var(--color-borderColor-1);
+  --tw-prose-quotes: #444;
+  --tw-prose-quote-borders: var(--color-borderColor-1);
+  --tw-prose-code: #111;
+  --tw-prose-pre-code: #111;
+  --tw-prose-pre-bg: var(--color-backGround-1);
+}
+
+.prose-invert {
+  --tw-prose-body: #e5e7eb;
+  --tw-prose-headings: #fff;
+  --tw-prose-links: #fff;
+  --tw-prose-bold: #fff;
+  --tw-prose-bullets: #a1a1aa;
+  --tw-prose-hr: #4b5563;
+  --tw-prose-quotes: #d1d5db;
+  --tw-prose-quote-borders: #4b5563;
+  --tw-prose-code: #fff;
+  --tw-prose-pre-code: #e5e7eb;
+  --tw-prose-pre-bg: rgba(0,0,0,0.2);
+}
+
+/* Fix for RTL list indentation */
+.prose :where(ul, ol):not(:where([class~="not-prose"] *)) {
+  padding-right: 1.625em;
+  padding-left: 0;
+}
 ```
 
 ================
@@ -436,11 +554,11 @@ FILE: src\api.ts
 ================
 
 ```
-// src/api.ts
 import axios, { AxiosError } from 'axios';
-import { router } from './router'; // Import router for navigation
-import { store } from './store'; // Import store to dispatch actions
-import { clearUser } from './slice/userSlice'; // Import the action to clear user data
+import { router } from './router'; 
+import { store } from './store'; 
+import { clearUser, setUser } from './slice/userSlice'; 
+import { UserState } from './slice/userSlice';
 
 const API_BASE_URL = 'https://kiddo2.pythonanywhere.com';
 
@@ -462,37 +580,62 @@ export const login = async (username: string, password: string): Promise<LoginRe
       username,
       password,
     });
-    // Store token for future requests
+    
+    // Store token for future requests and persistence
     axios.defaults.headers.common['Authorization'] = `Token ${response.data.token}`;
+    localStorage.setItem('authToken', response.data.token); // <-- Store token in localStorage
+
     console.log("API RESPONSE: login success", response.data.user);
     return response.data;
   } catch (error) {
     const axiosError = error as AxiosError;
      console.error("API ERROR: login", axiosError.response?.data);
-    if (axiosError.response?.status === 400) { // Django REST Framework returns 400 for bad credentials
+    if (axiosError.response?.status === 400) {
       throw new Error('نام کاربری یا رمز عبور اشتباه است');
     }
     throw new Error('خطا در ارتباط با سرور');
   }
 };
 
+/**
+ * Fetches the current user's data using the stored token.
+ * @returns A promise that resolves to the user data.
+ */
+export const getMe = async (): Promise<UserState> => {
+    console.log("API CALL: getMe");
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+      return Promise.reject("No token found");
+    }
+    axios.defaults.headers.common['Authorization'] = `Token ${token}`;
+    const response = await axios.get(`${API_BASE_URL}/api/v1/accounts/me/`);
+    const user = response.data;
+    console.log("API RESPONSE: getMe success", user);
+    // Return the full UserState structure including the token
+    return { ...user, token };
+};
+
+/**
+ * Logs the user out by clearing credentials.
+ */
+export const logout = () => {
+    console.log("ACTION: Logging out");
+    localStorage.removeItem('authToken'); // <-- Clear token from localStorage
+    delete axios.defaults.headers.common['Authorization'];
+    store.dispatch(clearUser()); // Clear user from redux
+    router.navigate('/'); // Redirect to login
+};
+
 // This function sets up the global interceptor
 export const setupAxiosInterceptors = () => {
   axios.interceptors.response.use(
-    // On successful response, just return it
     (response) => response,
-    // On error, check for 401
     (error: AxiosError) => {
       if (error.response?.status === 401) {
-        console.log('Global 401 Unauthorized error detected. Logging out and redirecting.');
-        // Clear user data from Redux
-        store.dispatch(clearUser());
-        // Clear auth header
-        delete axios.defaults.headers.common['Authorization'];
-        // Redirect to login page
-        router.navigate('/');
+        console.log('Global 401 Unauthorized error detected. Logging out.');
+        // If a 401 happens, it means the token is invalid, so perform a full logout
+        logout();
       }
-      // Important: return the error so that the original caller (e.g., useQuery) can handle it too
       return Promise.reject(error);
     }
   );
@@ -667,899 +810,6 @@ FILE: src\api-chat-details.ts
 ================
 
 ```
-
-```
-
-================
-FILE: README.md
-================
-
-```
-# React + TypeScript + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
-#   k i d d o  
- 
-```
-
-================
-FILE: src\types\state.ts
-================
-
-```
-export interface RootState {
-  darsyar: {
-    studySelectionButton: boolean;
-    selectedStudy: string | null;
-    selectedLesson: string | null;
-  };
-  konjkav: {
-    studySelectionButton: boolean;
-    selectedStudy: string | null;
-    selectedTopics: string[];
-    hasSelectedTopics: boolean;
-  };
-}
-
-export interface Lesson {
-  id: string;
-  title: string;
-}
-
-export interface Study {
-  id: string;
-  title: string;
-}
-
-export interface Topic {
-  id: string;
-  title: string;
-  description: string;
-  emoji: string;
-}
-
-```
-
-================
-FILE: src\types\api.ts
-================
-
-```
-// src/types/api.ts
-
-// Based on GET /api/v1/chat/sessions/{session_id}/
-export interface ApiMessage {
-  id: string;
-  sender_type: 'SYSTEM' | 'USER' | 'AI';
-  content: string;
-  timestamp: string;
-  raw_ai_response?: any; // Define more strictly if needed
-}
-
-// Based on POST /api/v1/tools/dars-yar/start/
-export interface ChatSession {
-  id: string; // This is the crucial session_id
-  tool: string;
-  title: string;
-  messages: ApiMessage[];
-}
-
-// Based on GET /api/v1/chat/events/
-export interface ChatEvent {
-  id: string;
-  student_name: string;
-  overview: string;
-  emoji: string;
-  level: 'INFO' | 'CONCERN' | 'DANGER';
-  subject_name: string;
-  created_at: string;
-  is_resolved: boolean;
-}
-
-// Based on GET /api/v1/chat/events/{event_id}/
-export interface ChatEventDetail extends ChatEvent {
-  explanation: string;
-  session_id: string;
-  resolved_by: {
-    id: string;
-    username: string;
-  } | null;
-}
-```
-
-================
-FILE: src\store\index.ts
-================
-
-```
-import { configureStore } from '@reduxjs/toolkit';
-import { useDispatch } from 'react-redux';
-import darsyarReducer from './../slice/darsyarSlice';
-import konjkavReducer from './../slice/konjkavSlice';
-import tarkibkonReducer from './../slice/tarkibkonSlice';
-import userReducer from './../slice/userSlice';
-
-export const store = configureStore({
-  reducer: {
-    darsyar: darsyarReducer,
-    konjkav: konjkavReducer,
-    tarkibkon:tarkibkonReducer,
-    user:userReducer
-  },
-});
-
-export type RootState = ReturnType<typeof store.getState>;
-
-export type AppDispatch = typeof store.dispatch;
-
-export const useAppDispatch = () => useDispatch<AppDispatch>();
-```
-
-================
-FILE: src\layout\ClassLayout.tsx
-================
-
-```
-import React from 'react';
-import { Outlet } from 'react-router-dom'; // Import Outlet
-import Header from '../components/common/Header';
-import Navbar from '../teacher/components/contentContainer/Navbar';
-import StudentAlert from '../teacher/components/contentContainer/StudentAlert';
-
-const ClassLayout = () => {
-  return (
-    <div>
-      <Header title={'کلاس ششم'} />
-      <Navbar />
-      <div className='bg-backGround-1 min-h-screen'>
-        <div className='mx-[16px] '>
-          <StudentAlert />
-          <main>
-            <Outlet />
-          </main>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default ClassLayout;
-```
-
-================
-FILE: src\login\LoginButton.tsx
-================
-
-```
-import React from 'react'
-
-interface LoginButtonProps {
-  disabled?: boolean
-}
-
-const LoginButton: React.FC<LoginButtonProps> = ({ disabled }) => {
-  return (
-    <div className="flex justify-center items-center bg-white w-full">
-      <div className={`chat-button border-2 border-backGroundButton w-full ${disabled ? 'opacity-50' : ''}`}>
-        <button 
-          type="submit"
-          disabled={disabled}
-          className="button-box text-white cursor-pointer p-[16px] w-full disabled:cursor-not-allowed"
-        >
-          {disabled ? 'در حال ورود...' : 'ورود'}
-        </button>
-      </div>
-    </div>
-  )
-}
-
-export default LoginButton
-
-```
-
-================
-FILE: src\login\Login.tsx
-================
-
-```
-import React from 'react'
-import HeroSection from './HeroSection'
-import InputGroup from './InputGroup'
-
-const Login = () => {
-  return (
-    <div className='bg-backGround-1 '>
-      <HeroSection/>
-      <InputGroup/>
-    </div>
-  )
-}
-
-export default Login
-
-```
-
-================
-FILE: src\login\InputGroup.tsx
-================
-
-```
-import { useState } from 'react'
-import { useDispatch } from 'react-redux'
-import LoginButton from './LoginButton'
-import { login } from '../api'
-import { setUser } from '../slice/userSlice'
-import { useNavigate } from 'react-router-dom'
-
-const InputGroup = () => {
-  const [username, setUsername] = useState('staff_3bae765c-d2a3-4606-86b2-65337195eeb3_0')
-  const [password, setPassword] = useState('fnWLMAtEDyskm8n')
-  const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError('')
-    setLoading(true)
-
-    try {
-      const response = await login(username, password)
-      console.log(response.user)
-      dispatch(setUser({
-        id: response.user.id,
-        username: response.user.username,
-        first_name: response.user.first_name,
-        last_name: response.user.last_name,
-        role: response.user.role,
-        token: response.token
-      }))
-      
-      // Navigate based on role
-      if (response.user.role === 'STUDENT') {
-        navigate('/student')
-      } else if (response.user.role === 'STAFF') {
-        navigate('/teacher')
-      }
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'خطا در ورود به سیستم')
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  return (
-    <form onSubmit={handleSubmit} className='flex flex-col justify-center items-center rounded-[24px] p-[40px] space-y-6 bg-white border-[2px] border-borderColor-1 rounded-b-none'>
-      {error && (
-        <div className='w-full text-right text-red-500 text-sm mb-4'>
-          {error}
-        </div>
-      )}
-      <div className='w-full mb-[16px]'>
-        <p className='mb-[12px] text-right text-[14px] font-extrabold'>نام کاربری</p>
-        <input
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          className='p-[16px] rounded-[16px] w-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-chatButton-1'
-          required
-        />
-      </div>
-      <div className='w-full mb-[40px]'>
-        <p className='mb-[12px] text-right text-[14px] font-extrabold'>کد ورود</p>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className='p-[16px] rounded-[16px] border border-gray-300 w-full focus:outline-none focus:ring-2 focus:ring-chatButton-1'
-          required
-        />
-      </div>
-      <LoginButton disabled={loading} />
-    </form>
-  )
-}
-
-export default InputGroup
-```
-
-================
-FILE: src\login\HeroSection.tsx
-================
-
-```
-import happyFace from './../assets/images/happyFace.png'
-
-const HeroSection = () => {
-  return (
-    <div className='pb-[32px] pt-[16px]  h-[50vh]'>
-        <div className='flex justify-center  p-4'>
-        <img src={happyFace}/>
-      </div>
-      <p className='text-center font-extrabold'>به کیدو خوش آمدی!</p>
-    </div>
-  )
-}
-
-export default HeroSection
-```
-
-================
-FILE: src\router\index.tsx
-================
-
-```
-// src/router/index.tsx
-import { createBrowserRouter, Outlet } from "react-router-dom";
-
-// ... (all other imports remain the same)
-import App from "../App";
-import Login from "../login/Login";
-
-// ... (import all your other components)
-import TeacherHome from "../teacher/pages/TeacherHome";
-import StudentHome from "../student/pages/StudentHome";
-import ClassLayout from "../layout/ClassLayout";
-import StudentsActivities from "../teacher/components/contentContainer/students/StudentsActivities";
-import ClassChat from "../teacher/pages/ClassChat";
-import DarsyarRecentChat from "../student/pages/darsYar/DarsyarRecentChat";
-import DarsyarWelcome from "../student/pages/darsYar/DarsyarStudyAssistant";
-import DarsyarStudySelection from "../student/pages/darsYar/DarsyarStudySelection";
-import DarsyarLessonSelection from "../student/pages/darsYar/DarsyarLessonSelection";
-import DarsyarChatWithBot from "../student/pages/darsYar/DarsyarChatWithBot";
-import KonjkavWelcome from "../student/pages/konjKav/KonjkavWelcome";
-import KonjkavRecentChat from "../student/pages/konjKav/KonjkavRecentChat";
-import KonjkavStudySelection from "../student/pages/konjKav/KonjkavStudySelection";
-import KonjkavTopicSelection from "../student/pages/konjKav/KonjkavTopicSelection";
-import KonjkavTopicBot from "../student/pages/konjKav/KonjkavTopicBot";
-import TarkibkonWelcome from "../student/pages/tarkibKon/TarkibkonWelcome";
-import TarkibkonRecentChat from "../student/pages/tarkibKon/TarkibkonRecentChat";
-import TarkibkonLearnTopic from "../student/pages/tarkibKon/TarkibkonLearnTopic";
-import TarkibkonFavoriteTopic from "../student/pages/tarkibKon/TarkibkonFavoriteTopic";
-import TarkibkonChatBot from "../student/pages/tarkibKon/TarkibkonChatBot";
-import TarkibkonStudySelection from "../student/pages/tarkibKon/TarkibkonStudySelection";
-import ReportsPage from "../teacher/pages/ReportsPage";
-
-// The only change is to export the router instance
-export const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <App />, 
-    children: [
-      {
-        index: true,
-        element: <Login />,
-      },
-      // ... (all other routes remain exactly the same)
-      {
-        path: "teacher", 
-        element: <TeacherHome />,
-      },
-      {
-        path: "teacher", 
-        element: <ClassLayout />,
-        children: [
-          {
-            path: "students", 
-            element: <StudentsActivities />,
-          },
-          {
-            path: "reports",
-            element: <ReportsPage />,
-          },
-          {
-            path: "chat", 
-            element: <ClassChat />,
-          },
-          
-        ],
-      },
-      {
-        path: "student",
-        children: [
-          {
-            index: true,
-            element: <StudentHome />,
-          },
-          {
-            path: "darsyar",
-            element: <Outlet />,
-            children: [
-              { path: "recent-chat", element: <DarsyarRecentChat /> },
-              { path: "study-assistant", element: <DarsyarWelcome /> },
-              { path: "study-selection", element: <DarsyarStudySelection /> },
-              { path: "lesson-selection", element: <DarsyarLessonSelection /> },
-              { path: "chat", element: <DarsyarChatWithBot /> },
-            ],
-          },
-          {
-            path: "konjkav",
-            element: <Outlet />,
-            children: [
-              { path: "welcome", element: <KonjkavWelcome /> },
-              { path: "recent-chat", element: <KonjkavRecentChat /> },
-              { path: "study-selection", element: <KonjkavStudySelection /> },
-              { path: "topic-selection", element: <KonjkavTopicSelection /> },
-              { path: "chat", element: <KonjkavTopicBot /> },
-            ],
-          },
-          {
-            path: "tarkibkon",
-            element: <Outlet />,
-            children: [
-              { path: "welcome", element: <TarkibkonWelcome /> },
-              { path: "recent-chat", element: <TarkibkonRecentChat /> },
-              { path: "study-selection", element: <TarkibkonStudySelection /> },
-              { path: "learn-topic-selection", element: <TarkibkonLearnTopic /> },
-              { path: "favorite-topic-selection", element: <TarkibkonFavoriteTopic /> },
-              { path: "chat", element: <TarkibkonChatBot /> },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-]);
-```
-
-================
-FILE: src\slice\userSlice.ts
-================
-
-```
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-export interface UserState {
-  id: string | null;
-  username: string | null;
-  first_name: string | null;
-  last_name: string | null;
-  role: 'STUDENT' | 'STAFF' | null;
-  token: string | null;
-}
-
-const initialState: UserState = {
-  id: null,
-  username: null,
-  first_name: null,
-  last_name: null,
-  role: null,
-  token: null,
-};
-
-const userSlice = createSlice({
-  name: 'user',
-  initialState,
-  reducers: {
-    setUser: (state, action: PayloadAction<UserState>) => {
-      return { ...action.payload };
-    },
-    clearUser: () => initialState,
-  },
-  
-});
-
-
-export const { setUser, clearUser } = userSlice.actions;
-export default userSlice.reducer;
-
-```
-
-================
-FILE: src\slice\tarkibkonSlice.ts
-================
-
-```
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-interface Study {
-    id: string;
-    name: string;
-}
-
-interface TarkibkonState {
-  selectedStudy: Study | null;
-  learnTopic: string;
-  favoriteTopic: string;
-  studySelectionButton: boolean;
-}
-
-const initialState: TarkibkonState = {
-  selectedStudy: null,
-  learnTopic: "",
-  favoriteTopic: '',
-  studySelectionButton: false,
-};
-
-const tarkibkonSlice = createSlice({
-  name: "tarkibkon",
-  initialState,
-  reducers: {
-    setSelectedStudy: (state, action: PayloadAction<Study | null>) => {
-      state.selectedStudy = action.payload;
-      state.studySelectionButton = !!action.payload;
-    },
-    setLearnTopic: (state, action: PayloadAction<string>) => {
-      state.learnTopic = action.payload;
-    },
-     setFavoriteTopic: (state, action: PayloadAction<string>) => {
-      state.favoriteTopic = action.payload;
-    },
-    resetSelection: (state) => {
-      state.selectedStudy = null;
-      state.learnTopic = "";
-      state.favoriteTopic='';
-      state.studySelectionButton = false;
-    },
-    activeButtonReducer: (state) => {
-      state.studySelectionButton = true;
-    },
-    disableButtonReducer: (state) => {
-      state.studySelectionButton = false;
-    },
-  },
-});
-
-export const {
-  setSelectedStudy,
-  setLearnTopic,
-  setFavoriteTopic,
-  resetSelection,
-  activeButtonReducer,
-  disableButtonReducer,
-} = tarkibkonSlice.actions;
-
-export default tarkibkonSlice.reducer;
-```
-
-================
-FILE: src\slice\konjkavSlice.ts
-================
-
-```
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-interface Study {
-  id: string;
-  name: string;
-}
-
-interface KonjkavState {
-  selectedStudy: Study | null;
-  selectedTopic: string;
-  studySelectionButton: boolean;
-}
-
-const initialState: KonjkavState = {
-  selectedStudy: null,
-  selectedTopic: "",
-  studySelectionButton: false,
-};
-
-const konjkavSlice = createSlice({
-  name: "konjkav",
-  initialState,
-  reducers: {
-    setSelectedStudy: (state, action: PayloadAction<Study | null>) => {
-      state.selectedStudy = action.payload;
-      if (action.payload) {
-        state.studySelectionButton = true;
-      } else {
-        state.studySelectionButton = false;
-      }
-    },
-    setSelectedTopic: (state, action: PayloadAction<string>) => {
-      state.selectedTopic = action.payload;
-    },
-    resetSelection: (state) => {
-      state.selectedStudy = null;
-      state.selectedTopic = "";
-      state.studySelectionButton = false;
-    },
-    activeButtonReducer: (state) => {
-      state.studySelectionButton = true;
-    },
-    disableButtonReducer: (state) => {
-      state.studySelectionButton = false;
-    },
-  },
-});
-
-export const {
-  setSelectedStudy,
-  setSelectedTopic,
-  resetSelection,
-  activeButtonReducer,
-  disableButtonReducer,
-} = konjkavSlice.actions;
-
-export default konjkavSlice.reducer;
-```
-
-================
-FILE: src\slice\darsyarSlice.ts
-================
-
-```
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-interface Study {
-  id: string;
-  name: string;
-}
-
-interface Lesson {
-  id: string;
-  title: string;
-}
-
-interface DarsyarState {
-  studySelectionButton: boolean;
-  selectedStudy: Study | null;
-  studyName: string | null;
-  selectedLessons: Lesson[];
-  hasSelectedLessons: boolean;
-}
-
-const initialState: DarsyarState = {
-  studySelectionButton: false,
-  selectedStudy: null,
-  studyName: null,
-  selectedLessons: [],
-  hasSelectedLessons: false
-};
-
-const darsyarSlice = createSlice({
-  name: 'darsyar',
-  initialState,
-  reducers: {
-    activeButtonReducer: (state) => {
-      state.studySelectionButton = true;
-    },
-    disableButtonReducer: (state) => {
-      state.studySelectionButton = false;
-    },
-    setSelectedStudy: (state, action: PayloadAction<Study>) => {
-      state.selectedStudy = action.payload;
-      state.studyName = action.payload.name;
-    },
-    setSelectedLesson: (state, action: PayloadAction<Lesson[]>) => {
-      state.selectedLessons = action.payload;
-      state.hasSelectedLessons = action.payload.length > 0;
-    },
-    clearSelections: (state) => {
-      state.selectedStudy = null;
-      state.studyName = null;
-      state.selectedLessons = [];
-      state.studySelectionButton = false;
-      state.hasSelectedLessons = false;
-    }
-  }
-});
-
-export const {
-  activeButtonReducer,
-  disableButtonReducer,
-  setSelectedStudy,
-  setSelectedLesson,
-  clearSelections
-} = darsyarSlice.actions;
-
-export default darsyarSlice.reducer;
-```
-
-================
-FILE: src\slice\chatSlice.ts
-================
-
-```
-
-```
-
-================
-FILE: src\hooks\useClientInfo.ts
-================
-
-```
-import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
-
-interface ClientInfo {
-  id: string;
-  username: string;
-  first_name: string;
-  last_name: string;
-  role: string;
-}
-
-const fetchClientInfo = async (): Promise<ClientInfo> => {
-  const response = await axios.get('/api/v1/accounts/me/', {
-    headers: {
-      Authorization: `Token ${localStorage.getItem('token')}`,
-    },
-  });
-  console.log(response)
-  return response.data;
-};
-
-export const useClientInfo = () => {
-  return useQuery({
-    queryKey: ['clientInfo'],
-    queryFn: fetchClientInfo,
-  });
-};
-
-```
-
-================
-FILE: src\hooks\useChatSessions.ts
-================
-
-```
-import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
-
-interface ChatSession {
-  id: string;
-  tool: string;
-  title: string;
-  subject: string;
-  updated_at: string;
-}
-
-const fetchChatSessions = async (): Promise<ChatSession[]> => {
-  const response = await axios.get('/api/v1/chat/sessions/', {
-    headers: {
-      Authorization: `Token ${localStorage.getItem('token')}`,
-    },
-  });
-  // Ensure we always return an array
-  return Array.isArray(response.data) ? response.data : [];
-};
-
-export const useChatSessions = () => {
-  return useQuery({
-    queryKey: ['chatSessions'],
-    queryFn: fetchChatSessions,
-    // Initialize with an empty array
-    initialData: [],
-  });
-};
-
-```
-
-================
-FILE: src\components\RecentChats.tsx
-================
-
-```
-import React from 'react';
-import { useChatSessions } from '../hooks/useChatSessions';
-import RecentChatCard from './common/RecentChatCard';
-
-const RecentChats: React.FC = () => {
-  const { data: chatSessions, isLoading, isError } = useChatSessions();
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (isError) {
-    return <div>Error loading recent chats</div>;
-  }
-
-  if (!chatSessions || chatSessions.length === 0) {
-    return (
-      <div className="flex flex-col items-center justify-center p-6 text-center">
-        <p className="text-gray-500">There are no recent chats here.</p>
-      </div>
-    );
-  }
-
-  return (
-    <div className="grid gap-4">
-      {chatSessions.map((session) => (
-        <RecentChatCard
-          key={session.id}
-          title={session.title}
-          tool={session.tool}
-          subject={session.subject}
-          updatedAt={session.updated_at}
-        />
-      ))}
-    </div>
-  );
-};
-
-export default RecentChats;
-
-```
-
-================
-FILE: src\constants\studyAssistantConstant.ts
-================
-
-```
-import rocketlogo from './../assets/images/logos/rocketLogo.png'
-import emojiLogo from './../assets/images/logos/emojiLogo.png'
-import alienLogo from './../assets/images/logos/alienLogo.png'
-
-export const studyAssistantConstatnt:studyAssistantType[] = [
-  {
-    logo: rocketlogo,
-    title: "هیچ درسی دیگه سخت نیست",
-    description:
-      "با درس‌یـــار هر مبحث سختی از کتاب رو اینجا به زبون ساده و سریع یاد بگیر.",
-  },
-  {
-    logo:emojiLogo,
-    title: "معلم خصوصی ۲۴ ساعته",
-    description:
-      "درس‌یـــار همیشه همراه تو! هر زمان و هرکجا، برای سوالاتت جواب فوری بگیر.",
-  },
-  {
-    logo: alienLogo,
-    title: "جمع‌بندی آسون برای امتحانات",
-    description:
-      "با خلاصه‌های دقیق و نکته‌های امتحانی، سریع‌تر از همیشه برای امتحانات آماده شو.",
-  },
-];
-export interface studyAssistantType{
-   logo:string ,
-    title: string,
-    description:string
-}
 
 ```
 
@@ -2107,6 +1357,864 @@ Authorization: Token YOUR_TOKEN_HERE
 ```
 
 ================
+FILE: src\types\state.ts
+================
+
+```
+export interface RootState {
+  darsyar: {
+    studySelectionButton: boolean;
+    selectedStudy: string | null;
+    selectedLesson: string | null;
+  };
+  konjkav: {
+    studySelectionButton: boolean;
+    selectedStudy: string | null;
+    selectedTopics: string[];
+    hasSelectedTopics: boolean;
+  };
+}
+
+export interface Lesson {
+  id: string;
+  title: string;
+}
+
+export interface Study {
+  id: string;
+  title: string;
+}
+
+export interface Topic {
+  id: string;
+  title: string;
+  description: string;
+  emoji: string;
+}
+
+```
+
+================
+FILE: src\types\api.ts
+================
+
+```
+// src/types/api.ts
+
+// Based on GET /api/v1/chat/sessions/{session_id}/
+export interface ApiMessage {
+  id: string;
+  sender_type: 'SYSTEM' | 'USER' | 'AI';
+  content: string;
+  timestamp: string;
+  raw_ai_response?: any; // Define more strictly if needed
+}
+
+// Based on POST /api/v1/tools/dars-yar/start/
+export interface ChatSession {
+  id: string; // This is the crucial session_id
+  tool: string;
+  title: string;
+  messages: ApiMessage[];
+}
+
+// Based on GET /api/v1/chat/events/
+export interface ChatEvent {
+  id: string;
+  student_name: string;
+  overview: string;
+  emoji: string;
+  level: 'INFO' | 'CONCERN' | 'DANGER';
+  subject_name: string;
+  created_at: string;
+  is_resolved: boolean;
+}
+
+// Based on GET /api/v1/chat/events/{event_id}/
+export interface ChatEventDetail extends ChatEvent {
+  explanation: string;
+  session_id: string;
+  resolved_by: {
+    id: string;
+    username: string;
+  } | null;
+}
+```
+
+================
+FILE: src\router\index.tsx
+================
+
+```
+// src/router/index.tsx
+import { createBrowserRouter, Outlet } from "react-router-dom";
+
+// ... (all other imports remain the same)
+import App from "../App";
+import Login from "../login/Login";
+
+// ... (import all your other components)
+import TeacherHome from "../teacher/pages/TeacherHome";
+import StudentHome from "../student/pages/StudentHome";
+import ClassLayout from "../layout/ClassLayout";
+import StudentsActivities from "../teacher/components/contentContainer/students/StudentsActivities";
+import ClassChat from "../teacher/pages/ClassChat";
+import DarsyarRecentChat from "../student/pages/darsYar/DarsyarRecentChat";
+import DarsyarWelcome from "../student/pages/darsYar/DarsyarStudyAssistant";
+import DarsyarStudySelection from "../student/pages/darsYar/DarsyarStudySelection";
+import DarsyarLessonSelection from "../student/pages/darsYar/DarsyarLessonSelection";
+import DarsyarChatWithBot from "../student/pages/darsYar/DarsyarChatWithBot";
+import KonjkavWelcome from "../student/pages/konjKav/KonjkavWelcome";
+import KonjkavRecentChat from "../student/pages/konjKav/KonjkavRecentChat";
+import KonjkavStudySelection from "../student/pages/konjKav/KonjkavStudySelection";
+import KonjkavTopicSelection from "../student/pages/konjKav/KonjkavTopicSelection";
+import KonjkavTopicBot from "../student/pages/konjKav/KonjkavTopicBot";
+import TarkibkonWelcome from "../student/pages/tarkibKon/TarkibkonWelcome";
+import TarkibkonRecentChat from "../student/pages/tarkibKon/TarkibkonRecentChat";
+import TarkibkonLearnTopic from "../student/pages/tarkibKon/TarkibkonLearnTopic";
+import TarkibkonFavoriteTopic from "../student/pages/tarkibKon/TarkibkonFavoriteTopic";
+import TarkibkonChatBot from "../student/pages/tarkibKon/TarkibkonChatBot";
+import TarkibkonStudySelection from "../student/pages/tarkibKon/TarkibkonStudySelection";
+import ReportsPage from "../teacher/pages/ReportsPage";
+
+// The only change is to export the router instance
+export const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />, 
+    children: [
+      {
+        index: true,
+        element: <Login />,
+      },
+      // ... (all other routes remain exactly the same)
+      {
+        path: "teacher", 
+        element: <TeacherHome />,
+      },
+      {
+        path: "teacher", 
+        element: <ClassLayout />,
+        children: [
+          {
+            path: "students", 
+            element: <StudentsActivities />,
+          },
+          {
+            path: "reports",
+            element: <ReportsPage />,
+          },
+          {
+            path: "chat", 
+            element: <ClassChat />,
+          },
+          
+        ],
+      },
+      {
+        path: "student",
+        children: [
+          {
+            index: true,
+            element: <StudentHome />,
+          },
+          {
+            path: "darsyar",
+            element: <Outlet />,
+            children: [
+              { path: "recent-chat", element: <DarsyarRecentChat /> },
+              { path: "study-assistant", element: <DarsyarWelcome /> },
+              { path: "study-selection", element: <DarsyarStudySelection /> },
+              { path: "lesson-selection", element: <DarsyarLessonSelection /> },
+              { path: "chat", element: <DarsyarChatWithBot /> },
+            ],
+          },
+          {
+            path: "konjkav",
+            element: <Outlet />,
+            children: [
+              { path: "welcome", element: <KonjkavWelcome /> },
+              { path: "recent-chat", element: <KonjkavRecentChat /> },
+              { path: "study-selection", element: <KonjkavStudySelection /> },
+              { path: "topic-selection", element: <KonjkavTopicSelection /> },
+              { path: "chat", element: <KonjkavTopicBot /> },
+            ],
+          },
+          {
+            path: "tarkibkon",
+            element: <Outlet />,
+            children: [
+              { path: "welcome", element: <TarkibkonWelcome /> },
+              { path: "recent-chat", element: <TarkibkonRecentChat /> },
+              { path: "study-selection", element: <TarkibkonStudySelection /> },
+              { path: "learn-topic-selection", element: <TarkibkonLearnTopic /> },
+              { path: "favorite-topic-selection", element: <TarkibkonFavoriteTopic /> },
+              { path: "chat", element: <TarkibkonChatBot /> },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+]);
+```
+
+================
+FILE: src\login\LoginButton.tsx
+================
+
+```
+import React from 'react'
+
+interface LoginButtonProps {
+  disabled?: boolean
+}
+
+const LoginButton: React.FC<LoginButtonProps> = ({ disabled }) => {
+  return (
+    <div className="flex justify-center items-center bg-white w-full">
+      <div className={`chat-button border-2 border-backGroundButton w-full ${disabled ? 'opacity-50' : ''}`}>
+        <button 
+          type="submit"
+          disabled={disabled}
+          className="button-box text-white cursor-pointer p-[16px] w-full disabled:cursor-not-allowed"
+        >
+          {disabled ? 'در حال ورود...' : 'ورود'}
+        </button>
+      </div>
+    </div>
+  )
+}
+
+export default LoginButton
+
+```
+
+================
+FILE: src\login\Login.tsx
+================
+
+```
+import React from 'react'
+import HeroSection from './HeroSection'
+import InputGroup from './InputGroup'
+
+const Login = () => {
+  return (
+    <div className='bg-backGround-1 '>
+      <HeroSection/>
+      <InputGroup/>
+    </div>
+  )
+}
+
+export default Login
+
+```
+
+================
+FILE: src\login\InputGroup.tsx
+================
+
+```
+import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import LoginButton from './LoginButton'
+import { login } from '../api'
+import { setUser } from '../slice/userSlice'
+import { useNavigate } from 'react-router-dom'
+
+const InputGroup = () => {
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setError('')
+    setLoading(true)
+
+    try {
+      const response = await login(username, password)
+      console.log(response.user)
+      dispatch(setUser({
+        id: response.user.id,
+        username: response.user.username,
+        first_name: response.user.first_name,
+        last_name: response.user.last_name,
+        role: response.user.role,
+        token: response.token
+      }))
+      
+      // Navigate based on role
+      if (response.user.role === 'STUDENT') {
+        navigate('/student')
+      } else if (response.user.role === 'STAFF') {
+        navigate('/teacher')
+      }
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'خطا در ورود به سیستم')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className='flex flex-col justify-center items-center rounded-[24px] p-[40px] space-y-6 bg-white border-[2px] border-borderColor-1 rounded-b-none'>
+      {error && (
+        <div className='w-full text-right text-red-500 text-sm mb-4'>
+          {error}
+        </div>
+      )}
+      <div className='w-full mb-[16px]'>
+        <p className='mb-[12px] text-right text-[14px] font-extrabold'>نام کاربری</p>
+        <input
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          className='p-[16px] rounded-[16px] w-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-chatButton-1'
+          required
+        />
+      </div>
+      <div className='w-full mb-[40px]'>
+        <p className='mb-[12px] text-right text-[14px] font-extrabold'>کد ورود</p>
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className='p-[16px] rounded-[16px] border border-gray-300 w-full focus:outline-none focus:ring-2 focus:ring-chatButton-1'
+          required
+        />
+      </div>
+      <LoginButton disabled={loading} />
+    </form>
+  )
+}
+
+export default InputGroup
+```
+
+================
+FILE: src\login\HeroSection.tsx
+================
+
+```
+import happyFace from './../assets/images/happyFace.png'
+
+const HeroSection = () => {
+  return (
+    <div className='pb-[32px] pt-[16px]  h-[50vh]'>
+        <div className='flex justify-center  p-4'>
+        <img src={happyFace}/>
+      </div>
+      <p className='text-center font-extrabold'>به کیدو خوش آمدی!</p>
+    </div>
+  )
+}
+
+export default HeroSection
+```
+
+================
+FILE: src\layout\ClassLayout.tsx
+================
+
+```
+import React from 'react';
+import { Outlet } from 'react-router-dom';
+import Header from '../components/common/Header';
+import Navbar from '../teacher/components/contentContainer/Navbar';
+import StudentAlert from '../teacher/components/contentContainer/StudentAlert';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+
+// Define an interface for the class data structure
+interface TeacherClass {
+  id: string;
+  name: string;
+  grade_level: number;
+}
+
+const ClassLayout = () => {
+  // Fetch the classes for the teacher using react-query
+  const { data: classes, isLoading } = useQuery<TeacherClass[]>({
+        queryKey: ['teacherClasses'], // Using a consistent key to leverage caching
+        queryFn: async () => {
+            console.log("API CALL: fetching classes for Header");
+            const res = await axios.get('https://kiddo2.pythonanywhere.com/api/v1/academics/classes/');
+            console.log("API RESPONSE: fetching classes for Header success", res.data);
+            return res.data;
+        },
+        staleTime: 300000, // Cache data for 5 minutes
+    });
+
+  // Determine the header title based on the fetching state
+  const headerTitle = isLoading 
+    ? 'در حال بارگذاری...' 
+    : (classes && classes.length > 0 ? classes[0].name : 'کلاس من');
+    console.log(headerTitle)
+    
+      
+  return (
+    <div>
+      <Header title={headerTitle} />
+      <Navbar />
+      <div className='bg-backGround-1 min-h-screen'>
+        <div className='mx-[16px] '>
+          <StudentAlert />
+          <main>
+            <Outlet />
+          </main>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ClassLayout;
+```
+
+================
+FILE: src\slice\userSlice.ts
+================
+
+```
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
+export interface UserState {
+  id: string | null;
+  username: string | null;
+  first_name: string | null;
+  last_name: string | null;
+  role: 'STUDENT' | 'STAFF' | null;
+  token: string | null;
+}
+
+const initialState: UserState = {
+  id: null,
+  username: null,
+  first_name: null,
+  last_name: null,
+  role: null,
+  token: null,
+};
+
+const userSlice = createSlice({
+  name: 'user',
+  initialState,
+  reducers: {
+    setUser: (state, action: PayloadAction<UserState>) => {
+      return { ...action.payload };
+    },
+    clearUser: () => initialState,
+  },
+  
+});
+
+
+export const { setUser, clearUser } = userSlice.actions;
+export default userSlice.reducer;
+
+```
+
+================
+FILE: src\slice\tarkibkonSlice.ts
+================
+
+```
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
+interface Study {
+    id: string;
+    name: string;
+}
+
+interface TarkibkonState {
+  selectedStudy: Study | null;
+  learnTopic: string;
+  favoriteTopic: string;
+  studySelectionButton: boolean;
+}
+
+const initialState: TarkibkonState = {
+  selectedStudy: null,
+  learnTopic: "",
+  favoriteTopic: '',
+  studySelectionButton: false,
+};
+
+const tarkibkonSlice = createSlice({
+  name: "tarkibkon",
+  initialState,
+  reducers: {
+    setSelectedStudy: (state, action: PayloadAction<Study | null>) => {
+      state.selectedStudy = action.payload;
+      state.studySelectionButton = !!action.payload;
+    },
+    setLearnTopic: (state, action: PayloadAction<string>) => {
+      state.learnTopic = action.payload;
+    },
+     setFavoriteTopic: (state, action: PayloadAction<string>) => {
+      state.favoriteTopic = action.payload;
+    },
+    resetSelection: (state) => {
+      state.selectedStudy = null;
+      state.learnTopic = "";
+      state.favoriteTopic='';
+      state.studySelectionButton = false;
+    },
+    activeButtonReducer: (state) => {
+      state.studySelectionButton = true;
+    },
+    disableButtonReducer: (state) => {
+      state.studySelectionButton = false;
+    },
+  },
+});
+
+export const {
+  setSelectedStudy,
+  setLearnTopic,
+  setFavoriteTopic,
+  resetSelection,
+  activeButtonReducer,
+  disableButtonReducer,
+} = tarkibkonSlice.actions;
+
+export default tarkibkonSlice.reducer;
+```
+
+================
+FILE: src\slice\konjkavSlice.ts
+================
+
+```
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
+interface Study {
+  id: string;
+  name: string;
+}
+
+interface KonjkavState {
+  selectedStudy: Study | null;
+  selectedTopic: string;
+  studySelectionButton: boolean;
+}
+
+const initialState: KonjkavState = {
+  selectedStudy: null,
+  selectedTopic: "",
+  studySelectionButton: false,
+};
+
+const konjkavSlice = createSlice({
+  name: "konjkav",
+  initialState,
+  reducers: {
+    setSelectedStudy: (state, action: PayloadAction<Study | null>) => {
+      state.selectedStudy = action.payload;
+      if (action.payload) {
+        state.studySelectionButton = true;
+      } else {
+        state.studySelectionButton = false;
+      }
+    },
+    setSelectedTopic: (state, action: PayloadAction<string>) => {
+      state.selectedTopic = action.payload;
+    },
+    resetSelection: (state) => {
+      state.selectedStudy = null;
+      state.selectedTopic = "";
+      state.studySelectionButton = false;
+    },
+    activeButtonReducer: (state) => {
+      state.studySelectionButton = true;
+    },
+    disableButtonReducer: (state) => {
+      state.studySelectionButton = false;
+    },
+  },
+});
+
+export const {
+  setSelectedStudy,
+  setSelectedTopic,
+  resetSelection,
+  activeButtonReducer,
+  disableButtonReducer,
+} = konjkavSlice.actions;
+
+export default konjkavSlice.reducer;
+```
+
+================
+FILE: src\slice\darsyarSlice.ts
+================
+
+```
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
+interface Study {
+  id: string;
+  name: string;
+}
+
+interface Lesson {
+  id: string;
+  title: string;
+}
+
+interface DarsyarState {
+  studySelectionButton: boolean;
+  selectedStudy: Study | null;
+  studyName: string | null;
+  selectedLessons: Lesson[];
+  hasSelectedLessons: boolean;
+}
+
+const initialState: DarsyarState = {
+  studySelectionButton: false,
+  selectedStudy: null,
+  studyName: null,
+  selectedLessons: [],
+  hasSelectedLessons: false
+};
+
+const darsyarSlice = createSlice({
+  name: 'darsyar',
+  initialState,
+  reducers: {
+    activeButtonReducer: (state) => {
+      state.studySelectionButton = true;
+    },
+    disableButtonReducer: (state) => {
+      state.studySelectionButton = false;
+    },
+    setSelectedStudy: (state, action: PayloadAction<Study>) => {
+      state.selectedStudy = action.payload;
+      state.studyName = action.payload.name;
+    },
+    setSelectedLesson: (state, action: PayloadAction<Lesson[]>) => {
+      state.selectedLessons = action.payload;
+      state.hasSelectedLessons = action.payload.length > 0;
+    },
+    clearSelections: (state) => {
+      state.selectedStudy = null;
+      state.studyName = null;
+      state.selectedLessons = [];
+      state.studySelectionButton = false;
+      state.hasSelectedLessons = false;
+    }
+  }
+});
+
+export const {
+  activeButtonReducer,
+  disableButtonReducer,
+  setSelectedStudy,
+  setSelectedLesson,
+  clearSelections
+} = darsyarSlice.actions;
+
+export default darsyarSlice.reducer;
+```
+
+================
+FILE: src\slice\chatSlice.ts
+================
+
+```
+
+```
+
+================
+FILE: src\hooks\useClientInfo.ts
+================
+
+```
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+
+interface ClientInfo {
+  id: string;
+  username: string;
+  first_name: string;
+  last_name: string;
+  role: string;
+}
+
+const fetchClientInfo = async (): Promise<ClientInfo> => {
+  const response = await axios.get('/api/v1/accounts/me/', {
+    headers: {
+      Authorization: `Token ${localStorage.getItem('token')}`,
+    },
+  });
+  console.log(response)
+  return response.data;
+};
+
+export const useClientInfo = () => {
+  return useQuery({
+    queryKey: ['clientInfo'],
+    queryFn: fetchClientInfo,
+  });
+};
+
+```
+
+================
+FILE: src\hooks\useChatSessions.ts
+================
+
+```
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+
+interface ChatSession {
+  id: string;
+  tool: string;
+  title: string;
+  subject: string;
+  updated_at: string;
+}
+
+const fetchChatSessions = async (): Promise<ChatSession[]> => {
+  const response = await axios.get('/api/v1/chat/sessions/', {
+    headers: {
+      Authorization: `Token ${localStorage.getItem('token')}`,
+    },
+  });
+  // Ensure we always return an array
+  return Array.isArray(response.data) ? response.data : [];
+};
+
+export const useChatSessions = () => {
+  return useQuery({
+    queryKey: ['chatSessions'],
+    queryFn: fetchChatSessions,
+    // Initialize with an empty array
+    initialData: [],
+  });
+};
+
+```
+
+================
+FILE: src\components\RecentChats.tsx
+================
+
+```
+import React from 'react';
+import { useChatSessions } from '../hooks/useChatSessions';
+import RecentChatCard from './common/RecentChatCard';
+
+const RecentChats: React.FC = () => {
+  const { data: chatSessions, isLoading, isError } = useChatSessions();
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Error loading recent chats</div>;
+  }
+
+  if (!chatSessions || chatSessions.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center p-6 text-center">
+        <p className="text-gray-500">There are no recent chats here.</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="grid gap-4">
+      {chatSessions.map((session) => (
+        <RecentChatCard
+          key={session.id}
+          title={session.title}
+          tool={session.tool}
+          subject={session.subject}
+          updatedAt={session.updated_at}
+        />
+      ))}
+    </div>
+  );
+};
+
+export default RecentChats;
+
+```
+
+================
+FILE: src\constants\studyAssistantConstant.ts
+================
+
+```
+import rocketlogo from './../assets/images/logos/rocketLogo.png'
+import emojiLogo from './../assets/images/logos/emojiLogo.png'
+import alienLogo from './../assets/images/logos/alienLogo.png'
+
+export const studyAssistantConstatnt:studyAssistantType[] = [
+  {
+    logo: rocketlogo,
+    title: "هیچ درسی دیگه سخت نیست",
+    description:
+      "با درس‌یـــار هر مبحث سختی از کتاب رو اینجا به زبون ساده و سریع یاد بگیر.",
+  },
+  {
+    logo:emojiLogo,
+    title: "معلم خصوصی ۲۴ ساعته",
+    description:
+      "درس‌یـــار همیشه همراه تو! هر زمان و هرکجا، برای سوالاتت جواب فوری بگیر.",
+  },
+  {
+    logo: alienLogo,
+    title: "جمع‌بندی آسون برای امتحانات",
+    description:
+      "با خلاصه‌های دقیق و نکته‌های امتحانی، سریع‌تر از همیشه برای امتحانات آماده شو.",
+  },
+];
+export interface studyAssistantType{
+   logo:string ,
+    title: string,
+    description:string
+}
+
+```
+
+================
+FILE: src\store\index.ts
+================
+
+```
+import { configureStore } from '@reduxjs/toolkit';
+import { useDispatch } from 'react-redux';
+import darsyarReducer from './../slice/darsyarSlice';
+import konjkavReducer from './../slice/konjkavSlice';
+import tarkibkonReducer from './../slice/tarkibkonSlice';
+import userReducer from './../slice/userSlice';
+
+export const store = configureStore({
+  reducer: {
+    darsyar: darsyarReducer,
+    konjkav: konjkavReducer,
+    tarkibkon:tarkibkonReducer,
+    user:userReducer
+  },
+});
+
+export type RootState = ReturnType<typeof store.getState>;
+
+export type AppDispatch = typeof store.dispatch;
+
+export const useAppDispatch = () => useDispatch<AppDispatch>();
+```
+
+================
 FILE: src\teacher\pages\TeacherHome.tsx
 ================
 
@@ -2342,10 +2450,7 @@ FILE: src\teacher\pages\ClassChat.tsx
 ================
 
 ```
-import React from 'react'
-import Header from '../../components/common/Header'
-import Navbar from '../components/contentContainer/Navbar'
-import StudentAlert from '../components/contentContainer/StudentAlert'
+
 import RecentChatCard from '../components/home/RecentChat'
 
 const ClassChat = () => {
@@ -2531,9 +2636,9 @@ const RecentChatCard: React.FC<RecentChatCardProps> = ({ title, tool, subject, u
   };
 
   return (
-    <div>
-         <div className='card-box'>
-            <div className='flex justify-start items-center bg-white rounded-[22px] p-[16px] gap-[16px] pl-[24px]'>
+    <div >
+         <div className='card-box mb-10'>
+            <div className='flex justify-start items-center bg-white rounded-[22px] p-[16px] gap-[16px] pl-[24px] '>
                 <div>
                     <img className='w-[56px] h-[56px] ' src={darsYar} alt={tool} />
                 </div>
@@ -2713,6 +2818,8 @@ FILE: src\components\common\Chat.tsx
 ```
 // src/components/common/Chat.tsx
 import React, { useState, useEffect, useRef } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { sendMessage, getSessionDetails } from "../../api-chat";
 import { ApiMessage, ChatSession } from "../../types/api";
 import Toast from "./Toast";
@@ -2726,6 +2833,8 @@ interface Message {
 interface ChatProps {
   startSession: () => Promise<ChatSession>;
   setIsChatting: React.Dispatch<React.SetStateAction<boolean>>;
+  tool: 'DARS_YAR' | 'KONJKAV_SHO' | 'TARKIB_KON' | string;
+  initialUserActionText?: string;
 }
 
 const mapApiMessageToUiMessage = (apiMessage: ApiMessage): Message => ({
@@ -2734,61 +2843,17 @@ const mapApiMessageToUiMessage = (apiMessage: ApiMessage): Message => ({
   text: apiMessage.content,
 });
 
-const Chat: React.FC<ChatProps> = ({ startSession, setIsChatting }) => {
+const Chat: React.FC<ChatProps> = ({ startSession, setIsChatting, tool, initialUserActionText }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState<string>("");
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [sessionId, setSessionId] = useState<string | null>(null);
-  const [inputAreaHeight, setInputAreaHeight] = useState(0); // For dynamic padding
+  const [inputAreaHeight, setInputAreaHeight] = useState(0);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const inputAreaRef = useRef<HTMLDivElement>(null); // Ref for the input container
-
-  useEffect(() => {
-    const initChat = async () => {
-      setIsChatting(true);
-      setIsLoading(true);
-      try {
-        const response = await startSession();
-        setSessionId(response.id);
-        setMessages(
-          response.messages
-            .filter(msg => msg.sender_type !== 'SYSTEM')
-            .map(mapApiMessageToUiMessage)
-        );
-      } catch (err) {
-        setError("خطا در شروع گفتگو. لطفاً دوباره تلاش کنید.");
-        console.error('Failed to start chat session:', err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    initChat();
-  }, [startSession, setIsChatting]);
-
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
-
-  // Adjust textarea height and update container height for padding
-  useEffect(() => {
-    if (textareaRef.current) {
-      textareaRef.current.style.height = "auto";
-      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
-    }
-    if (inputAreaRef.current) {
-        setInputAreaHeight(inputAreaRef.current.offsetHeight);
-    }
-  }, [inputMessage]);
-
-  // Set initial height of input area on mount
-  useEffect(() => {
-    if (inputAreaRef.current) {
-      setInputAreaHeight(inputAreaRef.current.offsetHeight);
-    }
-  }, []);
+  const inputAreaRef = useRef<HTMLDivElement>(null);
 
   const pollForResponse = (sid: string, originalMessageCount: number) => {
     const timeout = 20000;
@@ -2803,6 +2868,7 @@ const Chat: React.FC<ChatProps> = ({ startSession, setIsChatting }) => {
           if (lastMessage.sender_type === 'AI') {
             clearInterval(poller);
             clearTimeout(pollTimeoutId);
+            // Replace all local messages with the definitive list from the server
             setMessages(
               sessionDetails.messages
                 .filter(msg => msg.sender_type !== 'SYSTEM')
@@ -2824,6 +2890,75 @@ const Chat: React.FC<ChatProps> = ({ startSession, setIsChatting }) => {
       }
     }, timeout);
   };
+
+  useEffect(() => {
+    const initChat = async () => {
+      setIsChatting(true);
+
+      const isToolWithInitialMessage = (tool === 'KONJKAV_SHO' || tool === 'TARKIB_KON') && initialUserActionText;
+
+      if (isToolWithInitialMessage) {
+        const tempMessage: Message = {
+          id: 'temp-initial-message',
+          sender: 'user', // Show as user's action
+          text: initialUserActionText
+        };
+        setMessages([tempMessage]);
+        setIsLoading(true);
+      }
+
+      try {
+        const initialSession = await startSession();
+        setSessionId(initialSession.id);
+        
+        const hasAiMessage = initialSession.messages.some(m => m.sender_type === 'AI');
+
+        if (hasAiMessage) {
+          setMessages(
+            initialSession.messages
+              .filter(msg => msg.sender_type !== 'SYSTEM')
+              .map(mapApiMessageToUiMessage)
+          );
+          setIsLoading(false);
+        } else {
+          if (tool !== 'DARS_YAR') {
+            pollForResponse(initialSession.id, initialSession.messages.length);
+          } else {
+            setMessages([]);
+            setIsLoading(false);
+          }
+        }
+      } catch (err) {
+        setError("خطا در شروع گفتگو. لطفاً دوباره تلاش کنید.");
+        console.error('Failed to start chat session:', err);
+        setMessages([]);
+        setIsLoading(false);
+      }
+    };
+
+    initChat();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [startSession, setIsChatting, tool, initialUserActionText]);
+  
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, isLoading]);
+
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    }
+    if (inputAreaRef.current) {
+        setInputAreaHeight(inputAreaRef.current.offsetHeight);
+    }
+  }, [inputMessage]);
+
+  useEffect(() => {
+    if (inputAreaRef.current) {
+      setInputAreaHeight(inputAreaRef.current.offsetHeight);
+    }
+  }, []);
 
   const handleSendMessage = async () => {
     if (!sessionId || inputMessage.trim() === "") return;
@@ -2856,21 +2991,38 @@ const Chat: React.FC<ChatProps> = ({ startSession, setIsChatting }) => {
       handleSendMessage();
     }
   };
+  
+  const showTypingIndicator = isLoading && messages.length > 0 && messages[messages.length - 1].sender === 'user';
 
   return (
-    <div className='flex flex-col flex-grow bg-backGround-1'>
+    <div className='flex flex-col flex-grow bg-backGround-1 relative'>
       {error && <Toast message={error} type="error" onClose={() => setError(null)} />}
       
       <div className="flex-1 overflow-y-auto p-4" style={{ paddingBottom: `${inputAreaHeight}px` }}>
         {messages.map((msg) => (
-          <div key={msg.id} className={`flex my-2 ${msg.sender === "user" ? "justify-start" : "justify-end"}`}>
-            <div className={`max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg p-3 rounded-2xl mx-2 ${msg.sender === "user" ? "bg-custom-purple text-white" : "bg-white text-gray-800 border border-borderColor-1"}`}>
-              <p className="text-sm sm:text-base whitespace-pre-wrap break-words">{msg.text}</p>
+          <div key={msg.id} className={`w-full flex my-2 ${msg.sender === "user" ? "justify-start" : "justify-end"}`}>
+            <div 
+              dir="auto" 
+              className={`
+                prose prose-sm break-words max-w-[85%]
+                ${msg.sender === 'user' ? 'prose-invert' : ''}
+                p-3 rounded-[16px] mt-2 
+                ${msg.sender === "user" ? "bg-custom-purple text-white" : "bg-white text-gray-800 border border-borderColor-1"}
+              `}>
+              <ReactMarkdown
+                  remarkPlugins={[remarkGfm]}
+                  components={{
+                      a: ({ node, ...props }) => <a {...props} target="_blank" rel="noopener noreferrer" />
+                  }}
+              >
+                  {msg.text}
+              </ReactMarkdown>
             </div>
           </div>
         ))}
-        {isLoading && (
-          <div className="flex justify-start mx-2 my-2">
+
+        {showTypingIndicator && (
+          <div className="w-full flex my-2 justify-start">
             <div className="p-3 rounded-2xl bg-white border border-borderColor-1">
               <div className="flex items-center space-x-2">
                 <div className="w-2 h-2 bg-gray-600 rounded-full animate-bounce" style={{ animationDelay: "0s" }}></div>
@@ -2898,6 +3050,174 @@ const Chat: React.FC<ChatProps> = ({ startSession, setIsChatting }) => {
 };
 
 export default Chat;
+```
+
+================
+FILE: src\teacher\components\contentContainer\StudentAlert.tsx
+================
+
+```
+import React from 'react'
+
+const StudentAlert = () => {
+  return (
+    <div className='py-[16px]'>
+         <div className='alert-box '>
+            <div className='flex justify-between items-center bg-[#FFF0F0] rounded-[16px] px-[16px] py-[12px] gap-[16px] pl-[24px] text-[#FE4C4A] text-[12px]'>
+              
+                <div className='flex flex-col gap-[4px] '>
+                    <h1 className=' line-clamp-1 '>علی رفتار های خطرناکی دارد</h1>
+                   
+                </div>
+                 <div className='flex flex-col gap-[4px] '>
+                    <h1 className='font-extrabold line-clamp-1  '>بررسی</h1>
+                   
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+  )
+}
+
+export default StudentAlert
+```
+
+================
+FILE: src\teacher\components\contentContainer\Navbar.tsx
+================
+
+```
+import React from 'react';
+import { NavLink } from 'react-router-dom';
+import studentIcon from './../../../assets/images/reportsPage/student.png';
+import reportIcon from './../../../assets/images/reportsPage/report.png';
+import chatIcon from './../../../assets/images/reportsPage/chat.png';
+
+
+
+const Navbar = () => {
+  // A reusable component for each navigation item
+  const NavItem = ({ to, icon, label }) => {
+    // This function provides the classes for the NavLink container
+    const getNavLinkClass = ({ isActive }) => {
+      const baseClasses = 'flex items-center justify-center gap-2 px-4 py-2 rounded-full transition-colors duration-200';
+      const activeClasses = 'bg-backGround-1';
+      return `${baseClasses} ${isActive ? activeClasses : ''}`;
+    };
+
+    // This function provides classes for the text and icon
+    const getContentClass = (isActive) => {
+      return isActive ? 'font-extrabold text-gray-800' : 'text-gray-500';
+    };
+
+    return (
+      <NavLink to={to} className={getNavLinkClass}>
+        {({ isActive }) => (
+          <>
+            
+            <img 
+              src={icon} 
+              className={`h-5 w-5 ${!isActive ? 'opacity-70' : ''}`}
+              alt={`${label} icon`} 
+            />
+            <span className={getContentClass(isActive)}>{label}</span>
+          </>
+        )}
+      </NavLink>
+    );
+  };
+
+  return (
+    <div>
+      <div className='flex items-center justify-around bg-white py-2 px-2 text-[12px]'>
+        <NavItem to="/teacher/students" label="دانش آموزان" icon={studentIcon} />
+        <NavItem to="/teacher/reports" label="گزارشات" icon={reportIcon} />
+        <NavItem to="/teacher/chat" label="چت ها" icon={chatIcon} />
+      </div>
+      <hr className="border-[2px] border-borderColor-1 w-full" />
+    </div>
+  );
+};
+
+export default Navbar;
+```
+
+================
+FILE: src\teacher\components\contentContainer\Modal.tsx
+================
+
+```
+// src/teacher/components/contentContainer/Modal.tsx
+import React, { FC, useEffect, useRef } from 'react';
+
+interface ModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  children: React.ReactNode;
+}
+
+const Modal: FC<ModalProps> = ({ isOpen, onClose, children }) => {
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  // Effect to lock/unlock background scroll
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    // Cleanup function to reset scroll when component unmounts
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
+
+
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('keydown', handleEscape);
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, [isOpen, onClose]);
+
+  const handleBackdropClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (event.target === event.currentTarget) {
+      onClose();
+    }
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div
+      className="fixed inset-0 bg-backdrop flex items-end justify-center z-50 transition-opacity duration-300"
+      onClick={handleBackdropClick}
+      aria-modal="true"
+      role="dialog"
+    >
+      <div
+        ref={modalRef}
+        className="bg-white rounded-t-[24px] p-6 w-full max-h-[80vh] overflow-y-auto"
+      >
+        {children}
+      </div>
+    </div>
+  );
+};
+
+export default Modal;
 ```
 
 ================
@@ -2944,7 +3264,7 @@ import darsyar from './../../../assets/images/DarsYar.png'
 const RecentChatCard = () => {
   return (
     <div>
-         <div className='card-box'>
+         <div className='card-box mb-[12px]'>
             <div className='flex justify-start items-center bg-white rounded-[22px] p-[16px] gap-[16px] pl-[24px]'>
                 <div>
                     <img className='w-[56px] h-[56px] ' src={darsyar}/>
@@ -3114,172 +3434,6 @@ export default Classes;
 ```
 
 ================
-FILE: src\teacher\components\contentContainer\StudentAlert.tsx
-================
-
-```
-import React from 'react'
-
-const StudentAlert = () => {
-  return (
-    <div className='py-[16px]'>
-         <div className='alert-box '>
-            <div className='flex justify-between items-center bg-[#FFF0F0] rounded-[16px] px-[16px] py-[12px] gap-[16px] pl-[24px] text-[#FE4C4A] text-[12px]'>
-              
-                <div className='flex flex-col gap-[4px] '>
-                    <h1 className=' line-clamp-1 '>علی رفتار های خطرناکی دارد</h1>
-                   
-                </div>
-                 <div className='flex flex-col gap-[4px] '>
-                    <h1 className='font-extrabold line-clamp-1  '>بررسی</h1>
-                   
-                </div>
-                
-            </div>
-        </div>
-        
-    </div>
-  )
-}
-
-export default StudentAlert
-```
-
-================
-FILE: src\teacher\components\contentContainer\Navbar.tsx
-================
-
-```
-import React from 'react';
-import { NavLink } from 'react-router-dom';
-import studentIcon from './../../../assets/images/reportsPage/student.png';
-import reportIcon from './../../../assets/images/reportsPage/report.png';
-import chatIcon from './../../../assets/images/reportsPage/chat.png';
-
-const Navbar = () => {
-  // A reusable component for each navigation item
-  const NavItem = ({ to, icon, label }) => {
-    // This function provides the classes for the NavLink container
-    const getNavLinkClass = ({ isActive }) => {
-      const baseClasses = 'flex items-center justify-center gap-2 px-4 py-2 rounded-full transition-colors duration-200';
-      const activeClasses = 'bg-backGround-1';
-      return `${baseClasses} ${isActive ? activeClasses : ''}`;
-    };
-
-    // This function provides classes for the text and icon
-    const getContentClass = (isActive) => {
-      return isActive ? 'font-extrabold text-gray-800' : 'text-gray-500';
-    };
-
-    return (
-      <NavLink to={to} className={getNavLinkClass}>
-        {({ isActive }) => (
-          <>
-            
-            <img 
-              src={icon} 
-              className={`h-5 w-5 ${!isActive ? 'opacity-70' : ''}`}
-              alt={`${label} icon`} 
-            />
-            <span className={getContentClass(isActive)}>{label}</span>
-          </>
-        )}
-      </NavLink>
-    );
-  };
-
-  return (
-    <div>
-      <div className='flex items-center justify-around bg-white py-2 px-2 text-[12px]'>
-        <NavItem to="/teacher/students" label="دانش آموزان" icon={studentIcon} />
-        <NavItem to="/teacher/reports" label="گزارشات" icon={reportIcon} />
-        <NavItem to="/teacher/chat" label="چت ها" icon={chatIcon} />
-      </div>
-      <hr className="border-[2px] border-borderColor-1 w-full" />
-    </div>
-  );
-};
-
-export default Navbar;
-```
-
-================
-FILE: src\teacher\components\contentContainer\Modal.tsx
-================
-
-```
-// src/teacher/components/contentContainer/Modal.tsx
-import React, { FC, useEffect, useRef } from 'react';
-
-interface ModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  children: React.ReactNode;
-}
-
-const Modal: FC<ModalProps> = ({ isOpen, onClose, children }) => {
-  const modalRef = useRef<HTMLDivElement>(null);
-
-  // Effect to lock/unlock background scroll
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-
-    // Cleanup function to reset scroll when component unmounts
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [isOpen]);
-
-
-  useEffect(() => {
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        onClose();
-      }
-    };
-
-    if (isOpen) {
-      document.addEventListener('keydown', handleEscape);
-    }
-
-    return () => {
-      document.removeEventListener('keydown', handleEscape);
-    };
-  }, [isOpen, onClose]);
-
-  const handleBackdropClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (event.target === event.currentTarget) {
-      onClose();
-    }
-  };
-
-  if (!isOpen) return null;
-
-  return (
-    <div
-      className="fixed inset-0 bg-backdrop flex items-end justify-center z-50 transition-opacity duration-300"
-      onClick={handleBackdropClick}
-      aria-modal="true"
-      role="dialog"
-    >
-      <div
-        ref={modalRef}
-        className="bg-white rounded-t-[24px] p-6 w-full max-h-[80vh] overflow-y-auto"
-      >
-        {children}
-      </div>
-    </div>
-  );
-};
-
-export default Modal;
-```
-
-================
 FILE: src\student\pages\tarkibKon\TarkibkonWelcome.tsx
 ================
 
@@ -3398,8 +3552,8 @@ FILE: src\student\pages\tarkibKon\TarkibkonLearnTopic.tsx
 ```
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import { RootState } from "../../../store";
-import { useEffect, useState } from "react";
 import { activeButtonReducer, disableButtonReducer, setLearnTopic } from "../../../slice/tarkibkonSlice";
 import Header from "../../../components/common/Header";
 import ChatButton from "../../../components/common/ChatButton";
@@ -3411,81 +3565,53 @@ import HeroSection from "../../components/tarkibKon/learnTopic/HeroSection";
 const TarkibkonLearnTopic = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const selectedStudy = useSelector((state: RootState) => state.tarkibkon.selectedStudy);
-  // selectedTopic from Redux now represents the ID of the selected card
-  const learnTopic = useSelector((state: RootState) => state.tarkibkon.learnTopic); 
 
-  const [searchQuery, setSearchQuery] = useState<string>('');
+  const { selectedStudy, learnTopic, studySelectionButton: isButtonActive } = useSelector((state: RootState) => state.tarkibkon);
 
-  // Redirect if no study is selected
   useEffect(() => {
     if (!selectedStudy) {
       navigate('/student/tarkibkon/study-selection');
     }
   }, [selectedStudy, navigate]);
 
-  // Combined effect for button activation based on selection OR search query
   useEffect(() => {
-    const isActive = (learnTopic !== null && learnTopic !== "") || (searchQuery.trim() !== "");
-    if (isActive) {
+    if (learnTopic && learnTopic.trim() !== "") {
       dispatch(activeButtonReducer());
     } else {
       dispatch(disableButtonReducer());
     }
-  }, [learnTopic, searchQuery, dispatch]); // Depend on selectedTopic and searchQuery
+  }, [learnTopic, dispatch]);
 
-  const handleStartChat = () => {
-    // Before navigating, you might want to decide if the chat is based on a selected topic
-    // or the search query. This logic depends on your backend expectations.
-    // For now, we'll just navigate if *either* is active.
-    if ((learnTopic && learnTopic !== "") || searchQuery.trim() !== "") {
+  const handleNext = () => {
+    if (learnTopic && learnTopic.trim() !== "") {
       navigate('/student/tarkibkon/favorite-topic-selection');
     }
   };
 
-  const handleTopicSelect = (topicId: string | null) => {
-    // If a topic card is selected, clear the search query.
-    // This ensures only one mode of input (selection or search) triggers the button.
-    if (topicId) {
-      setSearchQuery(""); 
-      dispatch(setLearnTopic(topicId));
-    } else {
-      dispatch(setLearnTopic("")); // Deselect
-    }
+  const handleTopicChange = (topic: string | null) => {
+    dispatch(setLearnTopic(topic || ""));
   };
-
-  const handleSearchQueryChange = (query: string) => {
-    setSearchQuery(query);
-    // If the user types in the search box, deselect any topic card.
-    if (query.trim() !== "") {
-      dispatch(setLearnTopic("")); 
-    }
-  };
-
-  // Get button activation state from Redux (if you want to control it that way)
-  const isButtonActive = useSelector((state: RootState) => state.tarkibkon.studySelectionButton);
 
   return (
     <div className="h-screen">
-      <Header title={'کنج‌کاو'}/>
+      <Header title={'ترکیب‌کن'}/>
       <div className='font-yekanBakh bg-backGround-1 pb-20'>
-        
         <HeroSection />
         <div className="bg-white rounded-[24px] rounded-b-none pb-40 border-[2px] border-borderColor-1">
           <TopicSearchBox 
-            searchQuery={searchQuery} 
-            setSearchQuery={handleSearchQueryChange} // Use the new handler
+            searchQuery={learnTopic} 
+            setSearchQuery={handleTopicChange}
           />
           <MainContent 
-            onTopicSelect={handleTopicSelect} 
-            selectedTopicFromParent={learnTopic} // Pass the selected topic to MainContent
+            onTopicSelect={handleTopicChange} 
+            selectedTopicFromParent={learnTopic}
           />
         </div>
       </div>
       {isButtonActive ? (
-        <ChatButton textButton='ساخت چت جدید' onClick={handleStartChat} />
+        <ChatButton textButton='بعدی' onClick={handleNext} />
       ) : (
-        <DisableChatButton textButton='ساخت چت جدید' />
+        <DisableChatButton textButton='بعدی' />
       )}
     </div>
   );
@@ -3499,93 +3625,61 @@ FILE: src\student\pages\tarkibKon\TarkibkonFavoriteTopic.tsx
 ================
 
 ```
-// src/pages/StudySelection.tsx
-
-import { useEffect, useState } from "react"; // Import useState
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { RootState } from "../../../store";
+import { activeButtonReducer, disableButtonReducer, setFavoriteTopic } from "../../../slice/tarkibkonSlice";
+import Header from "../../../components/common/Header";
 import ChatButton from "../../../components/common/ChatButton";
 import DisableChatButton from "../../../components/common/DisableChatButton";
-import Header from "../../../components/common/Header";
-
-import {  activeButtonReducer, disableButtonReducer, setFavoriteTopic } from "../../../slice/tarkibkonSlice"; // Import reducers
-import { RootState } from "../../../store";
-import HeroSection from "../../components/tarkibKon/favoriteTopic/HeroSection";
-import TopicSearchBox from "../../components/tarkibKon/favoriteTopic/TopicSearchBox";
 import MainContent from "../../components/tarkibKon/favoriteTopic/MainContent";
-
+import TopicSearchBox from "../../components/tarkibKon/favoriteTopic/TopicSearchBox";
+import HeroSection from "../../components/tarkibKon/favoriteTopic/HeroSection";
 
 const TarkibkonFavoriteTopic = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const selectedStudy = useSelector((state: RootState) => state.tarkibkon.selectedStudy);
-  // selectedTopic from Redux now represents the ID of the selected card
-  const favoriteTopic = useSelector((state: RootState) => state.tarkibkon.favoriteTopic); 
 
-  const [searchQuery, setSearchQuery] = useState<string>('');
+  const { learnTopic, favoriteTopic, studySelectionButton: isButtonActive } = useSelector((state: RootState) => state.tarkibkon);
 
-  // Redirect if no study is selected
   useEffect(() => {
-    if (!selectedStudy) {
-      navigate('/student/tarkibkon/study-selection');
+    if (!learnTopic) { // Should have a learnTopic to be here
+      navigate('/student/tarkibkon/learn-topic-selection');
     }
-  }, [selectedStudy, navigate]);
+  }, [learnTopic, navigate]);
 
-  // Combined effect for button activation based on selection OR search query
   useEffect(() => {
-    const isActive = (favoriteTopic !== null && favoriteTopic !== "") || (searchQuery.trim() !== "");
-    if (isActive) {
+    if (favoriteTopic && favoriteTopic.trim() !== "") {
       dispatch(activeButtonReducer());
     } else {
       dispatch(disableButtonReducer());
     }
-  }, [favoriteTopic, searchQuery, dispatch]); // Depend on selectedTopic and searchQuery
+  }, [favoriteTopic, dispatch]);
 
   const handleStartChat = () => {
-    // Before navigating, you might want to decide if the chat is based on a selected topic
-    // or the search query. This logic depends on your backend expectations.
-    // For now, we'll just navigate if *either* is active.
-    if ((favoriteTopic && favoriteTopic !== "") || searchQuery.trim() !== "") {
+    if (favoriteTopic && favoriteTopic.trim() !== "") {
       navigate('/student/tarkibkon/chat');
     }
   };
 
-  const handleTopicSelect = (topicId: string | null) => {
-    // If a topic card is selected, clear the search query.
-    // This ensures only one mode of input (selection or search) triggers the button.
-    if (topicId) {
-      setSearchQuery(""); 
-      dispatch(setFavoriteTopic(topicId));
-    } else {
-      dispatch(setFavoriteTopic("")); // Deselect
-    }
+  const handleTopicChange = (topic: string | null) => {
+    dispatch(setFavoriteTopic(topic || ""));
   };
-
-  const handleSearchQueryChange = (query: string) => {
-    setSearchQuery(query);
-    // If the user types in the search box, deselect any topic card.
-    if (query.trim() !== "") {
-      dispatch(setFavoriteTopic("")); 
-    }
-  };
-
-  // Get button activation state from Redux (if you want to control it that way)
-  const isButtonActive = useSelector((state: RootState) => state.tarkibkon.studySelectionButton);
 
   return (
     <div className="h-screen">
-      <Header title={'کنج‌کاو'}/>
+      <Header title={'ترکیب‌کن'}/>
       <div className='font-yekanBakh bg-backGround-1 pb-20'>
-        
         <HeroSection />
         <div className="bg-white rounded-[24px] rounded-b-none pb-40 border-[2px] border-borderColor-1">
-          <TopicSearchBox
-            searchQuery={searchQuery} 
-            setSearchQuery={handleSearchQueryChange} // Use the new handler
+          <TopicSearchBox 
+            searchQuery={favoriteTopic} 
+            setSearchQuery={handleTopicChange}
           />
           <MainContent 
-            onTopicSelect={handleTopicSelect} 
-            selectedTopicFromParent={favoriteTopic} // Pass the selected topic to MainContent
+            onTopicSelect={handleTopicChange} 
+            selectedTopicFromParent={favoriteTopic}
           />
         </div>
       </div>
@@ -3649,13 +3743,17 @@ const TarkibkonChatBot = () => {
     return null;
   }
 
+  const initialMessage = `...در حال ترکیب کردن ${learnTopic} با ${favoriteTopic}`;
+
   return (
     <div className="bg-backGround-1 h-screen flex flex-col">
       <Header title={'ترکیب‌کن'} />
       <div className="flex-grow flex flex-col">
           <Chat 
             startSession={startSessionCallback}
-            setIsChatting={setIsChatting} 
+            setIsChatting={setIsChatting}
+            tool="TARKIB_KON"
+            initialUserActionText={initialMessage}
           />
       </div>
     </div>
@@ -3708,28 +3806,23 @@ FILE: src\student\pages\konjKav\KonjkavTopicSelection.tsx
 ================
 
 ```
-// src/pages/StudySelection.tsx
-
-import { useEffect, useState } from "react"; // Import useState
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import Header from "../../../components/common/Header";
 import ChatButton from "../../../components/common/ChatButton";
 import DisableChatButton from "../../../components/common/DisableChatButton";
-import Header from "../../../components/common/Header";
 import HeroSection from "../../components/konjKav/topicSelection/HeroSection";
 import MainContent from "../../components/konjKav/topicSelection/MainContent";
-import { setSelectedTopic, activeButtonReducer, disableButtonReducer } from "../../../slice/konjkavSlice"; // Import reducers
-import { RootState } from "../../../store";
 import TopicSearchBox from "../../components/konjKav/topicSelection/TopicSearchBox";
+import { setSelectedTopic, activeButtonReducer, disableButtonReducer } from "../../../slice/konjkavSlice";
+import { RootState } from "../../../store";
 
 const KonjkavTopicSelection = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const selectedStudy = useSelector((state: RootState) => state.konjkav.selectedStudy);
-  // selectedTopic from Redux now represents the ID of the selected card
-  const selectedTopic = useSelector((state: RootState) => state.konjkav.selectedTopic); 
-
-  const [searchQuery, setSearchQuery] = useState<string>('');
+  
+  const { selectedStudy, selectedTopic, studySelectionButton: isButtonActive } = useSelector((state: RootState) => state.konjkav);
 
   // Redirect if no study is selected
   useEffect(() => {
@@ -3738,61 +3831,38 @@ const KonjkavTopicSelection = () => {
     }
   }, [selectedStudy, navigate]);
 
-  // Combined effect for button activation based on selection OR search query
+  // Activate button if there is any topic (from card or textarea)
   useEffect(() => {
-    const isActive = (selectedTopic !== null && selectedTopic !== "") || (searchQuery.trim() !== "");
-    if (isActive) {
+    if (selectedTopic && selectedTopic.trim() !== "") {
       dispatch(activeButtonReducer());
     } else {
       dispatch(disableButtonReducer());
     }
-  }, [selectedTopic, searchQuery, dispatch]); // Depend on selectedTopic and searchQuery
+  }, [selectedTopic, dispatch]);
 
   const handleStartChat = () => {
-    // Before navigating, you might want to decide if the chat is based on a selected topic
-    // or the search query. This logic depends on your backend expectations.
-    // For now, we'll just navigate if *either* is active.
-    if ((selectedTopic && selectedTopic !== "") || searchQuery.trim() !== "") {
+    if (selectedTopic && selectedTopic.trim() !== "") {
       navigate('/student/konjkav/chat');
     }
   };
 
-  const handleTopicSelect = (topicId: string | null) => {
-    // If a topic card is selected, clear the search query.
-    // This ensures only one mode of input (selection or search) triggers the button.
-    if (topicId) {
-      setSearchQuery(""); 
-      dispatch(setSelectedTopic(topicId));
-    } else {
-      dispatch(setSelectedTopic("")); // Deselect
-    }
+  const handleTopicChange = (topic: string | null) => {
+    dispatch(setSelectedTopic(topic || ""));
   };
-
-  const handleSearchQueryChange = (query: string) => {
-    setSearchQuery(query);
-    // If the user types in the search box, deselect any topic card.
-    if (query.trim() !== "") {
-      dispatch(setSelectedTopic("")); 
-    }
-  };
-
-  // Get button activation state from Redux (if you want to control it that way)
-  const isButtonActive = useSelector((state: RootState) => state.konjkav.studySelectionButton);
 
   return (
     <div className="h-screen">
       <Header title={'کنج‌کاو'}/>
       <div className='font-yekanBakh bg-backGround-1 pb-20'>
-        
         <HeroSection />
         <div className="bg-white rounded-[24px] rounded-b-none pb-40 border-[2px] border-borderColor-1">
           <TopicSearchBox 
-            searchQuery={searchQuery} 
-            setSearchQuery={handleSearchQueryChange} // Use the new handler
+            searchQuery={selectedTopic} 
+            setSearchQuery={handleTopicChange}
           />
           <MainContent 
-            onTopicSelect={handleTopicSelect} 
-            selectedTopicFromParent={selectedTopic} // Pass the selected topic to MainContent
+            onTopicSelect={handleTopicChange} 
+            selectedTopicFromParent={selectedTopic}
           />
         </div>
       </div>
@@ -3862,6 +3932,8 @@ const KonjkavTopicBot = () => {
           <Chat 
             startSession={startSessionCallback}
             setIsChatting={setIsChatting} 
+            tool="KONJKAV_SHO"
+            initialUserActionText={selectedTopic}
           />
       </div>
     </div>
@@ -4008,7 +4080,7 @@ const DarsyarWelcome: FC = () => {
   return (
     <div>
       <Header title={'درس‌یار'} />
-      <div className="bg-backGround-1 h-full pb-10">
+      <div className="bg-backGround-1 h-full ">
         <div className="mx-[32px]">
           <HeroSection />
           <CardSection />
@@ -4138,7 +4210,7 @@ import Header from "../../../components/common/Header";
 import Chat from "../../../components/common/Chat";
 import { startDarsYarSession } from "../../../api-chat";
 import { ChatSession } from "../../../types/api";
-
+import darsyar from './../../..//assets/images/DarsYar.png'
 interface Study {
   id: string;
   name: string;
@@ -4183,21 +4255,20 @@ const DarsyarChatWithBot = () => {
   return (
     <div className="bg-backGround-1 h-screen flex flex-col">
       <Header title={'درس‌یار'} />
+
+      
       {showLessonInfo && (
         <LessonInformation 
           study={selectedStudy.name}
           lesson={selectedLessons.map(l => l.name).join('، ')}
         />
       )}
-      {/* 
-        The padding-top here is only to push the chat content down to avoid the LessonInformation bar.
-        The Header component already includes a 52px spacer.
-        The LessonInformation bar is about 40px high. So we add pt-[40px].
-      */}
+     
       <main className={`flex-grow flex flex-col transition-all duration-300 ${showLessonInfo ? 'pt-[40px]' : ''}`}>
           <Chat 
             startSession={startSessionCallback}
             setIsChatting={setIsChatting}
+            tool="DARS_YAR" // ADD THIS LINE
           />
       </main>
     </div>
@@ -4235,7 +4306,7 @@ const getToolRoute = (tool: string, hasRecentChats: boolean) => {
     case "SOALYAR":
       return hasRecentChats ? "/student/soalyar/recent-chat" : "/student/soalyar/welcome";
     case "AZMOON_SAZ":
-      return hasRecentChats ? "/student/azmoon/recent-chat" : "/student/azmoon/welcome";
+      return "#";
     default:
       return "/student";
   }
@@ -4337,54 +4408,67 @@ FILE: src\student\components\home\Header.tsx
 
 ```
 import { FC, useState, useEffect } from "react";
-import darsYar from './../../../assets/images/DarsYar.png'
+import { logout } from "../../../api"; // Import the logout function
+import darsYar from './../../../assets/images/DarsYar.png';
+
 const Header: FC = () => {
-  const [isSticky, setIsSticky] = useState(false); // State to track stickiness
+  const [isSticky, setIsSticky] = useState(false);
+
+  const handleLogout = () => {
+    logout(); // Call the centralized logout function
+  };
 
   useEffect(() => {
     const handleScroll = () => {
-      // Determine the scroll position at which the header should become sticky.
-      // A common approach is to make it sticky once it scrolls past its initial position.
-      // For simplicity, let's say 10 pixels from the top. You might adjust this.
       const offset = window.scrollY;
-      if (offset > 10) { // Or headerRef.current.offsetTop if you want it exact
+      if (offset > 10) {
         setIsSticky(true);
       } else {
         setIsSticky(false);
       }
     };
-
-    // Add the scroll event listener when the component mounts
     window.addEventListener("scroll", handleScroll);
-
-    // Clean up the event listener when the component unmounts
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []); // Empty dependency array means this effect runs once on mount and cleans up on unmount
+  }, []);
 
   return (
     <div>
       <header
         className={`
-          flex items-center justify-center bg-white py-[24px] px-[16px] h-[52px]
+          flex items-center justify-between bg-white py-[24px] px-[16px] h-[52px]
           transition-all duration-300 ease-in-out z-50
           ${isSticky ? "fixed top-0 w-full shadow-md" : ""}
         `}
       >
-        <div className="rounded-md flex items-center justify-center ">
-          {/* Your left content (e.g., menu icon) */}
-        </div>
-        <img src={darsYar} className="h-[24px] w-[24px] ml-[8px]"/>
-        <div className="text-xl font-bold">کیدو</div>
+        {/* Logout Icon Button on the left */}
+        <button onClick={handleLogout} className="text-gray-600 hover:text-red-500 transition-colors">
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            className="h-6 w-6" 
+            fill="none" 
+            viewBox="0 0 24 24" 
+            stroke="currentColor" 
+            strokeWidth={2}
+          >
+            <path 
+              strokeLinecap="round" 
+              strokeLinejoin="round" 
+              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" 
+            />
+          </svg>
+        </button>
         
-        {/* Your right content (e.g., user icon) */}
+        <div className="flex items-center">
+            <img src={darsYar} className="h-[24px] w-[24px] ml-[8px]"/>
+            <div className="text-xl font-bold">کیدو</div>
+        </div>
+        
+        {/* Placeholder to balance the layout */}
+        <div className="w-6"></div>
       </header>
-      {/*
-        This div acts as a "spacer" to prevent content from jumping up
-        when the header becomes `position: fixed`.
-        Its height should match the header's height (52px in your case).
-      */}
+      
       {isSticky && <div className="h-[52px]"></div>}
       <hr className="border-[1.5px] border-borderColor-1 w-full" />
     </div>
@@ -4479,7 +4563,7 @@ FILE: src\teacher\components\contentContainer\students\StudentActivity.tsx
 import React from 'react';
 import smallhappyface from './../../../../assets/images/smallhappyface.png';
 import recent from './../../../../assets/images/recent.png';
-
+import { FluentEmoji } from '@lobehub/ui';
 // Define the shape of the student data we expect as a prop
 interface Student {
   id: string;
@@ -4533,18 +4617,18 @@ const StudentActivity: React.FC<StudentActivityProps> = ({ student }) => {
                 {activityStatusMap[student.activity_status] || student.activity_status}
               </p>
               {/* Only render the mood tag if current_mood is not null */}
-              {student.current_mood && (
+              
                 <p className="bg-backGround-1 px-[8px] rounded-[16px] text-[10px] py-[2px]">
-                  {student.current_mood.text}
+                  <p><FluentEmoji emoji="🙂" type="anim" size={16}/></p>
                 </p>
-              )}
+             
             </div>
           </div>
           {/* Bottom row with last activity date */}
           <div className="flex justify-between items-center">
             <div className="flex">
               <h1 className="font-extrabold text-[10px]">
-                آخرین فعالیت : {formatDate(student.last_activity_at)}
+                آخرین فعالیت : {(student.last_activity_at)?(formatDate(student.last_activity_at)):(<span>بدون فعالیت</span>)}
               </h1>
             </div>
            <div>
@@ -4567,6 +4651,7 @@ FILE: src\teacher\components\contentContainer\reports\StudentReports.tsx
 ```
 import React from 'react';
 import { ChatEvent } from '../../../../types/api';
+import { FluentEmoji } from '@lobehub/fluent-emoji';
 
 interface StudentReportsProps {
   event: ChatEvent;
@@ -4575,17 +4660,23 @@ interface StudentReportsProps {
 
 const StudentReports: React.FC<StudentReportsProps> = ({ event, onOpenModal }) => {
   return (
-    <div className="mb-2">
-      <div className="flex justify-between items-center mb-2">
-        <h1 className="font-bold text-sm"> {event.emoji}{event.student_name} </h1>
-        <button onClick={() => onOpenModal(event.id)} className='p-1'>
+    <div className="mb-4 pt-4 first:pt-0">
+      <div className="flex justify-between items-start">
+        {/* Container for Name, Emoji, and Overview */}
+        <div className='flex-grow'>
+          <div className="flex items-center gap-x-2 mb-2">
+            <FluentEmoji emoji={event.emoji} size={24} />
+            <h1 className="font-bold text-sm">{event.student_name}</h1>
+          </div>
+          <p className="text-[12px] text-gray-600 line-clamp-2 pr-1">{event.overview}</p>
+        </div>
+
+        {/* Button on the far right */}
+        <button onClick={() => onOpenModal(event.id)} className='p-1 flex-shrink-0 ml-2'>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform='rotate(270)'>
             <path d="M15.7071 16.7071C16.0976 16.3166 16.0976 15.6834 15.7071 15.2929L10.4142 10L15.7071 4.70711C16.0976 4.31658 16.0976 3.68342 15.7071 3.29289C15.3166 2.90237 14.6834 2.90237 14.2929 3.29289L8.29289 9.29289C7.90237 9.68342 7.90237 10.3166 8.29289 10.7071L14.2929 16.7071C14.6834 17.0976 15.3166 17.0976 15.7071 16.7071Z" fill="#333333"/>
           </svg>
         </button>
-      </div>
-      <div>
-        <p className="text-[12px] text-gray-600 line-clamp-2">{event.explanation}</p>
       </div>
     </div>
   );
@@ -4626,7 +4717,7 @@ export default ReportTools;
 ```
 
 ================
-FILE: src\student\components\konjKav\welcome\HeroSection.tsx
+FILE: src\student\components\tarkibKon\welcome\HeroSection.tsx
 ================
 
 ```
@@ -4638,7 +4729,7 @@ const HeroSection = () => {
         <div className='flex justify-center  p-4'>
         <img src={happyFace}/>
       </div>
-      <p className='text-center font-extrabold'>به کنج‌کاو خوش آمدی!</p>
+      <p className='text-center font-extrabold'>به ترکیب‌کن خوش آمدی!</p>
     </div>
   )
 }
@@ -4647,7 +4738,7 @@ export default HeroSection
 ```
 
 ================
-FILE: src\student\components\konjKav\welcome\CardSection.tsx
+FILE: src\student\components\tarkibKon\welcome\CardSection.tsx
 ================
 
 ```
@@ -4682,626 +4773,13 @@ export default CardSection
 ```
 
 ================
-FILE: src\student\components\konjKav\recentChat\RecentChat.tsx
-================
-
-```
-
-```
-
-================
-FILE: src\student\components\konjKav\studySelection\MainContent.tsx
-================
-
-```
-import React from 'react';
-import CardSelector from './CardSelector';
-
-const MainContent: React.FC = () => {
-  return (
-    <div
-      className='
-        border-2 border-borderColor-1 bg-white rounded-[16px]
-        p-4 
-        h-full w-full 
-        overflow-y-auto 
-        flex flex-col 
-      '
-    >
-      <div> 
-        <CardSelector />
-      </div>
-    </div>
-  );
-};
-
-export default MainContent;
-```
-
-================
-FILE: src\student\components\konjKav\studySelection\HeroSection.tsx
-================
-
-```
-import React from 'react'
-import konjkav from './../../../../assets/images/konjkav.png'
-
-const HeroSection = () => {
-  return (
-    <div className='flex justify-center items-center flex-col '>
-      <img src={konjkav} className='w-[104px] h-[104px] mb-10 mt-5'/>
-      <h1 className='mb-10'>
-        لطفا یکی از درس ها را انتخاب کنید
-      </h1>
-    </div>
-  )
-}
-
-export default HeroSection
-
-```
-
-================
-FILE: src\student\components\konjKav\studySelection\CardSelector.tsx
-================
-
-```
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { setSelectedStudy } from '../../../../slice/konjkavSlice';
-import CardContent from './CardContent';
-import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-
-interface Subject {
-  id: string;
-  name: string;
-}
-
-const CardSelector: React.FC = () => {
-  const navigate=useNavigate()
-  const dispatch = useDispatch();
-  const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
-
-  const { data: subjects, isLoading, isError } = useQuery<Subject[]>({
-    queryKey: ['subjects'],
-    queryFn: async () => {
-      const response = await axios.get<Subject[]>(`https://kiddo2.pythonanywhere.com/api/v1/academics/subjects`);
-      console.log(response)
-      return response.data;
-    },
-  });
-
-  // if(subjects?.status===401){
-     
-  //     // Navigate to login page if selections are missing
-     
-  //       navigate('/'); 
-    
-  // }
-
-  const handleCardClick = (subject: Subject) => {
-    if (selectedCardId === subject.id) {
-      setSelectedCardId(null);
-      dispatch(setSelectedStudy(null));
-    } else {
-      setSelectedCardId(subject.id);
-      dispatch(setSelectedStudy(subject));
-    }
-  };
-
-  if (isLoading) return <div>در حال بارگذاری دروس...</div>;
-  if (isError) return <div>خطا در بارگذاری دروس.</div>;
-
-  return (
-    <div className="grid grid-cols-2 gap-[12px]">
-      {subjects?.map((subject) => (
-        <CardContent
-          key={subject.id}
-          title={subject.name}
-          isSelected={selectedCardId === subject.id}
-          onClick={() => handleCardClick(subject)}
-        />
-      ))}
-    </div>
-  );
-};
-
-export default CardSelector;
-```
-
-================
-FILE: src\student\components\konjKav\studySelection\CardContent.tsx
-================
-
-```
-import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import riazi from "./../../../../assets/images/riazi.png";
-import { activeButtonReducer, disableButtonReducer } from "../../../../slice/konjkavSlice";
-
-interface CardContentProps {
-  title: string;
-  isSelected: boolean;
-  onClick: () => void;
-}
-
-const CardContent: React.FC<CardContentProps> = ({ title, isSelected, onClick }) => {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (isSelected) {
-      dispatch(activeButtonReducer());
-    } else {
-      dispatch(disableButtonReducer());
-    }
-  }, [isSelected, dispatch]);
-
-  return (
-    <div className={`${isSelected ? `onClickedCard-box transform translate-y-1` : "card-box"}`}>
-      <div
-        className={`rounded-[22px] cursor-pointer transition-colors duration-200 flex flex-col overflow-hidden h-full ${isSelected ? `bg-backGroundCard` : "bg-white"}`}
-        onClick={onClick}
-      >
-        <img
-          src={riazi}
-          className="w-full h-auto object-contain"
-          alt={title}
-        />
-        <div className="p-4 text-center">
-          <h1 className="text-sm font-semibold">{title}</h1>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default CardContent;
-```
-
-================
-FILE: src\student\components\konjKav\topicSelection\TopicSelector.tsx
-================
-
-```
-// src/student/pages/konjKav/topicSelection/TopicSelector.tsx
-import React from 'react';
-import TopicCard from './TopicCard'; // Assuming TopicCard is in the same directory
-
-interface Card {
-  id: string;
-  title: string;
-}
-
-interface TopicSelectorProps {
-  onSelectCard: (id: string | null) => void;
-  selectedCardId: string | null; // This will now reflect the single selected card
-  isDisabled: boolean;
-}
-
-const TopicSelector: React.FC<TopicSelectorProps> = ({ onSelectCard, selectedCardId, isDisabled }) => {
-  const cards: Card[] = [
-    { id: 'math', title: 'ریاضی' },
-    { id: 'science', title: 'علوم' },
-    { id: 'history', title: 'تاریخ' },
-    { id: 'geography', title: 'جغرافیا' },
-    { id: 'literature', title: 'ادبیات فارسی طولانی تر' },
-    { id: 'art', title: 'هنر' },
-  ];
-
-  const handleCardClick = (clickedId: string) => {
-    if (!isDisabled) {
-      // If the clicked card is already selected, deselect it. Otherwise, select it.
-      onSelectCard(selectedCardId === clickedId ? null : clickedId);
-    }
-  };
-
-  return (
-    <div
-      className={`
-        flex flex-wrap gap-[12px]
-        ${isDisabled ? 'opacity-60 pointer-events-none' : ''} // Visual feedback and prevent clicks
-      `}
-    >
-      {cards.map((card) => (
-        <TopicCard
-          key={card.id}
-          title={card.title}
-          isSelected={selectedCardId === card.id} // Pass down the actual selected ID
-          onClick={() => handleCardClick(card.id)}
-          isDisabled={isDisabled}
-        />
-      ))}
-    </div>
-  );
-};
-
-export default TopicSelector;
-```
-
-================
-FILE: src\student\components\konjKav\topicSelection\TopicSearchBox.tsx
-================
-
-```
-import React from 'react';
-
-interface TopicSearchBoxProps {
-  searchQuery: string;
-  setSearchQuery: (query: string) => void;
-}
-
-const TopicSearchBox: React.FC<TopicSearchBoxProps> = ({ searchQuery, setSearchQuery }) => {
-  return (
-    <div className="mx-[16px] my-4 ">
-      <div className="relative">
-        <textarea
-          rows={1}
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder=" اینجا بنویس..."
-          className="w-full bg-white text-[12px] border-borderColor-1 border-[2px] rounded-[24px] p-[16px] "
-          style={{ direction: 'rtl' }}
-        />
-      </div>
-    </div>
-  );
-};
-
-export default TopicSearchBox;
-```
-
-================
-FILE: src\student\components\konjKav\topicSelection\TopicCard.tsx
-================
-
-```
-import React from "react";
-
-interface TopicCardProps {
-  title: string;
-  isSelected: boolean;
-  onClick: () => void;
-  isDisabled?: boolean;
-}
-
-const TopicCard: React.FC<TopicCardProps> = ({ title, isSelected, onClick, isDisabled }) => {
-  return (
-    <div>
-      <div
-        className={`
-          ${isSelected ? "onClickedButton-box transform translate-y-1" : "buttonClicked-box"}
-          inline-block
-          ${isDisabled ? 'pointer-events-none' : ''} // Prevent clicks when disabled
-        `}
-      >
-        <div
-          className={`
-            py-[8px] px-[16px] rounded-[16px]
-            ${isSelected ? "bg-backGroundCard" : "bg-white"}
-            ${isDisabled ? 'cursor-not-allowed' : 'cursor-pointer'} 
-          `}
-          onClick={onClick}
-        >
-          <div className="flex justify-start items-center">
-            <h1 className="text-[14px] font-extrabold whitespace-nowrap">
-              {title}
-            </h1>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default TopicCard;
-```
-
-================
-FILE: src\student\components\konjKav\topicSelection\Topic.tsx
-================
-
-```
-import React, { useState } from "react";
-import TopicCard from "./TopicCard"; // Make sure the path is correct
-import TopicSelector from "./TopicSelector";
-
-const Topic = () => {
-  const [textAreaContent, setTextAreaContent] = useState<string>("");
-  const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
-
-  const handleTextAreaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const value = e.target.value;
-    setTextAreaContent(value);
-    // If user starts typing, unselect any card
-    if (value.length > 0) {
-      setSelectedCardId(null);
-    }
-  };
-
-  const handleCardSelection = (id: string | null) => {
-    setSelectedCardId(id);
-    // If a card is selected, clear the textarea
-    if (id !== null) {
-      setTextAreaContent("");
-    }
-  };
-
-  // Determine if textarea should be disabled
-  const isTextAreaDisabled = selectedCardId !== null;
-  // Determine if TopicSelector (cards) should be disabled
-  const isTopicSelectorDisabled = textAreaContent.length > 0;
-
-  return (
-    <div className="flex justify-center bg-white  rounded-[24px] rounded-b-none p-[16px] flex-col pb-20">
-      <textarea
-        placeholder="اینجا بنویس ... "
-        className="p-[16px] border-[2px] border-backGround-1 rounded-[16px] w-full text-[14px] resize-none overflow-hidden" // Added resize-none
-        rows={1} // Made textarea smaller by setting rows
-        value={textAreaContent}
-        onChange={handleTextAreaChange}
-        disabled={isTextAreaDisabled}
-        style={isTextAreaDisabled ? { opacity: 0.6, cursor: 'not-allowed' } : {}} 
-        
-      />
-      <h1 className="font-extrabold text-[14px] mt-[16px] mb-[12px]">
-        موضوعات پیشنهادی
-      </h1>
-      <div className="flex flex-wrap gap-[12px]">
-        <TopicSelector
-          onSelectCard={handleCardSelection}
-          selectedCardId={selectedCardId}
-          isDisabled={isTopicSelectorDisabled}
-        />
-      </div>
-    </div>
-  );
-};
-
-export default Topic;
-```
-
-================
-FILE: src\student\components\konjKav\topicSelection\MainContent.tsx
-================
-
-```
-// src/student/pages/konjKav/topicSelection/MainContent.tsx
-import React from 'react';
-import { useDispatch } from 'react-redux';
-import { activeButtonReducer, disableButtonReducer } from '../../../../slice/konjkavSlice';
-import TopicSelector from './TopicSelector';
-
-// This Topic interface isn't directly used by TopicSelector anymore,
-// but it's good to keep if you plan to use these topics for filtering/search later.
-interface Topic {
-  id: string;
-  title: string;
-  description: string;
-  emoji: string;
-}
-
-interface MainContentProps {
-  onTopicSelect: (topicId: string | null) => void; // Now passes a single ID or null
-  selectedTopicFromParent: string | null; // New prop to receive the currently selected topic
-}
-
-const MainContent: React.FC<MainContentProps> = ({ onTopicSelect, selectedTopicFromParent }) => {
-  const dispatch = useDispatch();
-
- 
-
-  // handleTopicSelect now directly passes the selected ID to the parent via onTopicSelect
-  const handleTopicSelect = (topicId: string | null) => {
-    onTopicSelect(topicId); // Pass the ID directly to the parent
-    
-    // Logic for activating/deactivating button based on selection
-    if (topicId) { // If something is selected
-      dispatch(activeButtonReducer());
-    } else { // If nothing is selected
-      dispatch(disableButtonReducer());
-    }
-  };
-
-  return (
-    <div
-      className='
-        p-4 
-        h-full w-full 
-        overflow-y-auto 
-        flex flex-col 
-      '
-    >
-      <TopicSelector
-        onSelectCard={handleTopicSelect}
-        selectedCardId={selectedTopicFromParent} // Pass the selected ID from parent to TopicSelector
-        isDisabled={false} // Assuming TopicSelector itself is not disabled
-      />
-    </div>
-  );
-};
-
-export default MainContent;
-```
-
-================
-FILE: src\student\components\konjKav\topicSelection\HeroSection.tsx
-================
-
-```
-import React from 'react';
-import konjkav from './../../../../assets/images/konjkav.png';
-
-const HeroSection = () => {
-  return (
-    <div className="flex justify-center items-center flex-col ">
-      <img src={konjkav} className="w-[104px] h-[104px] mb-10 mt-5" />
-      <h1 className="mb-10">لطفا موضوع مورد نظر را انتخاب کنید</h1>
-    </div>
-  );
-};
-
-export default HeroSection;
-
-```
-
-================
-FILE: src\student\components\tarkibKon\studySelection\MainContent.tsx
-================
-
-```
-import React from 'react';
-import CardSelector from './CardSelector';
-
-const MainContent: React.FC = () => {
-  return (
-    <div className='border-2 border-borderColor-1 bg-white rounded-[16px] p-4 h-full w-full overflow-y-auto flex flex-col'>
-      <div> 
-        <CardSelector />
-      </div>
-    </div>
-  );
-};
-
-export default MainContent;
-```
-
-================
-FILE: src\student\components\tarkibKon\studySelection\HeroSection.tsx
-================
-
-```
-import React from 'react'
-import darsYar from './../../../../assets/images/DarsYar.png'
-
-const HeroSection = () => {
-  return (
-    <div className='flex justify-center items-center flex-col '>
-      <img src={darsYar} className='w-[104px] h-[104px] mb-10 mt-5'/>
-      <h1 className='mb-10'>
-        لطفا یکی از درس ها را انتخاب کنید
-      </h1>
-    </div>
-  )
-}
-
-export default HeroSection
-
-```
-
-================
-FILE: src\student\components\tarkibKon\studySelection\CardSelector.tsx
-================
-
-```
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { setSelectedStudy } from '../../../../slice/tarkibkonSlice';
-import CardContent from './CardContent';
-import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
-
-interface Subject {
-  id: string;
-  name: string;
-}
-
-const CardSelector: React.FC = () => {
-    const dispatch = useDispatch();
-    const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
-
-    const { data: subjects, isLoading, isError } = useQuery<Subject[]>({
-        queryKey: ['subjects'],
-        queryFn: async () => {
-            const response = await axios.get<Subject[]>(`https://kiddo2.pythonanywhere.com/api/v1/academics/subjects`);
-            return response.data;
-        },
-    });
-
-    const handleCardClick = (subject: Subject) => {
-        if (selectedCardId === subject.id) {
-            setSelectedCardId(null);
-            dispatch(setSelectedStudy(null));
-        } else {
-            setSelectedCardId(subject.id);
-            dispatch(setSelectedStudy(subject));
-        }
-    };
-
-    if (isLoading) return <div>در حال بارگذاری دروس...</div>;
-    if (isError) return <div>خطا در بارگذاری دروس.</div>;
-
-    return (
-        <div className="grid grid-cols-2 gap-[12px]">
-            {subjects?.map((subject) => (
-                <CardContent
-                    key={subject.id}
-                    name={subject.name}
-                    isSelected={selectedCardId === subject.id}
-                    onClick={() => handleCardClick(subject)}
-                />
-            ))}
-        </div>
-    );
-};
-
-export default CardSelector;
-```
-
-================
-FILE: src\student\components\tarkibKon\studySelection\CardContent.tsx
-================
-
-```
-import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import riazi from "./../../../../assets/images/riazi.png";
-import { activeButtonReducer, disableButtonReducer } from "../../../../slice/tarkibkonSlice";
-
-interface CardContentProps {
-  name: string;
-  isSelected: boolean;
-  onClick: () => void;
-}
-
-const CardContent: React.FC<CardContentProps> = ({ name, isSelected, onClick }) => {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (isSelected) {
-      dispatch(activeButtonReducer());
-    } else {
-      dispatch(disableButtonReducer());
-    }
-  }, [isSelected, dispatch]);
-
-  return (
-    <div className={`${isSelected ? `onClickedCard-box transform translate-y-1` : "card-box"}`}>
-      <div
-        className={`rounded-[22px] cursor-pointer transition-colors duration-200 flex flex-col overflow-hidden h-full ${isSelected ? `bg-backGroundCard` : "bg-white"}`}
-        onClick={onClick}
-      >
-        <img src={riazi} className="w-full h-auto object-contain" alt={name}/>
-        <div className="p-4 text-center">
-          <h1 className="text-sm font-semibold">{name}</h1>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default CardContent;
-```
-
-================
 FILE: src\student\components\tarkibKon\learnTopic\TopicSelector.tsx
 ================
 
 ```
-// src/student/pages/konjKav/topicSelection/TopicSelector.tsx
+// src/student/components/tarkibKon/favoriteTopic/TopicSelector.tsx
 import React from 'react';
-import TopicCard from './TopicCard'; // Assuming TopicCard is in the same directory
+import TopicCard from './TopicCard';
 
 interface Card {
   id: string;
@@ -5310,23 +4788,22 @@ interface Card {
 
 interface TopicSelectorProps {
   onSelectCard: (id: string | null) => void;
-  selectedCardId: string | null; // This will now reflect the single selected card
+  selectedCardId: string | null;
   isDisabled: boolean;
 }
 
 const TopicSelector: React.FC<TopicSelectorProps> = ({ onSelectCard, selectedCardId, isDisabled }) => {
   const cards: Card[] = [
-    { id: 'math', title: 'ریاضی' },
-    { id: 'science', title: 'علوم' },
-    { id: 'history', title: 'تاریخ' },
-    { id: 'geography', title: 'جغرافیا' },
-    { id: 'literature', title: 'ادبیات فارسی طولانی تر' },
-    { id: 'art', title: 'هنر' },
+    { id: 'فوتبال', title: 'فوتبال' },
+    { id: 'ماینکرفت', title: 'ماینکرفت' },
+    { id: 'دایناسورها', title: 'دایناسورها' },
+    { id: 'سفر به فضا', title: 'سفر به فضا' },
+    { id: 'داستان‌های شاهنامه', title: 'داستان‌های شاهنامه' },
+    { id: 'ابرقهرمان‌ها', title: 'ابرقهرمان‌ها' },
   ];
 
   const handleCardClick = (clickedId: string) => {
     if (!isDisabled) {
-      // If the clicked card is already selected, deselect it. Otherwise, select it.
       onSelectCard(selectedCardId === clickedId ? null : clickedId);
     }
   };
@@ -5335,14 +4812,14 @@ const TopicSelector: React.FC<TopicSelectorProps> = ({ onSelectCard, selectedCar
     <div
       className={`
         flex flex-wrap gap-[12px]
-        ${isDisabled ? 'opacity-60 pointer-events-none' : ''} // Visual feedback and prevent clicks
+        ${isDisabled ? 'opacity-60 pointer-events-none' : ''}
       `}
     >
       {cards.map((card) => (
         <TopicCard
           key={card.id}
           title={card.title}
-          isSelected={selectedCardId === card.id} // Pass down the actual selected ID
+          isSelected={selectedCardId === card.id}
           onClick={() => handleCardClick(card.id)}
           isDisabled={isDisabled}
         />
@@ -5375,7 +4852,7 @@ const TopicSearchBox: React.FC<TopicSearchBoxProps> = ({ searchQuery, setSearchQ
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder=" اینجا بنویس..."
-          className="w-full bg-white text-[12px] border-borderColor-1 border-[2px] rounded-[24px] p-[16px] "
+          className="p-[16px] rounded-[16px] w-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-chatButton-1 "
           style={{ direction: 'rtl' }}
         />
       </div>
@@ -5581,59 +5058,154 @@ export default HeroSection;
 ```
 
 ================
-FILE: src\student\components\tarkibKon\welcome\HeroSection.tsx
+FILE: src\student\components\tarkibKon\studySelection\MainContent.tsx
 ================
 
 ```
-import happyFace from './../../../../assets/images/happyFace.png'
+import React from 'react';
+import CardSelector from './CardSelector';
+
+const MainContent: React.FC = () => {
+  return (
+    <div className='border-2 border-borderColor-1 bg-white rounded-[16px] p-4 h-full w-full overflow-y-auto flex flex-col'>
+      <div> 
+        <CardSelector />
+      </div>
+    </div>
+  );
+};
+
+export default MainContent;
+```
+
+================
+FILE: src\student\components\tarkibKon\studySelection\HeroSection.tsx
+================
+
+```
+import React from 'react'
+import darsYar from './../../../../assets/images/DarsYar.png'
 
 const HeroSection = () => {
   return (
-    <div className='mb-[32px] pt-[16px]'>
-        <div className='flex justify-center  p-4'>
-        <img src={happyFace}/>
-      </div>
-      <p className='text-center font-extrabold'>به ترکیب‌کن خوش آمدی!</p>
+    <div className='flex justify-center items-center flex-col '>
+      <img src={darsYar} className='w-[104px] h-[104px] mb-10 mt-5'/>
+      <h1 className='mb-10'>
+        لطفا یکی از درس ها را انتخاب کنید
+      </h1>
     </div>
   )
 }
 
 export default HeroSection
+
 ```
 
 ================
-FILE: src\student\components\tarkibKon\welcome\CardSection.tsx
+FILE: src\student\components\tarkibKon\studySelection\CardSelector.tsx
 ================
 
 ```
-import React from 'react'
-import { studyAssistantConstatnt } from '../../../../constants/studyAssistantConstant'
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { setSelectedStudy } from '../../../../slice/tarkibkonSlice';
+import CardContent from './CardContent';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 
-
-const CardSection:React.FC = () => {
-  return (
-  <div className='h-screen'>
-   {studyAssistantConstatnt.map(study=>(
-        <div className='card-box mb-[12px] gap-[12px] '>
-        <div className=' flex justify-center flex-col bg-white rounded-[22px] gap-[8px] p-[16px] '>
-            <div className='gap-[8px] flex items-center justify-start'>
-               <img src={study.logo}/>
-                <h1 className='font-extrabold text-[14px]'> {study.title}   </h1>
-
-            </div>
-             <div>
-           <p className=' text-justify  text-[14px]'>{study.description}</p>
-        </div>
-            
-        </div>
-       
-     </div>
-  )
-   )}
-  </div>)
+interface Subject {
+  id: string;
+  name: string;
+  image_url:string
 }
 
-export default CardSection
+const CardSelector: React.FC = () => {
+    const dispatch = useDispatch();
+    const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
+
+    const { data: subjects, isLoading, isError } = useQuery<Subject[]>({
+        queryKey: ['subjects'],
+        queryFn: async () => {
+            const response = await axios.get<Subject[]>(`https://kiddo2.pythonanywhere.com/api/v1/academics/subjects`);
+            return response.data;
+        },
+    });
+
+    const handleCardClick = (subject: Subject) => {
+        if (selectedCardId === subject.id) {
+            setSelectedCardId(null);
+            dispatch(setSelectedStudy(null));
+        } else {
+            setSelectedCardId(subject.id);
+            dispatch(setSelectedStudy(subject));
+        }
+    };
+
+    if (isLoading) return <div>در حال بارگذاری دروس...</div>;
+    if (isError) return <div>خطا در بارگذاری دروس.</div>;
+
+    return (
+        <div className="grid grid-cols-2 gap-[12px]">
+            {subjects?.map((subject) => (
+                <CardContent
+                    key={subject.id}
+                    name={subject.name}
+                    image={subject.image_url}
+                    isSelected={selectedCardId === subject.id}
+                    onClick={() => handleCardClick(subject)}
+                />
+            ))}
+        </div>
+    );
+};
+
+export default CardSelector;
+```
+
+================
+FILE: src\student\components\tarkibKon\studySelection\CardContent.tsx
+================
+
+```
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import riazi from "./../../../../assets/images/riazi.png";
+import { activeButtonReducer, disableButtonReducer } from "../../../../slice/tarkibkonSlice";
+
+interface CardContentProps {
+  name: string;
+  isSelected: boolean;
+  image:string,
+  onClick: () => void;
+}
+
+const CardContent: React.FC<CardContentProps> = ({image, name, isSelected, onClick }) => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (isSelected) {
+      dispatch(activeButtonReducer());
+    } else {
+      dispatch(disableButtonReducer());
+    }
+  }, [isSelected, dispatch]);
+
+  return (
+    <div className={`${isSelected ? `onClickedCard-box transform translate-y-1` : "card-box"}`}>
+      <div
+        className={`rounded-[22px] cursor-pointer transition-colors duration-200 flex flex-col overflow-hidden h-full ${isSelected ? `bg-backGroundCard` : "bg-white"}`}
+        onClick={onClick}
+      >
+        <img src={image || riazi} className="w-full h-auto object-contain" alt={name}/>
+        <div className="p-4 text-center">
+          <h1 className="text-sm font-semibold">{name}</h1>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default CardContent;
 ```
 
 ================
@@ -5641,9 +5213,9 @@ FILE: src\student\components\tarkibKon\favoriteTopic\TopicSelector.tsx
 ================
 
 ```
-// src/student/pages/konjKav/topicSelection/TopicSelector.tsx
+// src/student/components/tarkibKon/learnTopic/TopicSelector.tsx
 import React from 'react';
-import TopicCard from './TopicCard'; // Assuming TopicCard is in the same directory
+import TopicCard from './TopicCard';
 
 interface Card {
   id: string;
@@ -5652,23 +5224,22 @@ interface Card {
 
 interface TopicSelectorProps {
   onSelectCard: (id: string | null) => void;
-  selectedCardId: string | null; // This will now reflect the single selected card
+  selectedCardId: string | null;
   isDisabled: boolean;
 }
 
 const TopicSelector: React.FC<TopicSelectorProps> = ({ onSelectCard, selectedCardId, isDisabled }) => {
   const cards: Card[] = [
-    { id: 'math', title: 'ریاضی' },
-    { id: 'science', title: 'علوم' },
-    { id: 'history', title: 'تاریخ' },
-    { id: 'geography', title: 'جغرافیا' },
-    { id: 'literature', title: 'ادبیات فارسی طولانی تر' },
-    { id: 'art', title: 'هنر' },
+    { id: 'کسرها', title: 'کسرها' },
+    { id: 'فتوسنتز', title: 'فتوسنتز' },
+    { id: 'ساختار اتم', title: 'ساختار اتم' },
+    { id: 'تاریخ صفویه', title: 'تاریخ صفویه' },
+    { id: 'آب و هوای ایران', title: 'آب و هوای ایران' },
+    { id: 'شعر نو', title: 'شعر نو' },
   ];
 
   const handleCardClick = (clickedId: string) => {
     if (!isDisabled) {
-      // If the clicked card is already selected, deselect it. Otherwise, select it.
       onSelectCard(selectedCardId === clickedId ? null : clickedId);
     }
   };
@@ -5677,14 +5248,14 @@ const TopicSelector: React.FC<TopicSelectorProps> = ({ onSelectCard, selectedCar
     <div
       className={`
         flex flex-wrap gap-[12px]
-        ${isDisabled ? 'opacity-60 pointer-events-none' : ''} // Visual feedback and prevent clicks
+        ${isDisabled ? 'opacity-60 pointer-events-none' : ''}
       `}
     >
       {cards.map((card) => (
         <TopicCard
           key={card.id}
           title={card.title}
-          isSelected={selectedCardId === card.id} // Pass down the actual selected ID
+          isSelected={selectedCardId === card.id}
           onClick={() => handleCardClick(card.id)}
           isDisabled={isDisabled}
         />
@@ -5717,7 +5288,7 @@ const TopicSearchBox: React.FC<TopicSearchBoxProps> = ({ searchQuery, setSearchQ
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder=" اینجا بنویس..."
-          className="w-full bg-white text-[12px] border-borderColor-1 border-[2px] rounded-[24px] p-[16px] "
+          className="p-[16px] rounded-[16px] w-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-chatButton-1"
           style={{ direction: 'rtl' }}
         />
       </div>
@@ -5923,6 +5494,738 @@ export default HeroSection;
 ```
 
 ================
+FILE: src\student\components\konjKav\welcome\HeroSection.tsx
+================
+
+```
+import happyFace from './../../../../assets/images/happyFace.png'
+
+const HeroSection = () => {
+  return (
+    <div className='mb-[32px] pt-[16px]'>
+        <div className='flex justify-center  p-4'>
+        <img src={happyFace}/>
+      </div>
+      <p className='text-center font-extrabold'>به کنج‌کاو خوش آمدی!</p>
+    </div>
+  )
+}
+
+export default HeroSection
+```
+
+================
+FILE: src\student\components\konjKav\welcome\CardSection.tsx
+================
+
+```
+import React from 'react'
+import { studyAssistantConstatnt } from '../../../../constants/studyAssistantConstant'
+
+
+const CardSection:React.FC = () => {
+  return (
+  <div className='h-screen'>
+   {studyAssistantConstatnt.map(study=>(
+        <div className='card-box mb-[12px] gap-[12px] '>
+        <div className=' flex justify-center flex-col bg-white rounded-[22px] gap-[8px] p-[16px] '>
+            <div className='gap-[8px] flex items-center justify-start'>
+               <img src={study.logo}/>
+                <h1 className='font-extrabold text-[14px]'> {study.title}   </h1>
+
+            </div>
+             <div>
+           <p className=' text-justify  text-[14px]'>{study.description}</p>
+        </div>
+            
+        </div>
+       
+     </div>
+  )
+   )}
+  </div>)
+}
+
+export default CardSection
+```
+
+================
+FILE: src\student\components\konjKav\topicSelection\TopicSelector.tsx
+================
+
+```
+// src/student/components/konjKav/topicSelection/TopicSelector.tsx
+import React from 'react';
+import TopicCard from './TopicCard';
+
+interface Card {
+  id: string;
+  title: string;
+}
+
+interface TopicSelectorProps {
+  onSelectCard: (id: string | null) => void;
+  selectedCardId: string | null;
+  isDisabled: boolean;
+}
+
+const TopicSelector: React.FC<TopicSelectorProps> = ({ onSelectCard, selectedCardId, isDisabled }) => {
+  const cards: Card[] = [
+    { id: 'سیارات منظومه شمسی', title: 'سیارات منظومه شمسی' },
+    { id: 'زنجیره غذایی', title: 'زنجیره غذایی' },
+    { id: 'تاریخ ایران باستان', title: 'تاریخ ایران باستان' },
+    { id: 'آب و هوای ایران', title: 'آب و هوای ایران' },
+    { id: 'شاعران معروف فارسی', title: 'شاعران معروف فارسی' },
+    { id: 'هنر اسلامی', title: 'هنر اسلامی' },
+  ];
+
+  const handleCardClick = (clickedId: string) => {
+    if (!isDisabled) {
+      onSelectCard(selectedCardId === clickedId ? null : clickedId);
+    }
+  };
+
+  return (
+    <div
+      className={`
+        flex flex-wrap gap-[12px]
+        ${isDisabled ? 'opacity-60 pointer-events-none' : ''}
+      `}
+    >
+      {cards.map((card) => (
+        <TopicCard
+          key={card.id}
+          title={card.title}
+          isSelected={selectedCardId === card.id}
+          onClick={() => handleCardClick(card.id)}
+          isDisabled={isDisabled}
+        />
+      ))}
+    </div>
+  );
+};
+
+export default TopicSelector;
+```
+
+================
+FILE: src\student\components\konjKav\topicSelection\TopicSearchBox.tsx
+================
+
+```
+import React from 'react';
+
+interface TopicSearchBoxProps {
+  searchQuery: string;
+  setSearchQuery: (query: string) => void;
+}
+
+const TopicSearchBox: React.FC<TopicSearchBoxProps> = ({ searchQuery, setSearchQuery }) => {
+  return (
+    <div className="mx-[16px] my-4 ">
+      <div className="relative">
+        <textarea
+          rows={1}
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder=" اینجا بنویس..."
+          className="p-[16px] rounded-[16px] w-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-chatButton-1"
+          style={{ direction: 'rtl' }}
+        />
+      </div>
+    </div>
+  );
+};
+
+export default TopicSearchBox;
+```
+
+================
+FILE: src\student\components\konjKav\topicSelection\TopicCard.tsx
+================
+
+```
+import React from "react";
+
+interface TopicCardProps {
+  title: string;
+  isSelected: boolean;
+  onClick: () => void;
+  isDisabled?: boolean;
+}
+
+const TopicCard: React.FC<TopicCardProps> = ({ title, isSelected, onClick, isDisabled }) => {
+  return (
+    <div>
+      <div
+        className={`
+          ${isSelected ? "onClickedButton-box transform translate-y-1" : "buttonClicked-box"}
+          inline-block
+          ${isDisabled ? 'pointer-events-none' : ''} // Prevent clicks when disabled
+        `}
+      >
+        <div
+          className={`
+            py-[8px] px-[16px] rounded-[16px]
+            ${isSelected ? "bg-backGroundCard" : "bg-white"}
+            ${isDisabled ? 'cursor-not-allowed' : 'cursor-pointer'} 
+          `}
+          onClick={onClick}
+        >
+          <div className="flex justify-start items-center">
+            <h1 className="text-[14px] font-extrabold whitespace-nowrap">
+              {title}
+            </h1>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default TopicCard;
+```
+
+================
+FILE: src\student\components\konjKav\topicSelection\Topic.tsx
+================
+
+```
+import React, { useState } from "react";
+import TopicCard from "./TopicCard"; // Make sure the path is correct
+import TopicSelector from "./TopicSelector";
+
+const Topic = () => {
+  const [textAreaContent, setTextAreaContent] = useState<string>("");
+  const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
+
+  const handleTextAreaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+    setTextAreaContent(value);
+    // If user starts typing, unselect any card
+    if (value.length > 0) {
+      setSelectedCardId(null);
+    }
+  };
+
+  const handleCardSelection = (id: string | null) => {
+    setSelectedCardId(id);
+    // If a card is selected, clear the textarea
+    if (id !== null) {
+      setTextAreaContent("");
+    }
+  };
+
+  // Determine if textarea should be disabled
+  const isTextAreaDisabled = selectedCardId !== null;
+  // Determine if TopicSelector (cards) should be disabled
+  const isTopicSelectorDisabled = textAreaContent.length > 0;
+
+  return (
+    <div className="flex justify-center bg-white  rounded-[24px] rounded-b-none p-[16px] flex-col pb-20">
+      <textarea
+        placeholder="اینجا بنویس ... "
+        className="p-[16px] border-[2px] border-backGround-1 rounded-[16px] w-full text-[14px] resize-none overflow-hidden" // Added resize-none
+        rows={1} // Made textarea smaller by setting rows
+        value={textAreaContent}
+        onChange={handleTextAreaChange}
+        disabled={isTextAreaDisabled}
+        style={isTextAreaDisabled ? { opacity: 0.6, cursor: 'not-allowed' } : {}} 
+        
+      />
+      <h1 className="font-extrabold text-[14px] mt-[16px] mb-[12px]">
+        موضوعات پیشنهادی
+      </h1>
+      <div className="flex flex-wrap gap-[12px]">
+        <TopicSelector
+          onSelectCard={handleCardSelection}
+          selectedCardId={selectedCardId}
+          isDisabled={isTopicSelectorDisabled}
+        />
+      </div>
+    </div>
+  );
+};
+
+export default Topic;
+```
+
+================
+FILE: src\student\components\konjKav\topicSelection\MainContent.tsx
+================
+
+```
+// src/student/pages/konjKav/topicSelection/MainContent.tsx
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { activeButtonReducer, disableButtonReducer } from '../../../../slice/konjkavSlice';
+import TopicSelector from './TopicSelector';
+
+// This Topic interface isn't directly used by TopicSelector anymore,
+// but it's good to keep if you plan to use these topics for filtering/search later.
+interface Topic {
+  id: string;
+  title: string;
+  description: string;
+  emoji: string;
+}
+
+interface MainContentProps {
+  onTopicSelect: (topicId: string | null) => void; // Now passes a single ID or null
+  selectedTopicFromParent: string | null; // New prop to receive the currently selected topic
+}
+
+const MainContent: React.FC<MainContentProps> = ({ onTopicSelect, selectedTopicFromParent }) => {
+  const dispatch = useDispatch();
+
+ 
+
+  // handleTopicSelect now directly passes the selected ID to the parent via onTopicSelect
+  const handleTopicSelect = (topicId: string | null) => {
+    onTopicSelect(topicId); // Pass the ID directly to the parent
+    
+    // Logic for activating/deactivating button based on selection
+    if (topicId) { // If something is selected
+      dispatch(activeButtonReducer());
+    } else { // If nothing is selected
+      dispatch(disableButtonReducer());
+    }
+  };
+
+  return (
+    <div
+      className='
+        p-4 
+        h-full w-full 
+        overflow-y-auto 
+        flex flex-col 
+      '
+    >
+      <TopicSelector
+        onSelectCard={handleTopicSelect}
+        selectedCardId={selectedTopicFromParent} // Pass the selected ID from parent to TopicSelector
+        isDisabled={false} // Assuming TopicSelector itself is not disabled
+      />
+    </div>
+  );
+};
+
+export default MainContent;
+```
+
+================
+FILE: src\student\components\konjKav\topicSelection\HeroSection.tsx
+================
+
+```
+import React from 'react';
+import konjkav from './../../../../assets/images/konjkav.png';
+
+const HeroSection = () => {
+  return (
+    <div className="flex justify-center items-center flex-col ">
+      <img src={konjkav} className="w-[104px] h-[104px] mb-10 mt-5" />
+      <h1 className="mb-10">لطفا موضوع مورد نظر را انتخاب کنید</h1>
+    </div>
+  );
+};
+
+export default HeroSection;
+
+```
+
+================
+FILE: src\student\components\konjKav\studySelection\MainContent.tsx
+================
+
+```
+import React from 'react';
+import CardSelector from './CardSelector';
+
+const MainContent: React.FC = () => {
+  return (
+    <div
+      className='
+        border-2 border-borderColor-1 bg-white rounded-[16px]
+        p-4 
+        h-full w-full 
+        overflow-y-auto 
+        flex flex-col 
+      '
+    >
+      <div> 
+        <CardSelector />
+      </div>
+    </div>
+  );
+};
+
+export default MainContent;
+```
+
+================
+FILE: src\student\components\konjKav\studySelection\HeroSection.tsx
+================
+
+```
+import React from 'react'
+import konjkav from './../../../../assets/images/konjkav.png'
+
+const HeroSection = () => {
+  return (
+    <div className='flex justify-center items-center flex-col '>
+      <img src={konjkav} className='w-[104px] h-[104px] mb-10 mt-5'/>
+      <h1 className='mb-10'>
+        لطفا یکی از درس ها را انتخاب کنید
+      </h1>
+    </div>
+  )
+}
+
+export default HeroSection
+
+```
+
+================
+FILE: src\student\components\konjKav\studySelection\CardSelector.tsx
+================
+
+```
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { setSelectedStudy } from '../../../../slice/konjkavSlice';
+import CardContent from './CardContent';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
+interface Subject {
+  id: string;
+  name: string;
+  image_url: string;
+}
+
+const CardSelector: React.FC = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
+
+  const { data: subjects, isLoading, isError } = useQuery<Subject[]>({
+    queryKey: ['subjects'],
+    queryFn: async () => {
+      const response = await axios.get<Subject[]>(`https://kiddo2.pythonanywhere.com/api/v1/academics/subjects`);
+      console.log(response)
+      return response.data;
+    },
+  });
+
+  // if(subjects?.status===401){
+     
+  //     // Navigate to login page if selections are missing
+     
+  //       navigate('/'); 
+    
+  // }
+
+  const handleCardClick = (subject: Subject) => {
+    if (selectedCardId === subject.id) {
+      setSelectedCardId(null);
+      dispatch(setSelectedStudy(null));
+    } else {
+      setSelectedCardId(subject.id);
+      dispatch(setSelectedStudy(subject));
+    }
+  };
+
+  if (isLoading) return <div>در حال بارگذاری دروس...</div>;
+  if (isError) return <div>خطا در بارگذاری دروس.</div>;
+
+  return (
+    <div className="grid grid-cols-2 gap-[12px]">
+      {subjects?.map((subject) => (
+        <CardContent
+          key={subject.id}
+          title={subject.name}
+          image={subject.image_url}
+          isSelected={selectedCardId === subject.id}
+          onClick={() => handleCardClick(subject)}
+        />
+      ))}
+    </div>
+  );
+};
+
+export default CardSelector;
+```
+
+================
+FILE: src\student\components\konjKav\studySelection\CardContent.tsx
+================
+
+```
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import riazi from "./../../../../assets/images/riazi.png";
+import { activeButtonReducer, disableButtonReducer } from "../../../../slice/konjkavSlice";
+
+interface CardContentProps {
+  title: string;
+  isSelected: boolean;
+  image: string;
+  onClick: () => void;
+}
+
+const CardContent: React.FC<CardContentProps> = ({ image,title, isSelected, onClick }) => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (isSelected) {
+      dispatch(activeButtonReducer());
+    } else {
+      dispatch(disableButtonReducer());
+    }
+  }, [isSelected, dispatch]);
+
+  return (
+    <div className={`${isSelected ? `onClickedCard-box transform translate-y-1` : "card-box"}`}>
+      <div
+        className={`rounded-[22px] cursor-pointer transition-colors duration-200 flex flex-col overflow-hidden h-full ${isSelected ? `bg-backGroundCard` : "bg-white"}`}
+        onClick={onClick}
+      >
+        <img
+          src={image || riazi}
+          className="w-full h-auto object-contain"
+          alt={title}
+        />
+        <div className="p-4 text-center">
+          <h1 className="text-sm font-semibold">{title}</h1>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default CardContent;
+```
+
+================
+FILE: src\student\components\konjKav\recentChat\RecentChat.tsx
+================
+
+```
+
+```
+
+================
+FILE: src\student\components\darsYar\studySelection\MainContent.tsx
+================
+
+```
+// MainContent.tsx
+import React from 'react';
+import CardSelector from './CardSelector'; // CardContent is not directly used here
+
+
+const MainContent: React.FC = () => {
+  return (
+    <div
+      className='
+        border-2 border-borderColor-1 bg-white rounded-[16px]
+        p-4 
+        h-full w-full 
+        overflow-y-auto 
+        flex flex-col 
+      '
+    >
+      {/* The `gap-[12px] pt-[16px] h-full` on the outer div were a bit ambiguous.
+          Moved padding and adjusted gap/flex behavior here. */}
+      <div> {/* This div acts as a wrapper for CardSelector */}
+        <CardSelector />
+      </div>
+      
+    </div>
+  );
+};
+
+export default MainContent;
+```
+
+================
+FILE: src\student\components\darsYar\studySelection\HeroSection.tsx
+================
+
+```
+import React from 'react'
+import darsYar from './../../../../assets/images/DarsYar.png'
+
+const HeroSection = () => {
+  return (
+    <div className='flex justify-center items-center flex-col '>
+      <img src={darsYar} className='w-[104px] h-[104px] mb-10 mt-5'/>
+      <h1 className='mb-10 text-[16px] font-extrabold'>
+        لطفا یکی از درس ها را انتخاب کنید
+      </h1>
+    </div>
+  )
+}
+
+export default HeroSection
+
+```
+
+================
+FILE: src\student\components\darsYar\studySelection\CardSelector.tsx
+================
+
+```
+// CardSelector.tsx
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { setSelectedStudy, clearSelections } from '../../../../slice/darsyarSlice';
+import CardContent from './CardContent';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+
+interface Card {
+  id: string;
+  name: string;
+  image_url: string;
+}
+
+const CardSelector: React.FC = () => {
+
+   const {
+    data,
+    isLoading,
+      
+  } = useQuery<Card[]>({ 
+    queryKey: ['classes'],
+    queryFn: async () => { 
+      const response = await axios.get<Card[]>(`https://kiddo2.pythonanywhere.com/api/v1/academics/subjects`);
+      return response.data; 
+    },
+    });
+   if (!isLoading){
+     console.log(data)
+   }
+  const dispatch = useDispatch();
+ 
+
+  const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
+
+  const handleCardClick = (clickedId: string, name: string) => {
+    const newSelectedId = selectedCardId === clickedId ? null : clickedId;
+    setSelectedCardId(newSelectedId);
+    
+    if (newSelectedId) {
+      dispatch(setSelectedStudy({
+        id: clickedId,
+        name: name
+      }));
+    } else {
+      // When deselecting, we set the study to null
+      dispatch(clearSelections());
+    }
+  };
+
+  return (
+   (!isLoading) &&  <div className="grid grid-cols-2 gap-[12px]">
+      {data?.map((card) => (
+        <CardContent
+          key={card.id}
+          name={card.name}
+          image={card.image_url}
+          isSelected={selectedCardId === card.id}
+          onClick={() => handleCardClick(card.id, card.name)}
+        />
+      ))}
+    </div>
+  );
+};
+
+export default CardSelector;
+```
+
+================
+FILE: src\student\components\darsYar\studySelection\CardContent.tsx
+================
+
+```
+// CardContent.tsx
+import React, { useEffect } from "react"; // Import useEffect
+import riazi from "./../../../../assets/images/riazi.png";
+import { useDispatch } from "react-redux";
+import { activeButtonReducer, disableButtonReducer } from "../../../../slice/darsyarSlice";
+
+interface CardContentProps {
+  name: string;
+  image:string;
+  isSelected: boolean;
+  onClick: () => void;
+}
+
+const CardContent: React.FC<CardContentProps> = ({
+  name,
+  isSelected,
+  image,
+  onClick,
+}) => {
+  const dispatch = useDispatch();
+
+
+  useEffect(() => {
+    if (isSelected) {
+      dispatch(activeButtonReducer());
+    } else {
+      dispatch(disableButtonReducer());
+    }
+  }, [isSelected, dispatch]); 
+
+  return (
+    <div className={`${isSelected ? `onClickedCard-box transform translate-y-1` : "card-box"}`}>
+      {" "}
+      <div
+        className={`
+          rounded-[22px] cursor-pointer
+          transition-colors duration-200 
+          flex flex-col 
+          overflow-hidden 
+          h-full 
+          ${isSelected ? `bg-backGroundCard` : "bg-white"}
+        `}
+        onClick={onClick}
+      >
+        <img
+          src={image || riazi}
+          className=" w-full h-auto object-contain"
+          alt={name}
+        />
+
+        <div
+          className="
+          p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12 
+          text-center flex flex-col justify-center items-center 
+        "
+        >
+          <h1
+            className="
+            text-sm 
+            font-semibold
+            pb-0 mt-0 
+          "
+          >
+            {name}
+          </h1>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default CardContent;
+```
+
+================
 FILE: src\student\components\darsYar\studyAssistant\HeroSection.tsx
 ================
 
@@ -6078,7 +6381,7 @@ const HeroSection = () => {
   return (
     <div className='flex justify-center items-center flex-col gap-[32px] pt-[16px]'>
       <img src={darsYar} className='w-[104px] h-[104px]'/>
-      <h1 className='mb-10 text-[16px] font-yekanBakhText'>
+      <h1 className='mb-10 text-[16px]  font-extrabold'>
         لطفا یکی از درس ها را انتخاب کنید
       </h1>
     </div>
@@ -6151,212 +6454,6 @@ export default CardContent;
 ```
 
 ================
-FILE: src\student\components\darsYar\studySelection\MainContent.tsx
-================
-
-```
-// MainContent.tsx
-import React from 'react';
-import CardSelector from './CardSelector'; // CardContent is not directly used here
-
-
-const MainContent: React.FC = () => {
-  return (
-    <div
-      className='
-        border-2 border-borderColor-1 bg-white rounded-[16px]
-        p-4 
-        h-full w-full 
-        overflow-y-auto 
-        flex flex-col 
-      '
-    >
-      {/* The `gap-[12px] pt-[16px] h-full` on the outer div were a bit ambiguous.
-          Moved padding and adjusted gap/flex behavior here. */}
-      <div> {/* This div acts as a wrapper for CardSelector */}
-        <CardSelector />
-      </div>
-      
-    </div>
-  );
-};
-
-export default MainContent;
-```
-
-================
-FILE: src\student\components\darsYar\studySelection\HeroSection.tsx
-================
-
-```
-import React from 'react'
-import darsYar from './../../../../assets/images/DarsYar.png'
-
-const HeroSection = () => {
-  return (
-    <div className='flex justify-center items-center flex-col '>
-      <img src={darsYar} className='w-[104px] h-[104px] mb-10 mt-5'/>
-      <h1 className='mb-10'>
-        لطفا یکی از درس ها را انتخاب کنید
-      </h1>
-    </div>
-  )
-}
-
-export default HeroSection
-
-```
-
-================
-FILE: src\student\components\darsYar\studySelection\CardSelector.tsx
-================
-
-```
-// CardSelector.tsx
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { setSelectedStudy, clearSelections } from '../../../../slice/darsyarSlice';
-import CardContent from './CardContent';
-import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
-
-interface Card {
-  id: string;
-  name: string;
-}
-
-const CardSelector: React.FC = () => {
-
-   const {
-    data,
-    isLoading,
-    isError, 
-    error,   
-  } = useQuery<Card[]>({ 
-    queryKey: ['classes'],
-    queryFn: async () => { 
-      const response = await axios.get<Card[]>(`https://kiddo2.pythonanywhere.com/api/v1/academics/subjects`);
-      return response.data; 
-    },
-    });
-   if (!isLoading){
-     console.log(data)
-   }
-  const dispatch = useDispatch();
- 
-
-  const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
-
-  const handleCardClick = (clickedId: string, name: string) => {
-    const newSelectedId = selectedCardId === clickedId ? null : clickedId;
-    setSelectedCardId(newSelectedId);
-    
-    if (newSelectedId) {
-      dispatch(setSelectedStudy({
-        id: clickedId,
-        name: name
-      }));
-    } else {
-      // When deselecting, we set the study to null
-      dispatch(clearSelections());
-    }
-  };
-
-  return (
-   (!isLoading) &&  <div className="grid grid-cols-2 gap-[12px]">
-      {data?.map((card) => (
-        <CardContent
-          key={card.id}
-          name={card.name}
-          isSelected={selectedCardId === card.id}
-          onClick={() => handleCardClick(card.id, card.name)}
-        />
-      ))}
-    </div>
-  );
-};
-
-export default CardSelector;
-```
-
-================
-FILE: src\student\components\darsYar\studySelection\CardContent.tsx
-================
-
-```
-// CardContent.tsx
-import React, { useEffect } from "react"; // Import useEffect
-import riazi from "./../../../../assets/images/riazi.png";
-import { useDispatch } from "react-redux";
-import { activeButtonReducer, disableButtonReducer } from "../../../../slice/darsyarSlice";
-
-interface CardContentProps {
-  name: string;
-  isSelected: boolean;
-  onClick: () => void;
-}
-
-const CardContent: React.FC<CardContentProps> = ({
-  name,
-  isSelected,
-  onClick,
-}) => {
-  const dispatch = useDispatch();
-
-
-  useEffect(() => {
-    if (isSelected) {
-      dispatch(activeButtonReducer());
-    } else {
-      dispatch(disableButtonReducer());
-    }
-  }, [isSelected, dispatch]); 
-
-  return (
-    <div className={`${isSelected ? `onClickedCard-box transform translate-y-1` : "card-box"}`}>
-      {" "}
-      <div
-        className={`
-          rounded-[22px] cursor-pointer
-          transition-colors duration-200 
-          flex flex-col 
-          overflow-hidden 
-          h-full 
-          ${isSelected ? `bg-backGroundCard` : "bg-white"}
-        `}
-        onClick={onClick}
-      >
-        <img
-          src={riazi}
-          className=" w-full h-auto object-contain"
-          alt={name}
-        />
-
-        <div
-          className="
-          p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12 
-          text-center flex flex-col justify-center items-center 
-        "
-        >
-          <h1
-            className="
-            text-sm 
-            font-semibold
-            pb-0 mt-0 
-          "
-          >
-            {name}
-          </h1>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default CardContent;
-```
-
-================
 FILE: src\student\components\darsYar\chatWithBot\LessonInformation.tsx
 ================
 
@@ -6403,14 +6500,6 @@ const HeroSection = () => {
 }
 
 export default HeroSection
-
-```
-
-================
-FILE: src\student\components\darsYar\chatWithBot\ChatBot.tsx
-================
-
-```
 
 ```
 
@@ -6526,7 +6615,7 @@ import ChatButton from '../../../../../components/common/ChatButton';
 import { useQuery } from '@tanstack/react-query';
 import { fetchEventDetails } from '../../../../../api-teacher';
 import { useNavigate } from 'react-router-dom';
-
+import { FluentEmoji } from '@lobehub/ui'
 interface ReportDetailModalProps {
   eventId: string | null;
   onClose: () => void;
@@ -6540,7 +6629,14 @@ const ReportDetailModal: React.FC<ReportDetailModalProps> = ({ eventId, onClose 
     queryFn: () => fetchEventDetails(eventId!), // The '!' asserts eventId is not null here
     enabled: !!eventId, // Only run query if eventId is not null
   });
-
+  let level
+  if(event?.level==='DANGER'){
+    level='هشدار جدی'
+  }else if(event?.level==='CONCERN'){
+    level='نیاز به توجه'
+  } else{
+    level='اطلاع‌رسانی'
+  }
   const handleViewChat = () => {
     if (event?.session_id) {
       // This route might need to be adjusted based on your final routing for specific chats
@@ -6557,11 +6653,11 @@ const ReportDetailModal: React.FC<ReportDetailModalProps> = ({ eventId, onClose 
         {event && (
           <div className='flex flex-col justify-center gap-4 pb-20'>
             <div className='flex flex-col items-center gap-2'>
-                <p className='text-4xl'>{event.emoji}</p>
+               <FluentEmoji emoji={event.emoji} size={70} type="anim" />
                 <h1 className='font-bold text-lg'>{event.student_name}</h1>
                 <div className='flex justify-center gap-2'>
                   <p className='bg-backGround-1 px-3 py-1 rounded-full text-xs'>{event.subject_name}</p>
-                  <p className='bg-backGround-1 px-3 py-1 rounded-full text-xs'>{event.level}</p>
+                  <p className='bg-backGround-1 px-3 py-1 rounded-full text-xs'>{level}</p>
                 </div>
             </div>
             

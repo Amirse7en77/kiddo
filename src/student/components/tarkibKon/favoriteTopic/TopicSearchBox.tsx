@@ -14,7 +14,7 @@ const TopicSearchBox: React.FC<TopicSearchBoxProps> = ({ searchQuery, setSearchQ
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder=" اینجا بنویس..."
-          className="w-full bg-white text-[12px] border-borderColor-1 border-[2px] rounded-[24px] p-[16px] "
+          className="p-[16px] rounded-[16px] w-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-chatButton-1"
           style={{ direction: 'rtl' }}
         />
       </div>

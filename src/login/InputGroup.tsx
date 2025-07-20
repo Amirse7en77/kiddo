@@ -6,8 +6,8 @@ import { setUser } from '../slice/userSlice'
 import { useNavigate } from 'react-router-dom'
 
 const InputGroup = () => {
-  const [username, setUsername] = useState('staff_3bae765c-d2a3-4606-86b2-65337195eeb3_0')
-  const [password, setPassword] = useState('fnWLMAtEDyskm8n')
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const dispatch = useDispatch()

@@ -6,10 +6,11 @@ import { activeButtonReducer, disableButtonReducer } from "../../../../slice/tar
 interface CardContentProps {
   name: string;
   isSelected: boolean;
+  image:string,
   onClick: () => void;
 }
 
-const CardContent: React.FC<CardContentProps> = ({ name, isSelected, onClick }) => {
+const CardContent: React.FC<CardContentProps> = ({image, name, isSelected, onClick }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -26,7 +27,7 @@ const CardContent: React.FC<CardContentProps> = ({ name, isSelected, onClick }) 
         className={`rounded-[22px] cursor-pointer transition-colors duration-200 flex flex-col overflow-hidden h-full ${isSelected ? `bg-backGroundCard` : "bg-white"}`}
         onClick={onClick}
       >
-        <img src={riazi} className="w-full h-auto object-contain" alt={name}/>
+        <img src={image || riazi} className="w-full h-auto object-contain" alt={name}/>
         <div className="p-4 text-center">
           <h1 className="text-sm font-semibold">{name}</h1>
         </div>

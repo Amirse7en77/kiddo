@@ -7,7 +7,7 @@ import Header from "../../../components/common/Header";
 import Chat from "../../../components/common/Chat";
 import { startDarsYarSession } from "../../../api-chat";
 import { ChatSession } from "../../../types/api";
-
+import darsyar from './../../..//assets/images/DarsYar.png'
 interface Study {
   id: string;
   name: string;
@@ -52,21 +52,20 @@ const DarsyarChatWithBot = () => {
   return (
     <div className="bg-backGround-1 h-screen flex flex-col">
       <Header title={'درس‌یار'} />
+
+      
       {showLessonInfo && (
         <LessonInformation 
           study={selectedStudy.name}
           lesson={selectedLessons.map(l => l.name).join('، ')}
         />
       )}
-      {/* 
-        The padding-top here is only to push the chat content down to avoid the LessonInformation bar.
-        The Header component already includes a 52px spacer.
-        The LessonInformation bar is about 40px high. So we add pt-[40px].
-      */}
+     
       <main className={`flex-grow flex flex-col transition-all duration-300 ${showLessonInfo ? 'pt-[40px]' : ''}`}>
           <Chat 
             startSession={startSessionCallback}
             setIsChatting={setIsChatting}
+            tool="DARS_YAR" // ADD THIS LINE
           />
       </main>
     </div>
