@@ -5,7 +5,7 @@ import ChatButton from '../../../../../components/common/ChatButton';
 import { useQuery } from '@tanstack/react-query';
 import { fetchEventDetails } from '../../../../../api-teacher';
 import { useNavigate } from 'react-router-dom';
-
+import { FluentEmoji } from '@lobehub/ui'
 interface ReportDetailModalProps {
   eventId: string | null;
   onClose: () => void;
@@ -36,7 +36,7 @@ const ReportDetailModal: React.FC<ReportDetailModalProps> = ({ eventId, onClose 
         {event && (
           <div className='flex flex-col justify-center gap-4 pb-20'>
             <div className='flex flex-col items-center gap-2'>
-                <p className='text-4xl'>{event.emoji}</p>
+               <FluentEmoji emoji="🤪" size={70} type="anim" />
                 <h1 className='font-bold text-lg'>{event.student_name}</h1>
                 <div className='flex justify-center gap-2'>
                   <p className='bg-backGround-1 px-3 py-1 rounded-full text-xs'>{event.subject_name}</p>
