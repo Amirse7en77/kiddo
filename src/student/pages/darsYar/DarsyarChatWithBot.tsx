@@ -16,7 +16,7 @@ interface Study {
 interface RootState {
   darsyar: {
     selectedStudy: Study | null;
-    selectedLessons: { id: string; name: string; }[];
+    selectedLessons: { id:string; name: string; }[];
   };
 }
 
@@ -44,12 +44,6 @@ const DarsyarChatWithBot = () => {
     );
   }, [selectedStudy, selectedLessons]);
 
-  // const handleTypingStateChange = (isTyping: boolean) => {
-  //   if(isTyping){
-  //     setShowLessonInfo(!isTyping);
-  //   }
-  // };
-
   // Render nothing while redirecting
   if (!selectedStudy || selectedLessons.length === 0) {
     return null;
@@ -64,11 +58,15 @@ const DarsyarChatWithBot = () => {
           lesson={selectedLessons.map(l => l.name).join('، ')}
         />
       )}
-      <main className={`flex-grow flex flex-col transition-all duration-300 ${showLessonInfo ? 'pt-[92px]' : 'pt-[52px]'}`}>
+      {/* 
+        The padding-top here is only to push the chat content down to avoid the LessonInformation bar.
+        The Header component already includes a 52px spacer.
+        The LessonInformation bar is about 40px high. So we add pt-[40px].
+      */}
+      <main className={`flex-grow flex flex-col transition-all duration-300 ${showLessonInfo ? 'pt-[40px]' : ''}`}>
           <Chat 
             startSession={startSessionCallback}
-            setIsChatting={setIsChatting} 
-            // onTypingStateChange={handleTypingStateChange}
+            setIsChatting={setIsChatting}
           />
       </main>
     </div>

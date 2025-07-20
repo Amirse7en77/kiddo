@@ -27,7 +27,7 @@
   --color-chatButton-1: #6248ff;
   --color-backGroundButton: #4432b3;
   --color-backGroundCard: #f2efff;
-
+  --color-backdrop: rgba(0, 0, 0, 0.2);
   /* Declare your custom font here */
   --font-yekanBakh: YekanBakh, sans-serif;
   --font-yekanBakhText: YekanBakhText, sans-serif;
@@ -69,23 +69,20 @@
 .chat-button {
   background-color: #4432b3;
 
-
   padding-bottom: 4px;
   border-radius: 20px;
 }
 .button-box {
- 
   background-color: #6248ff;
   border-radius: 16px;
 }
 .disableButton-box {
- 
   background-color: #dcdcdc;
   border-radius: 16px;
 }
 .disableChat-button {
   background-color: white;
-  
+
   padding-bottom: 4px;
   border-radius: 20px;
 }
@@ -105,12 +102,12 @@
   background-color: #6248ff;
   border-radius: 18px;
 }
-.alert-box{
+.alert-box {
   padding-top: 2px;
   padding-right: 2px;
   padding-left: 2px;
   padding-bottom: 4px;
-  background-color: #FE4C4A;
+  background-color: #fe4c4a;
   border-radius: 18px;
 }
 

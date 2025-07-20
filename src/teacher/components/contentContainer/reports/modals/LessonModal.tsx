@@ -1,77 +1,64 @@
-// src/components/ToolsModal/ToolsModal.tsx
+
+
+
 import React, { useState } from 'react';
 import Modal from '../../Modal';
-import Tools from './Tools';
+import Tools from './Tools'; // Re-using the 'Tools' component for styling
 import ChatButton from '../../../../../components/common/ChatButton';
 
-interface StudentModalProps {
+interface LessonModalProps {
   isModalOpen: boolean;
   handleCloseModal: () => void;
+  initialSelection: string;
+  onConfirm: (selection: string) => void;
 }
 
-const ToolsModal: React.FC<StudentModalProps> = ({ isModalOpen, handleCloseModal }) => {
-  const [activeTool, setActiveTool] = useState<string | null>(null);
-  console.log("Current Active Tool:", activeTool); // More descriptive console log
+const LessonModal: React.FC<LessonModalProps> = ({ isModalOpen, handleCloseModal, initialSelection, onConfirm }) => {
+  const [activeLesson, setActiveLesson] = useState<string>(initialSelection);
 
-  const handleToolClick = (toolName: string) => {
-    // If the clicked tool is already active, deactivate it (set to null)
-    // Otherwise, set the clicked tool as the new active tool
-    setActiveTool(prevActiveTool =>
-      prevActiveTool === toolName ? null : toolName
-    );
-    console.log("Clicked Tool:", toolName); // More descriptive console log
-  };
-
-  const toolsList = [
-    { name: "ابزار A" },
-    { name: "ابزار B" },
-    { name: "ابزار C" },
-    { name: "ابزار D" },
+  const lessonsList = [
+    { name: "علوم" },
+    { name: "ریاضی" },
+    { name: "فارسی" },
+    { name: "تاریخ" },
   ];
 
-  const allToolsOptionName = "همه درس ها";
+  const allLessonsOptionName = "همه درس ها";
+
+  const handleConfirmClick = () => {
+    onConfirm(activeLesson);
+  };
 
   return (
-    <div >
-      <Modal isOpen={isModalOpen} onClose={handleCloseModal} title="لطفا درس مورد نظر را انتخاب نمایید">
+    <div>
+      <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+        <div className='flex flex-col pb-20'>
+          <h2 className="text-center font-bold text-lg mb-4">لطفا درس مورد نظر را انتخاب نمایید</h2>
+          
+          <Tools
+            name={allLessonsOptionName}
+            isActive={activeLesson === allLessonsOptionName}
+            onClick={setActiveLesson}
+          />
+          
+          <div className='grid grid-cols-2 gap-x-3'>
+            {lessonsList.map((lesson) => (
+              <Tools
+                key={lesson.name}
+                name={lesson.name}
+                isActive={activeLesson === lesson.name}
+                onClick={setActiveLesson}
+              />
+            ))}
+          </div>
 
-        
-       <div className='pb-35'>
-         <div
-          className='mb-[12px] cursor-pointer '
-          onClick={() => handleToolClick(allToolsOptionName)}
-        >
-          <div className={`
-            ${activeTool === allToolsOptionName ? 'onClickedButton-box transform translate-y-1' : 'buttonClicked-box'}
-          `}>
-            <div className={`
-              flex justify-start items-center rounded-[16px] p-[16px] gap-[16px] pl-[24px]
-              ${activeTool === allToolsOptionName ? 'bg-backGroundCard' : 'bg-white'}
-            `}>
-              <h1>همه درس</h1>
-            </div>
+          <div onClick={handleConfirmClick}>
+            <ChatButton textButton={'تایید'} />
           </div>
         </div>
-
-        {/* Grid for other tools */}
-        <div className='grid grid-cols-2'>
-          {toolsList.map((tool) => (
-            <Tools
-              key={tool.name}
-              name={tool.name}
-              isActive={activeTool === tool.name}
-              onClick={handleToolClick}
-            />
-          ))}
-        </div>
-
-        <div onClick={handleCloseModal}>
-          <ChatButton textButton={'تایید'} />
-        </div>
-       </div>
       </Modal>
     </div>
   );
 };
 
-export default ToolsModal;
+export default LessonModal;

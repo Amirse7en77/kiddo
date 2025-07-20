@@ -1,46 +1,55 @@
-// src/components/ToolsModal/ToolsModal.tsx
+// src/teacher/components/contentContainer/reports/modals/ToolsModal.tsx
 import React, { useState } from 'react';
-
+import Modal from '../../Modal';
 import Tools from './Tools';
 import ChatButton from '../../../../../components/common/ChatButton';
-import Modal from '../../Modal';
 
-interface StudentModalProps {
+interface ToolsModalProps {
   isModalOpen: boolean;
   handleCloseModal: () => void;
+  initialSelection: string;
+  onConfirm: (selection: string) => void;
 }
 
-const ToolsModal: React.FC<StudentModalProps> = ({ isModalOpen, handleCloseModal }) => {
-  const [activeTool, setActiveTool] = useState<string | null>(null); // State to hold the name of the active tool
-
-  const handleToolClick = (toolName: string) => {
-    setActiveTool(prevActiveTool =>
-      prevActiveTool === toolName ? null : toolName
-    );
-  };
+const ToolsModal: React.FC<ToolsModalProps> = ({ isModalOpen, handleCloseModal, initialSelection, onConfirm }) => {
+  const [activeTool, setActiveTool] = useState<string>(initialSelection);
 
   const toolsList = [
-    { name: "همه ابزار ها" },
-    { name: "ابزار A" },
-    { name: "ابزار B" },
-    { name: "ابزار C" },
-    { name: "ابزار D" },
+    { name: "درس‌یار" },
+    { name: "کنجکاو شو" },
+    { name: "ترکیب کن" },
+    { name: "آزمون ساز" },
   ];
+  const allToolsOptionName = "همه ابزار ها";
+
+  const handleConfirmClick = () => {
+    onConfirm(activeTool);
+  };
 
   return (
     <div>
-      <Modal isOpen={isModalOpen} onClose={handleCloseModal} title="لطفا ابزار مورد نظر را انتخاب نمایید">
-        {toolsList.map((tool) => (
+      <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+        <div className='flex flex-col pb-20'>
+          <h2 className="text-center font-bold text-lg mb-4">لطفا ابزار مورد نظر را انتخاب نمایید</h2>
+          
           <Tools
-            key={tool.name} // Important for lists in React
-            name={tool.name}
-            isActive={activeTool === tool.name}
-            onClick={handleToolClick}
+            name={allToolsOptionName}
+            isActive={activeTool === allToolsOptionName}
+            onClick={setActiveTool}
           />
-        ))}
 
-         <div onClick={handleCloseModal}>
-          <ChatButton textButton={'تایید'} />
+          {toolsList.map((tool) => (
+            <Tools
+              key={tool.name}
+              name={tool.name}
+              isActive={activeTool === tool.name}
+              onClick={setActiveTool}
+            />
+          ))}
+
+          <div onClick={handleConfirmClick}>
+            <ChatButton textButton={'تایید'} />
+          </div>
         </div>
       </Modal>
     </div>

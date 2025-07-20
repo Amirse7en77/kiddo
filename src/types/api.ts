@@ -16,3 +16,25 @@ export interface ChatSession {
   title: string;
   messages: ApiMessage[];
 }
+
+// Based on GET /api/v1/chat/events/
+export interface ChatEvent {
+  id: string;
+  student_name: string;
+  overview: string;
+  emoji: string;
+  level: 'INFO' | 'CONCERN' | 'DANGER';
+  subject_name: string;
+  created_at: string;
+  is_resolved: boolean;
+}
+
+// Based on GET /api/v1/chat/events/{event_id}/
+export interface ChatEventDetail extends ChatEvent {
+  explanation: string;
+  session_id: string;
+  resolved_by: {
+    id: string;
+    username: string;
+  } | null;
+}

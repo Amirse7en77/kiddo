@@ -1,31 +1,49 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import studentIcon from './../../../assets/images/reportsPage/student.png';
+import reportIcon from './../../../assets/images/reportsPage/report.png';
+import chatIcon from './../../../assets/images/reportsPage/chat.png';
+
+
 
 const Navbar = () => {
-  // This function will be called by NavLink to determine the className
-  const getNavLinkClass = ({ isActive }) => {
-    // Add a bold style or a different color if the link is active
-    return isActive ? 'font-extrabold text-blue-600' : 'font-extrabold';
+  // A reusable component for each navigation item
+  const NavItem = ({ to, icon, label }) => {
+    // This function provides the classes for the NavLink container
+    const getNavLinkClass = ({ isActive }) => {
+      const baseClasses = 'flex items-center justify-center gap-2 px-4 py-2 rounded-full transition-colors duration-200';
+      const activeClasses = 'bg-backGround-1';
+      return `${baseClasses} ${isActive ? activeClasses : ''}`;
+    };
+
+    // This function provides classes for the text and icon
+    const getContentClass = (isActive) => {
+      return isActive ? 'font-extrabold text-gray-800' : 'text-gray-500';
+    };
+
+    return (
+      <NavLink to={to} className={getNavLinkClass}>
+        {({ isActive }) => (
+          <>
+            
+            <img 
+              src={icon} 
+              className={`h-5 w-5 ${!isActive ? 'opacity-70' : ''}`}
+              alt={`${label} icon`} 
+            />
+            <span className={getContentClass(isActive)}>{label}</span>
+          </>
+        )}
+      </NavLink>
+    );
   };
 
   return (
     <div>
-      <div className='flex justify-between items-center bg-white py-[8px] px-[16px] text-[12px]'>
-        <div>
-          <NavLink to="/teacher/students" className={getNavLinkClass}>
-            دانش آموزان
-          </NavLink>
-        </div>
-        <div>
-          <NavLink to="/teacher/reports" className={getNavLinkClass}>
-            گزارشات
-          </NavLink>
-        </div>
-        <div>
-          <NavLink to="/teacher/chat" className={getNavLinkClass}>
-            چت ها
-          </NavLink>
-        </div>
+      <div className='flex items-center justify-around bg-white py-2 px-2 text-[12px]'>
+        <NavItem to="/teacher/students" label="دانش آموزان" icon={studentIcon} />
+        <NavItem to="/teacher/reports" label="گزارشات" icon={reportIcon} />
+        <NavItem to="/teacher/chat" label="چت ها" icon={chatIcon} />
       </div>
       <hr className="border-[2px] border-borderColor-1 w-full" />
     </div>
