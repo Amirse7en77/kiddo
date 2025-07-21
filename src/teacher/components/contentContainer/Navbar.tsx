@@ -8,16 +8,22 @@ import chatIcon from './../../../assets/images/reportsPage/chat.png';
 
 const Navbar = () => {
   // A reusable component for each navigation item
-  const NavItem = ({ to, icon, label }) => {
+  interface NavItemProps {
+    to: string;
+    icon: string;
+    label: string;
+  }
+
+  const NavItem: React.FC<NavItemProps> = ({ to, icon, label }) => {
     // This function provides the classes for the NavLink container
-    const getNavLinkClass = ({ isActive }) => {
+    const getNavLinkClass = ({ isActive }: { isActive: boolean }) => {
       const baseClasses = 'flex items-center justify-center gap-2 px-4 py-2 rounded-full transition-colors duration-200';
       const activeClasses = 'bg-backGround-1';
       return `${baseClasses} ${isActive ? activeClasses : ''}`;
     };
 
     // This function provides classes for the text and icon
-    const getContentClass = (isActive) => {
+    const getContentClass = (isActive: boolean) => {
       return isActive ? 'font-extrabold text-gray-800' : 'text-gray-500';
     };
 

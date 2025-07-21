@@ -51,7 +51,11 @@ const MainContent: React.FC = () => {
           name: lesson.title
         }));
       
-      dispatch(setSelectedLesson(selectedLessonsData));
+      const lessonData = selectedLessonsData.map(lesson => ({
+        id: lesson.id,
+        title: lesson.name // Map name to title to match Lesson interface
+      }));
+      dispatch(setSelectedLesson(lessonData));
       return newSelection;
     });
   };

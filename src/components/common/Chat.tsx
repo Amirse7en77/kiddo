@@ -38,7 +38,7 @@ const Chat: React.FC<ChatProps> = ({ startSession, setIsChatting, tool, initialU
   const inputAreaRef = useRef<HTMLDivElement>(null);
 
   const pollForResponse = (sid: string, originalMessageCount: number) => {
-    const timeout = 20000;
+    const timeout = 35000;
     const interval = 1000;
     let pollTimeoutId: NodeJS.Timeout;
 
