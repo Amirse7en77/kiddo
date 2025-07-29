@@ -1,11 +1,15 @@
 import React from "react";
 import Header from "../../student/components/home/Header";
 import Classes from "../components/home/Classes";
-import ToolCard from "../../student/components/home/ToolCard";
+import ToolCard from './../components/home/ToolCard'
 import RecentChatCard from "../../components/common/RecentChatCard";
 import ProgressQuestion from "../components/home/ProgressQuestion";
 import { useChatSessions } from "../../hooks/useChatSessions";
 import { useNavigate } from "react-router-dom";
+import darsyar from './../../assets/images/darsyar.webp'
+import azmon from './../../assets/images/azmon.webp'
+import tarkibkon from './../../assets/images/tarkibkon.webp'
+import konjkav from './../../assets/images/konjkav.webp'
 
 const TeacherHome = () => {
   const navigate=useNavigate()
@@ -22,9 +26,9 @@ const TeacherHome = () => {
     <div>
       <Header />
       <div className="bg-backGround-1 h-full">
-        <div className="p-[24px] gap-[16px]">
+        <div className="p-[24px] gap-[16px] ">
           <div >
-            <h1 className="pb-[16px]">کلاس‌ها</h1>
+            <h1 className="mb-[16px] mt-12">کلاس‌ها</h1>
             <div onClick={handleClasses}>
               <Classes />
             </div>
@@ -33,40 +37,45 @@ const TeacherHome = () => {
           <div>
             <h1 className="pt-[20px] pb-[32px]">ابزار‌ها</h1>
             <div className="mb-[24px]">
-              <div className="flex justify-center items-center mb-[40px] gap-[12px]">
-                <ToolCard
-                  title="ترکیب‌کن"
-                  description="درسا رو همونطوری که دوست داری یاد بگیر."
-                  tool="TARKIB_KON"
-                  hasRecentChats={hasRecentChatsForTool("DARS_YAR")}
-                />
-                <ToolCard
-                  title="کنج‌کاو"
-                  description="درسا رو همونطوری که دوست داری یاد بگیر."
-                  tool="KONJKAV"
-                  hasRecentChats={hasRecentChatsForTool("KONJKAV")}
-                />
-              </div>
-              <div className="flex justify-center items-center gap-[12px]">
-                <ToolCard
-                  title="درس‌یار"
-                  description="درسا رو همونطوری که دوست داری یاد بگیر."
+              <div className="flex justify-center items-stretch mb-[12px] gap-[12px]">
+                    <ToolCard
+                  title="درس‌یـــــار"
+                  description='بهت کمک می‌کنه، درسا رو بهتر بفهمی!'
                   tool="DARS_YAR"
                   hasRecentChats={hasRecentChatsForTool("SOALYAR")}
+                  image={darsyar}
                 />
                 <ToolCard
-                  title="آزمون‌ساز"
-                  description="درسا رو همونطوری که دوست داری یاد بگیر."
+                  title="آزمون‌ســـاز"
+                  description='کلی نمونه سوال حرفه‌ای برات طراحی می‌کنه!'
                   tool="AZMOON_SAZ"
                   hasRecentChats={hasRecentChatsForTool("AZMOON_SAZ")}
+                  image={azmon}
+                />
+               
+              </div>
+              <div className="flex justify-center items-stretch gap-[12px]">
+             <ToolCard 
+                  title="ترکــــــیب‌کن"
+                  description='درسارو همونطوری که خودت دوست داری یادبگیر.'
+                  tool="TARKIB_KON"
+                  hasRecentChats={hasRecentChatsForTool("DARS_YAR")}
+                  image={tarkibkon}
+                />
+                <ToolCard
+                  title="کنج‌کـــاو"
+                  description='همراه خوب تو برای یادگرفتن چیزای جدید!'
+                  tool="KONJKAV"
+                  hasRecentChats={hasRecentChatsForTool("KONJKAV")}
+                  image={konjkav}
                 />
               </div>
             </div>
           </div>
-          <div>
+          {/* <div>
             <h1 className="mb-[16px]">وضعیت مصرف</h1>
             <ProgressQuestion progress={50} />
-          </div>
+          </div> */}
 
           <h3 className="font-extrabold text-right text-[14px] mt-[32px] mb-[16px]">
             چت‌های اخیر

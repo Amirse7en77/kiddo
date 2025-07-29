@@ -1,11 +1,11 @@
 import React from 'react'
-import darsyar from './../../../assets/images/DarsYar.png'
+import darsyar from './../../../assets/images/darsyar.webp'
 
 const RecentChatCard = () => {
   return (
     <div>
          <div className='card-box mb-[12px]'>
-            <div className='flex justify-start items-center bg-white rounded-[22px] p-[16px] gap-[16px] pl-[24px]'>
+            <div className='flex justify-start items-center bg-white rounded-[24px] p-[16px] gap-[16px] pl-[24px]'>
                 <div>
                     <img className='w-[56px] h-[56px] ' src={darsyar}/>
                 </div>

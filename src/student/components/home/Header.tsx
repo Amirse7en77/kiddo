@@ -1,36 +1,23 @@
 import { FC, useState, useEffect } from "react";
 import { logout } from "../../../api"; // Import the logout function
-import darsYar from './../../../assets/images/DarsYar.png';
+import happyFace from './../../../assets/images/happyface.webp';
 
 const Header: FC = () => {
-  const [isSticky, setIsSticky] = useState(false);
+ 
 
   const handleLogout = () => {
-    logout(); // Call the centralized logout function
+    logout(); 
   };
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const offset = window.scrollY;
-      if (offset > 10) {
-        setIsSticky(true);
-      } else {
-        setIsSticky(false);
-      }
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+
 
   return (
     <div>
       <header
         className={`
           flex items-center justify-between bg-white py-[24px] px-[16px] h-[52px]
-          transition-all duration-300 ease-in-out z-50
-          ${isSticky ? "fixed top-0 w-full shadow-md" : ""}
+          fixed top-0 w-full z-100
+          
         `}
       >
         {/* Logout Icon Button on the left */}
@@ -52,16 +39,16 @@ const Header: FC = () => {
         </button>
         
         <div className="flex items-center">
-            <img src={darsYar} className="h-[24px] w-[24px] ml-[8px]"/>
-            <div className="text-xl font-bold">کیدو</div>
+            <img src={happyFace} className="h-[24px] w-[24px] ml-[8px]"/>
+            <div className="text-[16px] font-extrabold">کیــــدو </div>
         </div>
         
         {/* Placeholder to balance the layout */}
         <div className="w-6"></div>
       </header>
       
-      {isSticky && <div className="h-[52px]"></div>}
-      <hr className="border-[1.5px] border-borderColor-1 w-full" />
+      
+      <hr className="border-[1.5px] border-borderColor-1 w-full fixed" />
     </div>
   );
 };

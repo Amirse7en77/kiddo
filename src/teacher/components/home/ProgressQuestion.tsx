@@ -8,7 +8,7 @@ const ProgressQuestion:React.FC<ProgressBarProps> = ({ progress }) => {
   return (
         <div className='mb-[12px]'>
          <div className='card-box'>
-            <div className='flex flex-col items-center bg-white rounded-[22px] p-[16px] gap-[16px] pl-[24px]'>
+            <div className='flex flex-col items-center bg-white rounded-[24px] p-[16px] gap-[16px] pl-[24px]'>
              <div className='flex justify-between items-center'>
                 <div>
                     <h1 className='text-[12px]'>

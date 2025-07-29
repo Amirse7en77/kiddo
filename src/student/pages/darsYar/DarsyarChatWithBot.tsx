@@ -7,7 +7,8 @@ import Header from "../../../components/common/Header";
 import Chat from "../../../components/common/Chat";
 import { startDarsYarSession } from "../../../api-chat";
 import { ChatSession } from "../../../types/api";
-import darsyar from './../../..//assets/images/DarsYar.png'
+import HeroSection from "../../components/darsYar/chatWithBot/HeroSection";
+
 interface Study {
   id: string;
   name: string;
@@ -16,7 +17,7 @@ interface Study {
 interface RootState {
   darsyar: {
     selectedStudy: Study | null;
-    selectedLessons: { id:string; name: string; }[];
+    selectedLessons: { id: string; title: string; }[];
   };
 }
 
@@ -26,7 +27,7 @@ const DarsyarChatWithBot = () => {
   const [showLessonInfo, setShowLessonInfo] = useState(true);
   const selectedStudy = useSelector((state: RootState) => state.darsyar.selectedStudy);
   const selectedLessons = useSelector((state: RootState) => state.darsyar.selectedLessons);
-
+  console.log(selectedLessons)
   useEffect(() => {
     // Navigate to login page if selections are missing
     if (!selectedStudy || selectedLessons.length === 0) {
@@ -51,21 +52,22 @@ const DarsyarChatWithBot = () => {
 
   return (
     <div className="bg-backGround-1 h-screen flex flex-col">
-      <Header title={'درس‌یار'} />
+      <Header title={'درس‌یـــــار'} />
 
       
       {showLessonInfo && (
         <LessonInformation 
           study={selectedStudy.name}
-          lesson={selectedLessons.map(l => l.name).join('، ')}
+          lesson={selectedLessons.map(l => l.title).join('، ')}
         />
       )}
-     
-      <main className={`flex-grow flex flex-col transition-all duration-300 ${showLessonInfo ? 'pt-[40px]' : ''}`}>
+      {(!isChatting) && <HeroSection />}
+      <main className={`flex-grow flex flex-col transition-all duration-300 ${showLessonInfo ? 'pt-[60px]' : ''}`}>
           <Chat 
             startSession={startSessionCallback}
             setIsChatting={setIsChatting}
-            tool="DARS_YAR" // ADD THIS LINE
+            tool="DARS_YAR"
+            initialUserActionText={selectedLessons.map(l => l.title).join('، ')}
           />
       </main>
     </div>

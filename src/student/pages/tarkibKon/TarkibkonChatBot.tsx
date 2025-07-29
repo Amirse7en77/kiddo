@@ -45,7 +45,7 @@ const TarkibkonChatBot = () => {
 
   return (
     <div className="bg-backGround-1 h-screen flex flex-col">
-      <Header title={'ترکیب‌کن'} />
+      <Header title={'ترکــــــیب‌کن'} />
       <div className="flex-grow flex flex-col">
           <Chat 
             startSession={startSessionCallback}

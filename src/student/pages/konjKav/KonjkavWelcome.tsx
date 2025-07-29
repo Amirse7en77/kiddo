@@ -14,18 +14,20 @@ const KonjkavWelcome:FC = () => {
         navigate('/student/konjkav/study-selection')
     }
 
-    return <div >
-        <Header title={'کنج‌کاو'}/>
-        <div className="bg-backGround-1 h-full pb-10 ">
-  <div className="mx-[32px] ">
-      <HeroSection/>
-    <CardSection/>
-    
-  </div>
+    return (
+      <div className="h-screen flex flex-col">
+        <Header title={'کنج‌کـــاو'} />
+        <div className="bg-backGround-1 flex-1  flex flex-col">
+          <div className="mx-4  flex-1   pb-[80px]">
+            <HeroSection />
+            <CardSection />
+          </div>
+          <div >
+            <ChatButton textButton='ساخت چت جدید' onClick={handleNavigate} />
+          </div>
         </div>
-       
-        <ChatButton textButton='ساخت چت جدید' onClick={handleNavigate}/>
-    </div>
+      </div>
+    );
 };
 
 export default KonjkavWelcome;

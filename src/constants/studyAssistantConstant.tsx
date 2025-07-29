@@ -1,29 +1,36 @@
-import rocketlogo from './../assets/images/logos/rocketLogo.png'
-import emojiLogo from './../assets/images/logos/emojiLogo.png'
-import alienLogo from './../assets/images/logos/alienLogo.png'
+import { FluentEmoji } from "@lobehub/fluent-emoji";
+import { ReactElement } from "react";
 
-export const studyAssistantConstatnt:studyAssistantType[] = [
+export const studyAssistantConstatnt: studyAssistantType[] = [
   {
-    logo: rocketlogo,
+    logo: (
+      <FluentEmoji
+        emoji="🚀"
+
+        size={24}
+        type={"anim"}
+        
+      />
+    ),
     title: "هیچ درسی دیگه سخت نیست",
     description:
       "با درس‌یـــار هر مبحث سختی از کتاب رو اینجا به زبون ساده و سریع یاد بگیر.",
   },
   {
-    logo:emojiLogo,
+    logo: <FluentEmoji emoji="😎" size={24} type="anim" />,
     title: "معلم خصوصی ۲۴ ساعته",
     description:
       "درس‌یـــار همیشه همراه تو! هر زمان و هرکجا، برای سوالاتت جواب فوری بگیر.",
   },
   {
-    logo: alienLogo,
+    logo: <FluentEmoji emoji="👽" size={24} type="anim" />,
     title: "جمع‌بندی آسون برای امتحانات",
     description:
       "با خلاصه‌های دقیق و نکته‌های امتحانی، سریع‌تر از همیشه برای امتحانات آماده شو.",
   },
 ];
-export interface studyAssistantType{
-   logo:string ,
-    title: string,
-    description:string
+export interface studyAssistantType {
+  logo: ReactElement;
+  title: string;
+  description: string;
 }

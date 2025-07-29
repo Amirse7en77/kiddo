@@ -30,7 +30,7 @@ const ClassLayout = () => {
   const headerTitle = isLoading 
     ? 'در حال بارگذاری...' 
     : (classes && classes.length > 0 ? classes[0].name : 'کلاس من');
-    console.log(headerTitle)
+    
     
       
   return (

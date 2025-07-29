@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { setSelectedStudy } from '../../../../slice/tarkibkonSlice';
 import CardContent from './CardContent';
 import { useQuery } from '@tanstack/react-query';
@@ -13,7 +13,15 @@ interface Subject {
 
 const CardSelector: React.FC = () => {
     const dispatch = useDispatch();
-    const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
+    const selectedStudy = useSelector((state: any) => state.tarkibkon.selectedStudy);
+    
+    const [selectedCardId, setSelectedCardId] = useState<string | null>(selectedStudy?.id || null);
+
+    useEffect(() => {
+        if (selectedStudy?.id) {
+            setSelectedCardId(selectedStudy.id);
+        }
+    }, [selectedStudy]);
 
     const { data: subjects, isLoading, isError } = useQuery<Subject[]>({
         queryKey: ['subjects'],
@@ -24,10 +32,8 @@ const CardSelector: React.FC = () => {
     });
 
     const handleCardClick = (subject: Subject) => {
-        if (selectedCardId === subject.id) {
-            setSelectedCardId(null);
-            dispatch(setSelectedStudy(null));
-        } else {
+        // Only allow switching to a different card, not deselecting
+        if (selectedCardId !== subject.id) {
             setSelectedCardId(subject.id);
             dispatch(setSelectedStudy(subject));
         }
@@ -44,6 +50,7 @@ const CardSelector: React.FC = () => {
                     name={subject.name}
                     image={subject.image_url}
                     isSelected={selectedCardId === subject.id}
+                    selectedCardId={selectedCardId}
                     onClick={() => handleCardClick(subject)}
                 />
             ))}

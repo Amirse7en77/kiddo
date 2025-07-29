@@ -7,12 +7,12 @@ const MainContent: React.FC = () => {
   return (
     <div
       className='
-        border-2 border-borderColor-1 bg-white rounded-[16px]
+        border-[2px] border-borderColor-1 bg-white rounded-[24px]
         p-4 
         h-full w-full 
         overflow-y-auto 
         flex flex-col 
-      '
+        gap-[12px] pt-[16px] rounded-b-none border-b-0'
     >
       {/* The `gap-[12px] pt-[16px] h-full` on the outer div were a bit ambiguous.
           Moved padding and adjusted gap/flex behavior here. */}

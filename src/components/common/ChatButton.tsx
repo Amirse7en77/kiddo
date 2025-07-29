@@ -11,14 +11,14 @@ const ChatButton: React.FC<ButtonType> = ({ textButton, onClick }) => {
       className="
         fixed bottom-0 left-0 right-0
         bg-white z-50
-        shadow-lg 
+       w-full
       "
     >
-      <hr className="border-[1.5px] border-borderColor-1 w-full" />
-      <div className="h-[70px] px-[24px] py-[16px] flex justify-center items-center">
-        <div className="chat-button rounded-[24px] border-2 border-backGroundButton mx-[16px]">
+      <hr className="border-[1.5px] border-borderColor-1 w-full " />
+      <div className=" px-[24px] py-[12px] flex justify-center items-center w-full">
+        <div className="chat-button rounded-[16px] w-full  mx-[16px]">
           <button
-            className="button-box text-borderColor-1 w-[327px] h-[50px] cursor-pointer"
+            className="button-box text-borderColor-1 w-full cursor-pointer px-[8px] py-[12px]"
             onClick={onClick}
           >
             {textButton}

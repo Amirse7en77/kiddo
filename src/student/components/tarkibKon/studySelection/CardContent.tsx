@@ -7,24 +7,25 @@ interface CardContentProps {
   name: string;
   isSelected: boolean;
   image:string,
+  selectedCardId: string | null;
   onClick: () => void;
 }
 
-const CardContent: React.FC<CardContentProps> = ({image, name, isSelected, onClick }) => {
+const CardContent: React.FC<CardContentProps> = ({image, name, isSelected, onClick, selectedCardId }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (isSelected) {
+    if (selectedCardId) {
       dispatch(activeButtonReducer());
     } else {
       dispatch(disableButtonReducer());
     }
-  }, [isSelected, dispatch]);
+  }, [selectedCardId, dispatch]);
 
   return (
     <div className={`${isSelected ? `onClickedCard-box transform translate-y-1` : "card-box"}`}>
       <div
-        className={`rounded-[22px] cursor-pointer transition-colors duration-200 flex flex-col overflow-hidden h-full ${isSelected ? `bg-backGroundCard` : "bg-white"}`}
+        className={`rounded-[24px] cursor-pointer transition-colors duration-200 flex flex-col overflow-hidden h-full ${isSelected ? `bg-backGroundCard` : "bg-white"}`}
         onClick={onClick}
       >
         <img src={image || riazi} className="w-full h-auto object-contain" alt={name}/>

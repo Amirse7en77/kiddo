@@ -1,4 +1,4 @@
-import darsyarIcon from "../assets/images/DarsYar.png";
+import darsyarIcon from "../assets/images/darsyar.webp";
 import konjkavIcon from "../assets/images/konjkav.png";
 import tarkibkonIcon from "../assets/images/hediye.png";
 import { RecentChat } from "../types/chat";

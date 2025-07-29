@@ -17,8 +17,8 @@ const KonjkavStudySelection = () => {
 
   return (
     <div className="h-screen">
-      <Header title={'کنجکاو'} />
-      <div className='font-yekanBakh bg-backGround-1 pb-20'>
+      <Header title={'کنج‌کـــاو'} />
+      <div className='font-yekanBakh bg-backGround-1 pb-18'>
         <HeroSection />
         <MainContent />
       </div>

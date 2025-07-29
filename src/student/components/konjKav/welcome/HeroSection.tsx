@@ -2,11 +2,11 @@ import happyFace from './../../../../assets/images/happyFace.png'
 
 const HeroSection = () => {
   return (
-    <div className='mb-[32px] pt-[16px]'>
-        <div className='flex justify-center  p-4'>
+    <div className='mb-[32px] pt-[24px]'>
+        <div className='flex justify-center   mb-[32px]'>
         <img src={happyFace}/>
       </div>
-      <p className='text-center font-extrabold'>به کنج‌کاو خوش آمدی!</p>
+      <p className='text-center font-extrabold'>به کنج‌کـــاو خوش اومدی!</p>
     </div>
   )
 }

@@ -10,7 +10,7 @@ const HeroSection = () => {
         <div className='flex justify-center  p-4'>
         <img src={kiddoFace}/>
       </div>
-      <p className='text-center font-extrabold'>به درس‌یار خوش آمدی!</p>
+      <p className='text-center text-[16px] font-extrabold'>به درس‌یار خوش آمدی!</p>
     </div>
   )
 }

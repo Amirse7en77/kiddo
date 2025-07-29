@@ -1,5 +1,5 @@
 // src/teacher/pages/ReportsPage.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import ReportTools from '../components/contentContainer/reports/ReportTools';
 import StudentReports from '../components/contentContainer/reports/StudentReports';
@@ -7,6 +7,7 @@ import ReportDetailModal from '../components/contentContainer/reports/modals/Rep
 import { fetchChatEvents } from '../../api-teacher';
 import LessonModal from '../components/contentContainer/reports/modals/LessonModal';
 import ToolsModal from '../components/contentContainer/reports/modals/ToolsModal';
+import StudentAlert from '../components/contentContainer/StudentAlert';
 import tool from './../../assets/images/reportsPage/tool.png'
 import lesson from './../../assets/images/reportsPage/lesson.png'
 
@@ -16,14 +17,35 @@ const ReportsPage = () => {
   // State to manage which modal is open
   const [openModal, setOpenModal] = useState<'lessons' | 'tools' | null>(null);
   
-  // State for selected filters
-  const [selectedLesson, setSelectedLesson] = useState('همه درس ها');
-  const [selectedTool, setSelectedTool] = useState('همه ابزار ها');
+  // State for selected filters - initialize from localStorage
+  const [selectedLesson, setSelectedLesson] = useState(() => {
+    return localStorage.getItem('reportsPage_selectedLesson') || 'همه درس ها';
+  });
+  const [selectedTool, setSelectedTool] = useState(() => {
+    return localStorage.getItem('reportsPage_selectedTool') || 'همه ابزار ها';
+  });
+
+  // Save to localStorage whenever filters change
+  useEffect(() => {
+    localStorage.setItem('reportsPage_selectedLesson', selectedLesson);
+  }, [selectedLesson]);
+
+  useEffect(() => {
+    localStorage.setItem('reportsPage_selectedTool', selectedTool);
+  }, [selectedTool]);
 
   const { data: events, isLoading, isError } = useQuery({
-    queryKey: ['chatEvents'], // This key could be enhanced with filters later
+    queryKey: ['chatEvents'],
     queryFn: fetchChatEvents,
   });
+
+  // Filter events based on selected lesson and tool
+  const filteredEvents = events?.filter(event => {
+    const lessonMatch = selectedLesson === 'همه درس ها' || event.subject_name === selectedLesson;
+    // Since ChatEvent doesn't have tool_name, we'll just filter by lesson for now
+    // You may need to add tool filtering logic based on your actual data structure
+    return lessonMatch;
+  }) || [];
 
   const handleOpenDetailModal = (eventId: string) => {
     setSelectedEventId(eventId);
@@ -45,18 +67,31 @@ const ReportsPage = () => {
 
   return (
     <>
+      
+      
+      
       <div className='flex justify-center items-center gap-[12px] mb-[16px]'>
-        <ReportTools title={selectedLesson} onClick={() => setOpenModal('lessons')} image={lesson}/>
-        <ReportTools title={selectedTool} onClick={() => setOpenModal('tools')} image={tool}/>
+        <ReportTools 
+          title={selectedLesson} 
+          onClick={() => setOpenModal('lessons')} 
+          image={lesson}
+          isSelected={selectedLesson !== 'همه درس ها'}
+        />
+        <ReportTools 
+          title={selectedTool} 
+          onClick={() => setOpenModal('tools')} 
+          image={tool}
+          isSelected={selectedTool !== 'همه ابزار ها'}
+        />
       </div>
 
       <div className='border-[2px] border-borderColor-1 rounded-[24px] bg-white p-[16px]'>
-        {isLoading && <p className='text-center py-4'>در حال بارگذاری گزارشات...</p>}
+        {isLoading && <p className='text-center py-4'>در حال bارگذاری گزارشات...</p>}
         {isError && <p className='text-center py-4 text-red-500'>خطا در دریافت گزارشات.</p>}
-        {events && events.length === 0 && <p className='text-center py-4 text-gray-500'>گزارشی برای نمایش وجود ندارد.</p>}
+        {filteredEvents && filteredEvents.length === 0 && <p className='text-center py-4 text-gray-500'>گزارشی برای نمایش وجود ندارد.</p>}
         
         <div className='space-y-4 divide-y divide-gray-100'>
-            {events?.map((event) => (
+            {filteredEvents?.map((event) => (
               <div key={event.id} className="pt-4 first:pt-0">
                 <StudentReports event={event} onOpenModal={handleOpenDetailModal} />
               </div>

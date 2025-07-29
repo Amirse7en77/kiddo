@@ -1,6 +1,6 @@
 // CardSelector.tsx
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { setSelectedStudy, clearSelections } from '../../../../slice/darsyarSlice';
 import CardContent from './CardContent';
 import { useQuery } from '@tanstack/react-query';
@@ -26,12 +26,20 @@ const CardSelector: React.FC = () => {
     },
     });
    if (!isLoading){
-     console.log(data)
+    
    }
-  const dispatch = useDispatch();
- 
 
-  const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
+  const dispatch = useDispatch();
+  const selectedStudy = useSelector((state: any) => state.darsyar.selectedStudy);
+
+  const [selectedCardId, setSelectedCardId] = useState<string | null>(selectedStudy?.id || null);
+  
+
+  useEffect(() => {
+    if (selectedStudy?.id) {
+      setSelectedCardId(selectedStudy.id);
+    }
+  }, [selectedStudy]);
 
   const handleCardClick = (clickedId: string, name: string) => {
     const newSelectedId = selectedCardId === clickedId ? null : clickedId;
@@ -55,6 +63,7 @@ const CardSelector: React.FC = () => {
           key={card.id}
           name={card.name}
           image={card.image_url}
+          selectId={selectedCardId }
           isSelected={selectedCardId === card.id}
           onClick={() => handleCardClick(card.id, card.name)}
         />

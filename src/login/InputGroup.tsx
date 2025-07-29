@@ -20,7 +20,7 @@ const InputGroup = () => {
 
     try {
       const response = await login(username, password)
-      console.log(response.user)
+      
       dispatch(setUser({
         id: response.user.id,
         username: response.user.username,

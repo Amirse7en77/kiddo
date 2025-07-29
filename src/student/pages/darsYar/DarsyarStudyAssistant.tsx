@@ -14,10 +14,10 @@ const DarsyarWelcome: FC = () => {
   };
 
   return (
-    <div>
-      <Header title={'درس‌یار'} />
-      <div className="bg-backGround-1 h-full ">
-        <div className="mx-[32px]">
+    <div className="h-screen flex flex-col">
+      <Header title={'درس‌یـــــار'} />
+      <div className="bg-backGround-1 flex-1 ">
+        <div className="mx-[32px] h-full  pb-[80px]">
           <HeroSection />
           <CardSection />
         </div>

@@ -7,33 +7,35 @@ import { activeButtonReducer, disableButtonReducer } from "../../../../slice/dar
 interface CardContentProps {
   name: string;
   image:string;
-  isSelected: boolean;
+  selectId: string|null;
+  isSelected:boolean
   onClick: () => void;
 }
 
 const CardContent: React.FC<CardContentProps> = ({
   name,
-  isSelected,
+  selectId,
   image,
+  isSelected,
   onClick,
 }) => {
   const dispatch = useDispatch();
 
 
   useEffect(() => {
-    if (isSelected) {
+    if (selectId) {
       dispatch(activeButtonReducer());
     } else {
       dispatch(disableButtonReducer());
     }
-  }, [isSelected, dispatch]); 
+  }, [selectId, dispatch]); 
 
   return (
     <div className={`${isSelected ? `onClickedCard-box transform translate-y-1` : "card-box"}`}>
       {" "}
       <div
         className={`
-          rounded-[22px] cursor-pointer
+          rounded-[24px] cursor-pointer
           transition-colors duration-200 
           flex flex-col 
           overflow-hidden 
@@ -50,7 +52,7 @@ const CardContent: React.FC<CardContentProps> = ({
 
         <div
           className="
-          p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12 
+          p-4 
           text-center flex flex-col justify-center items-center 
         "
         >

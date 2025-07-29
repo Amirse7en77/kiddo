@@ -43,7 +43,9 @@ const ReportDetailModal: React.FC<ReportDetailModalProps> = ({ eventId, onClose 
         {event && (
           <div className='flex flex-col justify-center gap-4 pb-20'>
             <div className='flex flex-col items-center gap-2'>
-               <FluentEmoji emoji={event.emoji} size={70} type="anim" />
+              <div className='p-2 bg-backGround-1 rounded-full'>
+                 <FluentEmoji emoji={event.emoji} size={70} type="anim" />
+              </div>
                 <h1 className='font-bold text-lg'>{event.student_name}</h1>
                 <div className='flex justify-center gap-2'>
                   <p className='bg-backGround-1 px-3 py-1 rounded-full text-xs'>{event.subject_name}</p>

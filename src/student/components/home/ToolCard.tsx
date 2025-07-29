@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { useNavigate } from "react-router-dom";
-import icon from './../../../assets/images/DarsYar.png';
+import icon from './../../../assets/images/darsyar.webp';
  
 interface ToolCardProps {
   
@@ -8,6 +8,7 @@ interface ToolCardProps {
   description: string;
   tool: "DARS_YAR" | "KONJKAV" | "SOALYAR" | "AZMOON_SAZ" | "TARKIB_KON";
   hasRecentChats?: boolean;
+  image:string
 }
 
 const getToolRoute = (tool: string, hasRecentChats: boolean) => {
@@ -27,7 +28,7 @@ const getToolRoute = (tool: string, hasRecentChats: boolean) => {
   }
 };
 
-const ToolCard: FC<ToolCardProps> = ({  title, description, tool, hasRecentChats = false }) => {
+const ToolCard: FC<ToolCardProps> = ({  title, description, tool, hasRecentChats = false,image }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -36,13 +37,13 @@ const ToolCard: FC<ToolCardProps> = ({  title, description, tool, hasRecentChats
   };
 
   return (
-  <div onClick={handleClick} >
+  <div onClick={handleClick} className="w-full" >
    
-   <div className="card-box cursor-pointer hover:transform hover:translate-y-1">
-     <div className="flex flex-col items-center text-center  rounded-[24px] bg-white   relative p-[16px]  ">
-      <img src={icon} className=" absolute -translate-y-11 h-[56px] w-[56px]" alt={title} />
-      <h3 className="font-extrabold text-[18px] mt-[16px]">{title}</h3>
-      <p className="text-[10px] ">{description}</p>
+   <div className="card-box cursor-pointer hover:transform hover:translate-y-1 h-full">
+     <div className="flex flex-col items-center text-center rounded-[24px] bg-white relative p-[16px] w-full">
+      <img src={image} className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[56px] w-[56px]" alt={title} />
+      <h3 className="font-extrabold text-[18px] mt-[28px] mb-[4px]">{title}</h3>
+      <p className="text-[10px]">{description}</p>
     </div>
    </div>
   </div>

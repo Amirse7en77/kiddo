@@ -44,14 +44,15 @@ const KonjkavTopicSelection = () => {
 
   return (
     <div className="h-screen">
-      <Header title={'کنج‌کاو'}/>
-      <div className='font-yekanBakh bg-backGround-1 pb-20'>
+      <Header title={'کنج‌کـــاو'}/>
+      <div className='font-yekanBakh bg-backGround-1 '>
         <HeroSection />
-        <div className="bg-white rounded-[24px] rounded-b-none pb-40 border-[2px] border-borderColor-1">
+        <div className="bg-white rounded-[24px] rounded-b-none pb-50 border-[2px] border-borderColor-1">
           <TopicSearchBox 
             searchQuery={selectedTopic} 
             setSearchQuery={handleTopicChange}
           />
+          <h1 className="mb-[16px] mt-[12px] mx-[16px] text-[16px] font-extrabold">موضوعات پیشنهادی</h1>
           <MainContent 
             onTopicSelect={handleTopicChange} 
             selectedTopicFromParent={selectedTopic}
@@ -59,9 +60,9 @@ const KonjkavTopicSelection = () => {
         </div>
       </div>
       {isButtonActive ? (
-        <ChatButton textButton='ساخت چت جدید' onClick={handleStartChat} />
+        <ChatButton textButton='بزن بریم  ' onClick={handleStartChat} />
       ) : (
-        <DisableChatButton textButton='ساخت چت جدید' />
+        <DisableChatButton textButton='بزن بریم  '/>
       )}
     </div>
   );

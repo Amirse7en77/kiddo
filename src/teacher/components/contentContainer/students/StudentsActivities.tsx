@@ -44,8 +44,9 @@ const StudentsActivities = () => {
         enabled: !!classId,
     });
     
+    
     const isLoading = isLoadingClasses || isLoadingStudents;
-
+    
     if (isLoading) {
         return <div className="p-4 text-center">در حال بارگذاری دانش‌آموزان...</div>;
     }
@@ -60,7 +61,7 @@ const StudentsActivities = () => {
             {students && students.map((student, index) => (
                 <React.Fragment key={student.id}>
                     <StudentActivity student={student} />
-                    {index < students.length - 1 && <hr className="mx-4 border-t-2 border-backGround-1" />}
+                    {index < students.length - 1 && <hr className="mx-4 border-t-[1.5px] border-backGround-1" />}
                 </React.Fragment>
             ))}
         </div>

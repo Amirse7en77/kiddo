@@ -1,15 +1,15 @@
 import React from 'react'
-import { studyAssistantConstatnt } from '../../../../constants/studyAssistantConstant'
+import { konjkavWelcomeConstant } from '../../../../constants/konjkavWelcomConstant'
 
 
 const CardSection:React.FC = () => {
   return (
-  <div className='h-screen'>
-   {studyAssistantConstatnt.map(study=>(
+  <div >
+   {konjkavWelcomeConstant.map(study=>(
         <div className='card-box mb-[12px] gap-[12px] '>
-        <div className=' flex justify-center flex-col bg-white rounded-[22px] gap-[8px] p-[16px] '>
+        <div className=' flex justify-center flex-col bg-white rounded-[24px] gap-[8px] p-[16px] '>
             <div className='gap-[8px] flex items-center justify-start'>
-               <img src={study.logo}/>
+               {study.logo}
                 <h1 className='font-extrabold text-[14px]'> {study.title}   </h1>
 
             </div>

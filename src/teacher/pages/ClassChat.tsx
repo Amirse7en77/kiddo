@@ -1,14 +1,9 @@
-
-import RecentChatCard from '../components/home/RecentChat'
+import RecentChats from '../../components/RecentChats'
 
 const ClassChat = () => {
   return (
-     <div>
-        
-          <RecentChatCard/>
-          <RecentChatCard/>
-          <RecentChatCard/>
-          
+     <div className="py-4">
+        <RecentChats />
     </div>
   )
 }

@@ -44,15 +44,15 @@ const DarsyarLessonSelection = () => {
   return (
     <div>
       <div>
-        <Header title={'درس‌یار'} />
+        <Header title={'درس‌یـــــار'} />
         <div className='bg-backGround-1'>
           <HeroSection />
           <MainContent />
         </div>
         {isButtonActive ? (
-          <ChatButton textButton='ساخت چت جدید' onClick={handleStartChat} />
+          <ChatButton textButton='بزن بریم  ' onClick={handleStartChat} />
         ) : (
-          <DisableChatButton textButton='ساخت چت جدید' />
+          <DisableChatButton textButton='بزن بریم  ' />
         )}
       </div>
     </div>

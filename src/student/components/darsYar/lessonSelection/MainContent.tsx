@@ -17,8 +17,7 @@ const MainContent: React.FC = () => {
   const dispatch = useDispatch();
   const [selectedLessons, setSelectedLessons] = useState<string[]>([]);
   const subject = useSelector((state: any) => state.darsyar.selectedStudy?.id);
-  console.log('Selected subject:', subject);
-  console.log('Selected lessons:', selectedLessons);
+  
    const {
     data,
     isLoading,

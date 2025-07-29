@@ -42,14 +42,15 @@ const TarkibkonLearnTopic = () => {
 
   return (
     <div className="h-screen">
-      <Header title={'ترکیب‌کن'}/>
+      <Header title={'ترکــــــیب‌کن'}/>
       <div className='font-yekanBakh bg-backGround-1 pb-20'>
         <HeroSection />
-        <div className="bg-white rounded-[24px] rounded-b-none pb-40 border-[2px] border-borderColor-1">
+        <div className="bg-white rounded-[24px] rounded-b-none pb-50 border-[2px] border-borderColor-1">
           <TopicSearchBox 
             searchQuery={learnTopic} 
             setSearchQuery={handleTopicChange}
           />
+          <h1 className="mb-[16px] mt-[12px] mx-[16px] text-[16px] font-extrabold">موضوعات پیشنهادی</h1>
           <MainContent 
             onTopicSelect={handleTopicChange} 
             selectedTopicFromParent={learnTopic}

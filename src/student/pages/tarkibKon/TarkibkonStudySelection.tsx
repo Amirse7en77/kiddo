@@ -17,8 +17,8 @@ const TarkibkonStudySelection = () => {
 
   return (
     <div className="h-screen">
-      <Header title={'ترکیب‌کن'} />
-      <div className='font-yekanBakh bg-backGround-1 pb-20'>
+      <Header title={'ترکــــــیب‌کن'} />
+      <div className='font-yekanBakh bg-backGround-1 pb-18'>
         <HeroSection />
         <MainContent />
       </div>

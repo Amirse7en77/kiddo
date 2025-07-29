@@ -15,7 +15,7 @@ const fetchClientInfo = async (): Promise<ClientInfo> => {
       Authorization: `Token ${localStorage.getItem('token')}`,
     },
   });
-  console.log(response)
+
   return response.data;
 };
 

@@ -6,26 +6,27 @@ const RecentChats: React.FC = () => {
   const { data: chatSessions, isLoading, isError } = useChatSessions();
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div className="text-center py-4">در حال بارگذاری...</div>;
   }
 
   if (isError) {
-    return <div>Error loading recent chats</div>;
+    return <div className="text-center text-red-500 py-4">خطا در بارگذاری چت‌ها</div>;
   }
 
   if (!chatSessions || chatSessions.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center p-6 text-center">
-        <p className="text-gray-500">There are no recent chats here.</p>
+        <p className="text-gray-500">چت اخیری وجود ندارد.</p>
       </div>
     );
   }
-
+  
   return (
-    <div className="grid gap-4">
+    <div className="space-y-[12px]">
       {chatSessions.map((session) => (
         <RecentChatCard
           key={session.id}
+          id={session.id}
           title={session.title}
           tool={session.tool}
           subject={session.subject}

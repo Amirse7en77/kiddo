@@ -42,7 +42,7 @@ const KonjkavTopicBot = () => {
 
   return (
     <div className="bg-backGround-1 h-screen flex flex-col">
-      <Header title={'کنج‌کاو'} />
+      <Header title={'کنج‌کـــاو'} />
       <div className="flex-grow flex flex-col">
           <Chat 
             startSession={startSessionCallback}

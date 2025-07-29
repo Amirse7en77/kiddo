@@ -1,5 +1,6 @@
 import { FC } from "react";
 import React from "react"; // Import React for inline SVG
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 interface ButtonType {
@@ -9,10 +10,18 @@ interface ButtonType {
 
 const Header: FC<ButtonType> = ({ title }) => {
   const navigate = useNavigate(); // Initialize useNavigate hook
-
+  const role=useSelector(state=>state?.user.role)
+ 
   const handleBackClick = () => {
-    navigate(-1); // Go back one step in history
-  };
+    if (role==='STUDENT')
+    navigate('/student')
+  else{
+    navigate('/teacher')
+  
+  }
+  }
+
+  
   return (
     <div>
       <header
@@ -49,7 +58,7 @@ const Header: FC<ButtonType> = ({ title }) => {
       </header>
 
       <div className="h-[52px]"></div>
-      <hr className="border-[2px] border-borderColor-1 w-full" />
+      <hr className="border-[1.5px] border-borderColor-1 w-full fixed" />
     </div>
   );
 };

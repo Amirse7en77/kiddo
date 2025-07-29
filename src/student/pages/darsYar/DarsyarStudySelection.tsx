@@ -17,8 +17,8 @@ const DarsyarStudySelection = () => {
 
   return (
     <div className="h-screen">
-      <Header title={'درس‌یار'} />
-      <div className='font-yekanBakh bg-backGround-1 pb-20'> {/* Increased pb to avoid overlap with draggable MainContent */}
+      <Header title={'درس‌یـــــار'} />
+      <div className='font-yekanBakh bg-backGround-1 pb-18'> {/* Increased pb to avoid overlap with draggable MainContent */}
         <HeroSection />
          <MainContent />
       </div>
