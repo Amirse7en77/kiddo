@@ -1,36 +1,23 @@
-// src/student/pages/konjKav/topicSelection/MainContent.tsx
+// src/student/components/tarkibKon/learnTopic/MainContent.tsx
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { activeButtonReducer, disableButtonReducer } from '../../../../slice/konjkavSlice';
+import { activeButtonReducer, disableButtonReducer } from '../../../../slice/tarkibkonSlice';
 import TopicSelector from './TopicSelector'
 
-// This Topic interface isn't directly used by TopicSelector anymore,
-// but it's good to keep if you plan to use these topics for filtering/search later.
-interface Topic {
-  id: string;
-  title: string;
-  description: string;
-  emoji: string;
-}
-
 interface MainContentProps {
-  onTopicSelect: (topicId: string | null) => void; // Now passes a single ID or null
-  selectedTopicFromParent: string | null; // New prop to receive the currently selected topic
+  onTopicSelect: (topicId: string | null) => void;
+  selectedTopicFromParent: string | null;
 }
 
 const MainContent: React.FC<MainContentProps> = ({ onTopicSelect, selectedTopicFromParent }) => {
   const dispatch = useDispatch();
 
- 
-
-  // handleTopicSelect now directly passes the selected ID to the parent via onTopicSelect
   const handleTopicSelect = (topicId: string | null) => {
-    onTopicSelect(topicId); // Pass the ID directly to the parent
+    onTopicSelect(topicId);
     
-    // Logic for activating/deactivating button based on selection
-    if (topicId) { // If something is selected
+    if (topicId) {
       dispatch(activeButtonReducer());
-    } else { // If nothing is selected
+    } else {
       dispatch(disableButtonReducer());
     }
   };
@@ -42,12 +29,13 @@ const MainContent: React.FC<MainContentProps> = ({ onTopicSelect, selectedTopicF
         h-full w-full 
         overflow-y-auto 
         flex flex-col 
+        pb-24
       '
     >
       <TopicSelector
         onSelectCard={handleTopicSelect}
-        selectedCardId={selectedTopicFromParent} // Pass the selected ID from parent to TopicSelector
-        isDisabled={false} // Assuming TopicSelector itself is not disabled
+        selectedCardId={selectedTopicFromParent}
+        isDisabled={false}
       />
     </div>
   );

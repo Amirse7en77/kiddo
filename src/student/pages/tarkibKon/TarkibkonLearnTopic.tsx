@@ -41,11 +41,11 @@ const TarkibkonLearnTopic = () => {
   };
 
   return (
-    <div className="h-screen">
+    <div className="h-screen flex flex-col bg-backGround-1">
       <Header title={'ترکــــــیب‌کن'}/>
-      <div className='font-yekanBakh bg-backGround-1 pb-20'>
+      <div className='flex-1 flex flex-col min-h-0'>
         <HeroSection />
-        <div className="bg-white rounded-[24px] rounded-b-none pb-50 border-[2px] border-borderColor-1">
+        <div className="flex-1 flex flex-col min-h-0 bg-white rounded-t-[24px] border-t-2 border-x-2 border-borderColor-1">
           <TopicSearchBox 
             searchQuery={learnTopic} 
             setSearchQuery={handleTopicChange}

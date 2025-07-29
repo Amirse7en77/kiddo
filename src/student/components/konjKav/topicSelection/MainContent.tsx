@@ -1,4 +1,4 @@
-// src/student/pages/konjKav/topicSelection/MainContent.tsx
+// src/student/components/konjKav/topicSelection/MainContent.tsx
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { activeButtonReducer, disableButtonReducer } from '../../../../slice/konjkavSlice';
@@ -38,10 +38,8 @@ const MainContent: React.FC<MainContentProps> = ({ onTopicSelect, selectedTopicF
   return (
     <div
       className='
-        p-4 
-        h-full w-full 
-        overflow-y-auto 
-        flex flex-col 
+        p-4 h-full w-full 
+        overflow-y-auto flex flex-col pb-24
       '
     >
       <TopicSelector

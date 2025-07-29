@@ -1,8 +1,14 @@
+// src/components/RecentChats.tsx
+
 import React from 'react';
 import { useChatSessions } from '../hooks/useChatSessions';
 import RecentChatCard from './common/RecentChatCard';
 
-const RecentChats: React.FC = () => {
+interface RecentChatsProps {
+  filterByTool?: 'DARS_YAR' | 'KONJKAV_SHO' | 'TARKIB_KON' | 'AZMOON_SAZ';
+}
+
+const RecentChats: React.FC<RecentChatsProps> = ({ filterByTool }) => {
   const { data: chatSessions, isLoading, isError } = useChatSessions();
 
   if (isLoading) {
@@ -13,7 +19,11 @@ const RecentChats: React.FC = () => {
     return <div className="text-center text-red-500 py-4">خطا در بارگذاری چت‌ها</div>;
   }
 
-  if (!chatSessions || chatSessions.length === 0) {
+  const filteredSessions = filterByTool 
+    ? chatSessions?.filter(session => session.tool === filterByTool)
+    : chatSessions;
+
+  if (!filteredSessions || filteredSessions.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center p-6 text-center">
         <p className="text-gray-500">چت اخیری وجود ندارد.</p>
@@ -23,7 +33,7 @@ const RecentChats: React.FC = () => {
   
   return (
     <div className="space-y-[12px]">
-      {chatSessions.map((session) => (
+      {filteredSessions.map((session) => (
         <RecentChatCard
           key={session.id}
           id={session.id}

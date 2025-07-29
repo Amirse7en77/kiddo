@@ -16,14 +16,12 @@ const KonjkavTopicSelection = () => {
   
   const { selectedStudy, selectedTopic, studySelectionButton: isButtonActive } = useSelector((state: RootState) => state.konjkav);
 
-  // Redirect if no study is selected
   useEffect(() => {
     if (!selectedStudy) {
       navigate('/student/konjkav/study-selection');
     }
   }, [selectedStudy, navigate]);
 
-  // Activate button if there is any topic (from card or textarea)
   useEffect(() => {
     if (selectedTopic && selectedTopic.trim() !== "") {
       dispatch(activeButtonReducer());
@@ -43,11 +41,11 @@ const KonjkavTopicSelection = () => {
   };
 
   return (
-    <div className="h-screen">
+    <div className="h-screen flex flex-col bg-backGround-1">
       <Header title={'کنج‌کـــاو'}/>
-      <div className='font-yekanBakh bg-backGround-1 '>
+      <div className='flex-1 flex flex-col min-h-0'>
         <HeroSection />
-        <div className="bg-white rounded-[24px] rounded-b-none pb-50 border-[2px] border-borderColor-1">
+        <div className="flex-1 flex flex-col min-h-0 bg-white rounded-t-[24px] border-t-2 border-x-2 border-borderColor-1">
           <TopicSearchBox 
             searchQuery={selectedTopic} 
             setSearchQuery={handleTopicChange}

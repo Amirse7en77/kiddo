@@ -28,6 +28,7 @@ import TarkibkonFavoriteTopic from "../student/pages/tarkibKon/TarkibkonFavorite
 import TarkibkonChatBot from "../student/pages/tarkibKon/TarkibkonChatBot";
 import TarkibkonStudySelection from "../student/pages/tarkibKon/TarkibkonStudySelection";
 import ReportsPage from "../teacher/pages/ReportsPage";
+import ResumeChatPage from "../student/pages/ResumeChatPage";
 
 // The only change is to export the router instance
 export const router = createBrowserRouter([
@@ -60,8 +61,11 @@ export const router = createBrowserRouter([
             path: "chat", 
             element: <ClassChat />,
           },
-          
         ],
+      },
+      {
+        path: "teacher/chat/:sessionId",
+        element: <ResumeChatPage />,
       },
       {
         path: "student",
@@ -69,6 +73,10 @@ export const router = createBrowserRouter([
           {
             index: true,
             element: <StudentHome />,
+          },
+          {
+            path: "chat/:sessionId",
+            element: <ResumeChatPage />,
           },
           {
             path: "darsyar",

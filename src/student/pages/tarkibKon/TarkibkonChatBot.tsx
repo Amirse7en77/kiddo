@@ -1,3 +1,5 @@
+// src/student/pages/tarkibKon/TarkibkonChatBot.tsx
+
 import { useState, useEffect, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -41,7 +43,8 @@ const TarkibkonChatBot = () => {
     return null;
   }
 
-  const initialMessage = `...در حال ترکیب کردن ${learnTopic} با ${favoriteTopic}`;
+  // Use the actual prompt template for consistency
+  const initialMessage = `موضوع «${learnTopic}» را در فضا و لحن «${favoriteTopic}» توضیح بده.`;
 
   return (
     <div className="bg-backGround-1 h-screen flex flex-col">

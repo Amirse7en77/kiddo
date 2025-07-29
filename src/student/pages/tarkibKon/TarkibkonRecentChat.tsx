@@ -1,3 +1,5 @@
+// src/student/pages/tarkibKon/TarkibkonRecentChat.tsx
+
 import Header from '../../../components/common/Header'
 import ChatButton from '../../../components/common/ChatButton'
 import RecentChats from '../../../components/RecentChats'
@@ -7,7 +9,8 @@ const TarkibkonRecentChat = () => {
   const navigate = useNavigate();
 
   const handleNewChat = () => {
-    navigate('/student/tarkibkon/welcome');
+    // Navigate directly to the study selection, skipping the welcome page.
+    navigate('/student/tarkibkon/study-selection');
   };
 
   return (
@@ -18,7 +21,7 @@ const TarkibkonRecentChat = () => {
           <h1 className=' font-extrabold text-[14px] mb-4'>چت‌های اخیر</h1>
         </div>
         <div className=' flex flex-col gap-[12px] mx-[16px] pb-20'>
-          <RecentChats/>
+          <RecentChats filterByTool="TARKIB_KON"/>
         </div>
       </div>
       <ChatButton textButton='ساخت چت جدید' onClick={handleNewChat} />

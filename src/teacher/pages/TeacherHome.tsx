@@ -1,9 +1,10 @@
+// src/teacher/pages/TeacherHome.tsx
+
 import React from "react";
 import Header from "../../student/components/home/Header";
 import Classes from "../components/home/Classes";
 import ToolCard from './../components/home/ToolCard'
 import RecentChatCard from "../../components/common/RecentChatCard";
-import ProgressQuestion from "../components/home/ProgressQuestion";
 import { useChatSessions } from "../../hooks/useChatSessions";
 import { useNavigate } from "react-router-dom";
 import darsyar from './../../assets/images/darsyar.webp'
@@ -25,10 +26,10 @@ const TeacherHome = () => {
   return (
     <div>
       <Header />
-      <div className="bg-backGround-1 h-full">
-        <div className="p-[24px] gap-[16px] ">
+      <div className="bg-backGround-1 min-h-screen pb-10">
+        <div className="p-[24px] gap-[16px] pt-[80px]">
           <div >
-            <h1 className="mb-[16px] mt-12">کلاس‌ها</h1>
+            <h1 className="mb-[16px]">کلاس‌ها</h1>
             <div onClick={handleClasses}>
               <Classes />
             </div>
@@ -42,7 +43,7 @@ const TeacherHome = () => {
                   title="درس‌یـــــار"
                   description='بهت کمک می‌کنه، درسا رو بهتر بفهمی!'
                   tool="DARS_YAR"
-                  hasRecentChats={hasRecentChatsForTool("SOALYAR")}
+                  hasRecentChats={hasRecentChatsForTool("DARS_YAR")}
                   image={darsyar}
                 />
                 <ToolCard
@@ -59,24 +60,20 @@ const TeacherHome = () => {
                   title="ترکــــــیب‌کن"
                   description='درسارو همونطوری که خودت دوست داری یادبگیر.'
                   tool="TARKIB_KON"
-                  hasRecentChats={hasRecentChatsForTool("DARS_YAR")}
+                  hasRecentChats={hasRecentChatsForTool("TARKIB_KON")}
                   image={tarkibkon}
                 />
                 <ToolCard
                   title="کنج‌کـــاو"
                   description='همراه خوب تو برای یادگرفتن چیزای جدید!'
-                  tool="KONJKAV"
-                  hasRecentChats={hasRecentChatsForTool("KONJKAV")}
+                  tool="KONJKAV_SHO"
+                  hasRecentChats={hasRecentChatsForTool("KONJKAV_SHO")}
                   image={konjkav}
                 />
               </div>
             </div>
           </div>
-          {/* <div>
-            <h1 className="mb-[16px]">وضعیت مصرف</h1>
-            <ProgressQuestion progress={50} />
-          </div> */}
-
+          
           <h3 className="font-extrabold text-right text-[14px] mt-[32px] mb-[16px]">
             چت‌های اخیر
           </h3>
@@ -95,6 +92,7 @@ const TeacherHome = () => {
               chatSessions.map((session) => (
                 <RecentChatCard
                   key={session.id}
+                  id={session.id}
                   title={session.title}
                   tool={session.tool}
                   subject={session.subject}

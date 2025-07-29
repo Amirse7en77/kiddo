@@ -1,3 +1,5 @@
+// src/student/pages/konjKav/KonjkavRecentChat.tsx
+
 import ChatButton from "../../../components/common/ChatButton"
 import Header from "../../../components/common/Header"
 import RecentChats from "../../../components/RecentChats"
@@ -7,7 +9,8 @@ const KonjkavRecentChat = () => {
   const navigate = useNavigate();
 
   const handleNewChat = () => {
-    navigate('/student/konjkav/welcome');
+    // Navigate directly to the study selection, skipping the welcome page.
+    navigate('/student/konjkav/study-selection');
   };
 
   return (
@@ -18,7 +21,7 @@ const KonjkavRecentChat = () => {
           <h1 className=' font-extrabold text-[14px] mb-4'>چت‌های اخیر</h1>
         </div>
         <div className=' flex flex-col gap-[12px] mx-[16px] pb-20'>
-          <RecentChats/>
+          <RecentChats filterByTool="KONJKAV_SHO"/>
         </div>
       </div>
       <ChatButton textButton='ساخت چت جدید' onClick={handleNewChat}/>

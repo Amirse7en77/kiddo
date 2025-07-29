@@ -1,7 +1,9 @@
 // src/components/common/Chat.tsx
-import React, { useState, useEffect, useRef } from "react";
+
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { useQueryClient } from "@tanstack/react-query";
 import { sendMessage, getSessionDetails } from "../../api-chat";
 import { ApiMessage, ChatSession } from "../../types/api";
 import Toast from "./Toast";
@@ -14,9 +16,10 @@ interface Message {
 }
 
 interface ChatProps {
-  startSession: () => Promise<ChatSession>;
+  startSession?: () => Promise<ChatSession>;
+  resumeSessionId?: string;
   setIsChatting: React.Dispatch<React.SetStateAction<boolean>>;
-  tool: 'DARS_YAR' | 'KONJKAV_SHO' | 'TARKIB_KON' | string;
+  tool?: 'DARS_YAR' | 'KONJKAV_SHO' | 'TARKIB_KON' | string;
   initialUserActionText?: string;
 }
 
@@ -24,14 +27,12 @@ const mapApiMessageToUiMessage = (apiMessage: ApiMessage, tool: string): Message
   let text = apiMessage.content;
   let questions: string[] | undefined = undefined;
 
-  // For Konjkav, extract explanation and follow-up questions from the structured response.
   if (
     tool === 'KONJKAV_SHO' &&
     apiMessage.sender_type === 'AI' &&
     apiMessage.raw_ai_response &&
     Array.isArray(apiMessage.raw_ai_response.follow_up_questions)
   ) {
-    // Use the 'explanation' field for the main text if it exists, otherwise fall back to 'content'.
     text = apiMessage.raw_ai_response.explanation || apiMessage.content;
     questions = apiMessage.raw_ai_response.follow_up_questions;
   }
@@ -44,19 +45,26 @@ const mapApiMessageToUiMessage = (apiMessage: ApiMessage, tool: string): Message
   };
 };
 
-const Chat: React.FC<ChatProps> = ({ startSession, setIsChatting, tool, initialUserActionText }) => {
+const Chat: React.FC<ChatProps> = ({ startSession, resumeSessionId, setIsChatting, tool, initialUserActionText }) => {
+  const queryClient = useQueryClient();
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [sessionId, setSessionId] = useState<string | null>(null);
+  const [currentTool, setCurrentTool] = useState<string | undefined>(tool);
   const [inputAreaHeight, setInputAreaHeight] = useState(0);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const inputAreaRef = useRef<HTMLDivElement>(null);
+  const loadingRef = useRef(isLoading);
+  
+  useEffect(() => {
+    loadingRef.current = isLoading;
+  }, [isLoading]);
 
-  const pollForResponse = (sid: string, originalMessageCount: number) => {
+  const pollForResponse = useCallback((sid: string, originalMessageCount: number) => {
     const timeout = 35000;
     const interval = 1000;
     let pollTimeoutId: ReturnType<typeof setTimeout>;
@@ -69,32 +77,10 @@ const Chat: React.FC<ChatProps> = ({ startSession, setIsChatting, tool, initialU
           if (lastMessage.sender_type === 'AI') {
             clearInterval(poller);
             clearTimeout(pollTimeoutId);
-            // Replace all messages with the definitive list from the server
-            // Filter out any temp message (id === 'temp-initial-message')
-            // Remove temp message and any duplicate user message with the same text as initialUserActionText
-            let serverMsgs = sessionDetails.messages
+            const uiMessages = sessionDetails.messages
               .filter(msg => msg.sender_type !== 'SYSTEM')
-              .map(msg => mapApiMessageToUiMessage(msg, tool));
-
-            if (initialUserActionText && (tool === 'KONJKAV_SHO' || tool === 'TARKIB_KON')) {
-              let foundFirstUserMsg = false;
-              serverMsgs = serverMsgs.filter(msg => {
-                if (
-                  msg.sender === 'user' &&
-                  msg.text.trim() === initialUserActionText.trim()
-                ) {
-                  if (!foundFirstUserMsg) {
-                    foundFirstUserMsg = true;
-                    return true; // keep the first occurrence
-                  }
-                  return false; // remove duplicates
-                }
-                return msg.id !== 'temp-initial-message';
-              });
-            } else {
-              serverMsgs = serverMsgs.filter(msg => msg.id !== 'temp-initial-message');
-            }
-            setMessages(serverMsgs);
+              .map(msg => mapApiMessageToUiMessage(msg, sessionDetails.tool));
+            setMessages(uiMessages);
             setIsLoading(false);
           }
         }
@@ -105,60 +91,52 @@ const Chat: React.FC<ChatProps> = ({ startSession, setIsChatting, tool, initialU
 
     pollTimeoutId = setTimeout(() => {
       clearInterval(poller);
-      if (isLoading) {
-          setError("پاسخی از سرور دریافت نشد. لطفاً دوباره تلاش کنید.");
-          setIsLoading(false);
+      if (loadingRef.current) {
+        setError("پاسخی از سرور دریافت نشد. لطفاً دوباره تلاش کنید.");
+        setIsLoading(false);
       }
     }, timeout);
-  };
+  }, []);
 
   useEffect(() => {
     const initChat = async () => {
-      const isToolWithInitialMessage = (tool === 'KONJKAV_SHO' || tool === 'TARKIB_KON') && initialUserActionText;
-
-      // Show the initial message immediately for konjkav and tarkib
-      if (isToolWithInitialMessage) {
-        const tempMessage: Message = {
-          id: 'temp-initial-message',
-          sender: 'user',
-          text: initialUserActionText
-        };
-        setMessages([tempMessage]);
-        setIsChatting(true);
-        setIsLoading(true);
-      }
-
+      setIsLoading(true);
       try {
-        const initialSession = await startSession();
-        setSessionId(initialSession.id);
-        const filteredMessages = initialSession.messages.filter(msg => msg.sender_type !== 'SYSTEM');
-        
-        // For konjkav and tarkib, ALWAYS send the initial message automatically
-        if ((tool === 'KONJKAV_SHO' || tool === 'TARKIB_KON') && initialUserActionText) {
-          try {
-            await sendMessage(initialSession.id, initialUserActionText);
-            const sessionDetailsBeforePoll = await getSessionDetails(initialSession.id);
-            pollForResponse(initialSession.id, sessionDetailsBeforePoll.messages.length);
-          } catch (err) {
-            setError("خطا در ارسال پیام اولیه.");
-            setIsLoading(false);
+        let sessionToProcess: ChatSession;
+        let toolName: string;
+
+        if (resumeSessionId) {
+          sessionToProcess = await getSessionDetails(resumeSessionId);
+          toolName = sessionToProcess.tool;
+        } else if (startSession) {
+          if ((tool === 'KONJKAV_SHO' || tool === 'TARKIB_KON') && initialUserActionText) {
+            const tempMessage: Message = { id: `temp-${Date.now()}`, sender: 'user', text: initialUserActionText };
+            setMessages([tempMessage]);
           }
-        } else if (filteredMessages.length > 0) {
-          setMessages(filteredMessages.map(msg => mapApiMessageToUiMessage(msg, tool)));
-          setIsChatting(true);
-          setIsLoading(false);
+          sessionToProcess = await startSession();
+          await queryClient.invalidateQueries({ queryKey: ['chatSessions'] });
+          toolName = tool!;
         } else {
-          setMessages([]);
-          setIsLoading(false);
+          throw new Error("Chat component requires either 'resumeSessionId' or 'startSession'");
         }
-        
-        // Start polling for other tools if needed
-        if (!filteredMessages.length && tool !== 'DARS_YAR' && tool !== 'KONJKAV_SHO' && tool !== 'TARKIB_KON') {
-          pollForResponse(initialSession.id, initialSession.messages.length);
+
+        setSessionId(sessionToProcess.id);
+        setCurrentTool(toolName);
+        setIsChatting(true);
+
+        const serverMessages = sessionToProcess.messages.filter(msg => msg.sender_type !== 'SYSTEM');
+        const uiMessages = serverMessages.map(msg => mapApiMessageToUiMessage(msg, toolName));
+        setMessages(uiMessages);
+
+        const lastMessage = serverMessages[serverMessages.length - 1];
+        if (lastMessage && lastMessage.sender_type !== 'AI') {
+          pollForResponse(sessionToProcess.id, serverMessages.length);
+        } else {
+          setIsLoading(false);
         }
       } catch (err) {
-        setError("خطا در شروع گفتگو. لطفاً دوباره تلاش کنید.");
-        console.error('Failed to start chat session:', err);
+        setError("خطا در شروع یا بارگذاری گفتگو. لطفاً دوباره تلاش کنید.");
+        console.error('Failed to initialize chat session:', err);
         setMessages([]);
         setIsLoading(false);
       }
@@ -166,8 +144,8 @@ const Chat: React.FC<ChatProps> = ({ startSession, setIsChatting, tool, initialU
 
     initChat();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [startSession, setIsChatting, tool, initialUserActionText]);
-  
+  }, [resumeSessionId, startSession]);
+
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isLoading]);
@@ -178,15 +156,33 @@ const Chat: React.FC<ChatProps> = ({ startSession, setIsChatting, tool, initialU
       textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
     }
     if (inputAreaRef.current) {
-        setInputAreaHeight(inputAreaRef.current.offsetHeight);
+      setInputAreaHeight(inputAreaRef.current.offsetHeight);
     }
   }, [inputMessage]);
 
-  useEffect(() => {
-    if (inputAreaRef.current) {
-      setInputAreaHeight(inputAreaRef.current.offsetHeight);
+  const handleSendMessage = async () => {
+    if (!sessionId || inputMessage.trim() === "" || isLoading) return;
+
+    const userMessageText = inputMessage.trim();
+    const tempUserMessage: Message = {
+      id: `temp-${Date.now()}`,
+      sender: "user",
+      text: userMessageText,
+    };
+    setMessages(prev => [...prev, tempUserMessage]);
+    setInputMessage("");
+    setIsLoading(true);
+
+    try {
+      await sendMessage(sessionId, userMessageText);
+      const sessionDetailsBeforePoll = await getSessionDetails(sessionId);
+      pollForResponse(sessionId, sessionDetailsBeforePoll.messages.length);
+    } catch (err) {
+      setError("خطا در ارسال پیام.");
+      setMessages(prev => prev.filter(m => m.id !== tempUserMessage.id));
+      setIsLoading(false);
     }
-  }, []);
+  };
 
   const handleQuestionClick = async (question: string) => {
     if (!sessionId || isLoading) return;
@@ -198,7 +194,6 @@ const Chat: React.FC<ChatProps> = ({ startSession, setIsChatting, tool, initialU
     };
     setMessages(prev => [...prev, tempUserMessage]);
     setIsLoading(true);
-    setIsChatting(true);
 
     try {
       await sendMessage(sessionId, question);
@@ -206,33 +201,8 @@ const Chat: React.FC<ChatProps> = ({ startSession, setIsChatting, tool, initialU
       pollForResponse(sessionId, sessionDetailsBeforePoll.messages.length);
     } catch (err) {
       setError("خطا در ارسال پیام.");
-      setIsLoading(false);
       setMessages(prev => prev.filter(m => m.id !== tempUserMessage.id));
-    }
-  };
-
-  const handleSendMessage = async () => {
-    if (!sessionId || inputMessage.trim() === "") return;
-
-    const userMessageText = inputMessage.trim();
-    const tempUserMessage: Message = {
-      id: `temp-${Date.now()}`,
-      sender: "user",
-      text: userMessageText,
-    };
-    setMessages(prev => [...prev, tempUserMessage]);
-    setInputMessage("");
-    setIsLoading(true);
-    setIsChatting(true);
-
-    try {
-      await sendMessage(sessionId, userMessageText);
-      const sessionDetailsBeforePoll = await getSessionDetails(sessionId);
-      pollForResponse(sessionId, sessionDetailsBeforePoll.messages.length);
-    } catch (err) {
-      setError("خطا در ارسال پیام.");
       setIsLoading(false);
-      setMessages(prev => prev.filter(m => m.id !== tempUserMessage.id));
     }
   };
 
@@ -242,14 +212,14 @@ const Chat: React.FC<ChatProps> = ({ startSession, setIsChatting, tool, initialU
       handleSendMessage();
     }
   };
-  
-  const showTypingIndicator = isLoading && messages.length > 0 && messages[messages.length - 1].sender === 'user';
+
+  const showTypingIndicator = isLoading && messages[messages.length - 1]?.sender === 'user';
 
   return (
     <div className='flex flex-col flex-grow bg-backGround-1 relative'>
       {error && <Toast message={error} type="error" onClose={() => setError(null)} />}
       
-      <div className={`flex-1 overflow-y-auto p-4 ${tool === 'DARS_YAR' ? 'pt-2' : ''}`} style={{ paddingBottom: `${inputAreaHeight}px` }}>
+      <div className={`flex-1 overflow-y-auto p-4 ${currentTool === 'DARS_YAR' ? 'pt-2' : ''}`} style={{ paddingBottom: `${inputAreaHeight}px` }}>
         {messages.map((msg) => (
           <div key={msg.id} className={`w-full flex my-2 ${msg.sender === "user" ? "justify-start" : "justify-end"}`}>
             <div 
@@ -269,8 +239,7 @@ const Chat: React.FC<ChatProps> = ({ startSession, setIsChatting, tool, initialU
                   {msg.text}
               </ReactMarkdown>
               
-              {/* Render clickable questions for bot messages in konjkav */}
-                     {msg.sender === 'bot' && msg.questions && tool === 'KONJKAV_SHO' && (
+              {msg.sender === 'bot' && msg.questions && currentTool === 'KONJKAV_SHO' && (
                 <div className="mt-3 space-y-2">
                   {msg.questions.map((question, index) => (
                     <button
@@ -305,7 +274,7 @@ const Chat: React.FC<ChatProps> = ({ startSession, setIsChatting, tool, initialU
       <div ref={inputAreaRef} className="fixed bottom-0 left-0 right-0 bg-white p-4 w-full border-t border-borderColor-1 z-20">
         <div className="bg-gradient-to-r from-[#6248FF] via-[#FE4C4A] to-[#FFB800] p-[2px] rounded-[26px]">
           <div className="relative flex items-center">
-          <textarea ref={textareaRef} rows={1} className="w-full py-3 pl-4 pr-14 rounded-[24px] focus:outline-none bg-white resize-none overflow-y-auto max-h-40" placeholder="اینجا بنویس ... " value={inputMessage} onChange={(e) => setInputMessage(e.target.value)} onKeyPress={handleKeyPress} disabled={ !sessionId} />
+          <textarea ref={textareaRef} rows={1} className="w-full py-3 pl-4 pr-14 rounded-[24px] focus:outline-none bg-white resize-none overflow-y-auto max-h-40" placeholder="اینجا بنویس ... " value={inputMessage} onChange={(e) => setInputMessage(e.target.value)} onKeyPress={handleKeyPress} disabled={!sessionId || isLoading} />
           <button onClick={handleSendMessage} disabled={isLoading || inputMessage.trim() === "" || !sessionId} className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center justify-center bg-custom-purple text-white w-10 h-10 rounded-[24px] shadow-lg transition duration-200 ease-in-out transform hover:scale-105 disabled:bg-gray-400 disabled:cursor-not-allowed rotate-90">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" transform="rotate(180)">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />

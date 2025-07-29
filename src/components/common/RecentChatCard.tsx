@@ -1,4 +1,9 @@
+// src/components/common/RecentChatCard.tsx
+
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
 
 // Import tool icons
 import darsyarIcon from './../../assets/images/darsyar.webp';
@@ -23,7 +28,9 @@ const toolInfoMap: { [key: string]: { name: string; icon: string } } = {
 };
 
 const RecentChatCard: React.FC<RecentChatCardProps> = ({ id, title, tool, subject, updatedAt }) => {
-  
+  const navigate = useNavigate();
+  const userRole = useSelector((state: RootState) => state.user.role);
+
   const formatDate = (dateString: string) => {
     try {
       if (!dateString) return '';
@@ -41,7 +48,8 @@ const RecentChatCard: React.FC<RecentChatCardProps> = ({ id, title, tool, subjec
 
   const handleClick = () => {
     console.log(`Navigating to chat session: ${id}`);
-    // Navigation logic will be added later when the chat view page is ready.
+    const basePath = userRole === 'STUDENT' ? '/student' : '/teacher';
+    navigate(`${basePath}/chat/${id}`);
   };
 
   return (
