@@ -9,7 +9,7 @@ interface ReportToolsProps {
 }
 
 const ReportTools: React.FC<ReportToolsProps> = ({ title, onClick, image, isSelected = false }) => {
-  const isDefaultSelection = title === 'همه درس ها' || title === 'همه ابزار ها';
+  const isDefaultSelection = title === 'همه درس‌ها' || title === 'همه ابزارها';
   const shouldShowPurple = isSelected && !isDefaultSelection;
 
   return (

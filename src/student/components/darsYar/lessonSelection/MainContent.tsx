@@ -5,6 +5,7 @@ import { setSelectedLesson } from "../../../../slice/darsyarSlice";
 import CardContent from "./CardContent";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
+import LoadingIndicator from "../../../../components/common/LoadingIndicator";
 
 // Interface for the API response
 interface LessonResponse {
@@ -33,6 +34,13 @@ const MainContent: React.FC = () => {
     });
   
 
+ if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-[500px]">
+        <LoadingIndicator className='w-10 h-10' />
+      </div>
+    );
+  }
 
   const handleLessonSelect = (id: string) => {
     setSelectedLessons(prev => {

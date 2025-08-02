@@ -1,6 +1,6 @@
 import { FC, useState, useEffect } from "react";
 import { logout } from "../../../api"; // Import the logout function
-import happyFace from './../../../assets/images/happyface.webp';
+import kiddo from './../../../assets/images/Kiddos.svg';
 
 const Header: FC = () => {
  
@@ -39,7 +39,7 @@ const Header: FC = () => {
         </button>
         
         <div className="flex items-center">
-            <img src={happyFace} className="h-[24px] w-[24px] ml-[8px]"/>
+            <img src={kiddo} className="h-[24px] w-[24px] ml-[8px]"/>
             <div className="text-[16px] font-extrabold">کیــــدو </div>
         </div>
         

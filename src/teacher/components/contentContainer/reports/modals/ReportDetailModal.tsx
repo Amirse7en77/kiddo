@@ -6,6 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchEventDetails } from '../../../../../api-teacher';
 import { useNavigate } from 'react-router-dom';
 import { FluentEmoji } from '@lobehub/ui'
+import LoadingIndicator from '../../../../../components/common/LoadingIndicator';
 interface ReportDetailModalProps {
   eventId: string | null;
   onClose: () => void;
@@ -38,7 +39,9 @@ const ReportDetailModal: React.FC<ReportDetailModalProps> = ({ eventId, onClose 
   return (
     <div>
       <Modal isOpen={!!eventId} onClose={onClose}>
-        {isLoading && <p className='text-center py-8'>در حال بارگذاری جزئیات...</p>}
+        {isLoading &&  <div className="flex justify-center items-center text-center">
+                  <LoadingIndicator className="w-10 h-10 " />
+                </div>}
         {isError && <p className='text-center py-8 text-red-500'>خطا در دریافت جزئیات گزارش.</p>}
         {event && (
           <div className='flex flex-col justify-center gap-4 pb-20'>

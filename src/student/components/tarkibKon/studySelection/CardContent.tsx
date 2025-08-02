@@ -23,7 +23,7 @@ const CardContent: React.FC<CardContentProps> = ({image, name, isSelected, onCli
   }, [selectedCardId, dispatch]);
 
   return (
-    <div className={`${isSelected ? `onClickedCard-box transform translate-y-1` : "card-box"}`}>
+    <div className={`${isSelected ? `onClickedCard-box ` : "card-box"}`}>
       <div
         className={`rounded-[24px] cursor-pointer transition-colors duration-200 flex flex-col overflow-hidden h-full ${isSelected ? `bg-backGroundCard` : "bg-white"}`}
         onClick={onClick}

@@ -17,7 +17,7 @@ const KonjkavStudySelection = () => {
 
   return (
     <div className="h-screen">
-      <Header title={'کنج‌کـــاو'} />
+      <Header title={'کنج‌کـــاو'} backPath="/student/konjkav/recent-chat" />
       <div className='font-yekanBakh bg-backGround-1 pb-18'>
         <HeroSection />
         <MainContent />

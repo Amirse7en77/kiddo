@@ -29,7 +29,7 @@ const Navbar = () => {
               className="w-4 h-4 flex-shrink-0"
               alt={`${label} icon`} 
             />
-            <span className={`${isActive ? 'font-extrabold text-[14px]' : 'text-[12px]'} truncate text-center`}>
+            <span className='font-extrabold text-[14px] truncate text-center'>
               {label}
             </span>
           </>
@@ -39,8 +39,8 @@ const Navbar = () => {
   };
 
   return (
-    <div>
-      <div className='flex items-center bg-white py-2 px-2 text-[12px] w-full'>
+    <div >
+      <div className='flex items-center bg-white py-2 px-2 text-[12px] w-full '>
         <NavItem to="/teacher/students" label="دانش آموزان" icon={studentIcon} />
         <NavItem to="/teacher/reports" label="گزارشات" icon={reportIcon} />
         <NavItem to="/teacher/chat" label="چت ها" icon={chatIcon} />

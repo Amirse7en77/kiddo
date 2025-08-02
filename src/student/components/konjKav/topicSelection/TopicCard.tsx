@@ -12,7 +12,7 @@ const TopicCard: React.FC<TopicCardProps> = ({ title, isSelected, onClick, isDis
     <div>
       <div
         className={`
-          ${isSelected ? "onClickedButton-box transform translate-y-1" : "buttonClicked-box"}
+          ${isSelected ? "onClickedButton-box " : "buttonClicked-box"}
           inline-block
           ${isDisabled ? 'pointer-events-none' : ''} // Prevent clicks when disabled
         `}

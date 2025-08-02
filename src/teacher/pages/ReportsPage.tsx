@@ -10,6 +10,7 @@ import ToolsModal from '../components/contentContainer/reports/modals/ToolsModal
 import StudentAlert from '../components/contentContainer/StudentAlert';
 import tool from './../../assets/images/reportsPage/tool.png'
 import lesson from './../../assets/images/reportsPage/lesson.png'
+import LoadingIndicator from '../../components/common/LoadingIndicator';
 
 const ReportsPage = () => {
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
@@ -19,10 +20,10 @@ const ReportsPage = () => {
   
   // State for selected filters - initialize from localStorage
   const [selectedLesson, setSelectedLesson] = useState(() => {
-    return localStorage.getItem('reportsPage_selectedLesson') || 'همه درس ها';
+    return localStorage.getItem('reportsPage_selectedLesson') || 'همه درس‌ها';
   });
   const [selectedTool, setSelectedTool] = useState(() => {
-    return localStorage.getItem('reportsPage_selectedTool') || 'همه ابزار ها';
+    return localStorage.getItem('reportsPage_selectedTool') || 'همه ابزارها';
   });
 
   // Save to localStorage whenever filters change
@@ -41,7 +42,7 @@ const ReportsPage = () => {
 
   // Filter events based on selected lesson and tool
   const filteredEvents = events?.filter(event => {
-    const lessonMatch = selectedLesson === 'همه درس ها' || event.subject_name === selectedLesson;
+    const lessonMatch = selectedLesson === 'همه درس‌ها' || event.subject_name === selectedLesson;
     // Since ChatEvent doesn't have tool_name, we'll just filter by lesson for now
     // You may need to add tool filtering logic based on your actual data structure
     return lessonMatch;
@@ -75,18 +76,20 @@ const ReportsPage = () => {
           title={selectedLesson} 
           onClick={() => setOpenModal('lessons')} 
           image={lesson}
-          isSelected={selectedLesson !== 'همه درس ها'}
+          isSelected={selectedLesson !== 'همه درس‌ها'}
         />
         <ReportTools 
           title={selectedTool} 
           onClick={() => setOpenModal('tools')} 
           image={tool}
-          isSelected={selectedTool !== 'همه ابزار ها'}
+          isSelected={selectedTool !== 'همه ابزارها'}
         />
       </div>
 
       <div className='border-[2px] border-borderColor-1 rounded-[24px] bg-white p-[16px]'>
-        {isLoading && <p className='text-center py-4'>در حال bارگذاری گزارشات...</p>}
+        {isLoading &&  <div className="flex justify-center items-center text-center">
+                  <LoadingIndicator className="w-10 h-10 " />
+                </div>}
         {isError && <p className='text-center py-4 text-red-500'>خطا در دریافت گزارشات.</p>}
         {filteredEvents && filteredEvents.length === 0 && <p className='text-center py-4 text-gray-500'>گزارشی برای نمایش وجود ندارد.</p>}
         

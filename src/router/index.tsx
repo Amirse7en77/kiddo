@@ -1,11 +1,8 @@
 // src/router/index.tsx
 import { createBrowserRouter, Outlet } from "react-router-dom";
-
-// ... (all other imports remain the same)
 import App from "../App";
 import Login from "../login/Login";
-
-// ... (import all your other components)
+import ResumeChatPage from "../student/pages/ResumeChatPage";
 import TeacherHome from "../teacher/pages/TeacherHome";
 import StudentHome from "../student/pages/StudentHome";
 import ClassLayout from "../layout/ClassLayout";
@@ -28,9 +25,8 @@ import TarkibkonFavoriteTopic from "../student/pages/tarkibKon/TarkibkonFavorite
 import TarkibkonChatBot from "../student/pages/tarkibKon/TarkibkonChatBot";
 import TarkibkonStudySelection from "../student/pages/tarkibKon/TarkibkonStudySelection";
 import ReportsPage from "../teacher/pages/ReportsPage";
-import ResumeChatPage from "../student/pages/ResumeChatPage";
+import StudentChat from "../teacher/pages/StudentChat";
 
-// The only change is to export the router instance
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -40,7 +36,6 @@ export const router = createBrowserRouter([
         index: true,
         element: <Login />,
       },
-      // ... (all other routes remain exactly the same)
       {
         path: "teacher", 
         element: <TeacherHome />,
@@ -66,6 +61,10 @@ export const router = createBrowserRouter([
       {
         path: "teacher/chat/:sessionId",
         element: <ResumeChatPage />,
+      },
+      {
+        path: "teacher/student/:studentId/chats",
+        element: <StudentChat />,
       },
       {
         path: "student",

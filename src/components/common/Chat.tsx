@@ -7,6 +7,8 @@ import { useQueryClient } from "@tanstack/react-query";
 import { sendMessage, getSessionDetails } from "../../api-chat";
 import { ApiMessage, ChatSession } from "../../types/api";
 import Toast from "./Toast";
+import vector from './../../assets/images/Vector.svg';
+import SuggestionChip from "./SuggestionChip"; 
 
 interface Message {
   id: string;
@@ -15,12 +17,18 @@ interface Message {
   questions?: string[];
 }
 
+interface Suggestion {
+  text: string;
+}
+
 interface ChatProps {
   startSession?: () => Promise<ChatSession>;
   resumeSessionId?: string;
   setIsChatting: React.Dispatch<React.SetStateAction<boolean>>;
   tool?: 'DARS_YAR' | 'KONJKAV_SHO' | 'TARKIB_KON' | string;
   initialUserActionText?: string;
+  onFirstInteraction?: () => void;
+  suggestions?: Suggestion[];
 }
 
 const mapApiMessageToUiMessage = (apiMessage: ApiMessage, tool: string): Message => {
@@ -39,13 +47,13 @@ const mapApiMessageToUiMessage = (apiMessage: ApiMessage, tool: string): Message
   
   return {
     id: apiMessage.id,
-    sender: apiMessage.sender_type === 'USER' ? 'user' : 'bot',
+    sender: apiMessage.sender_type === 'AI' ? 'bot' : 'user',
     text,
     questions: questions && questions.length > 0 ? questions : undefined,
   };
 };
 
-const Chat: React.FC<ChatProps> = ({ startSession, resumeSessionId, setIsChatting, tool, initialUserActionText }) => {
+const Chat: React.FC<ChatProps> = ({ startSession, resumeSessionId, setIsChatting, tool, initialUserActionText, onFirstInteraction, suggestions }) => {
   const queryClient = useQueryClient();
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState<string>("");
@@ -59,6 +67,14 @@ const Chat: React.FC<ChatProps> = ({ startSession, resumeSessionId, setIsChattin
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const inputAreaRef = useRef<HTMLDivElement>(null);
   const loadingRef = useRef(isLoading);
+  const hasInteracted = useRef(false);
+  
+  const handleInteraction = useCallback(() => {
+    if (!hasInteracted.current && onFirstInteraction) {
+      onFirstInteraction();
+      hasInteracted.current = true;
+    }
+  }, [onFirstInteraction]);
   
   useEffect(() => {
     loadingRef.current = isLoading;
@@ -106,6 +122,7 @@ const Chat: React.FC<ChatProps> = ({ startSession, resumeSessionId, setIsChattin
         let toolName: string;
 
         if (resumeSessionId) {
+          handleInteraction();
           sessionToProcess = await getSessionDetails(resumeSessionId);
           toolName = sessionToProcess.tool;
         } else if (startSession) {
@@ -151,30 +168,26 @@ const Chat: React.FC<ChatProps> = ({ startSession, resumeSessionId, setIsChattin
   }, [messages, isLoading]);
 
   useEffect(() => {
-    if (textareaRef.current) {
-      textareaRef.current.style.height = "auto";
-      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
-    }
     if (inputAreaRef.current) {
       setInputAreaHeight(inputAreaRef.current.offsetHeight);
     }
-  }, [inputMessage]);
+  }, [inputMessage, suggestions, isLoading, messages]); 
 
-  const handleSendMessage = async () => {
-    if (!sessionId || inputMessage.trim() === "" || isLoading) return;
+  const sendUserMessage = async (content: string) => {
+    if (!sessionId || content.trim() === "" || isLoading) return;
 
-    const userMessageText = inputMessage.trim();
+    handleInteraction();
+
     const tempUserMessage: Message = {
       id: `temp-${Date.now()}`,
       sender: "user",
-      text: userMessageText,
+      text: content,
     };
     setMessages(prev => [...prev, tempUserMessage]);
-    setInputMessage("");
     setIsLoading(true);
 
     try {
-      await sendMessage(sessionId, userMessageText);
+      await sendMessage(sessionId, content);
       const sessionDetailsBeforePoll = await getSessionDetails(sessionId);
       pollForResponse(sessionId, sessionDetailsBeforePoll.messages.length);
     } catch (err) {
@@ -184,25 +197,23 @@ const Chat: React.FC<ChatProps> = ({ startSession, resumeSessionId, setIsChattin
     }
   };
 
+  const handleSendMessage = async () => {
+    await sendUserMessage(inputMessage.trim());
+    setInputMessage("");
+  };
+
+  const handleSuggestionClick = async (suggestionText: string) => {
+    await sendUserMessage(suggestionText);
+  };
+
   const handleQuestionClick = async (question: string) => {
-    if (!sessionId || isLoading) return;
-
-    const tempUserMessage: Message = {
-      id: `temp-${Date.now()}`,
-      sender: "user",
-      text: question,
-    };
-    setMessages(prev => [...prev, tempUserMessage]);
-    setIsLoading(true);
-
-    try {
-      await sendMessage(sessionId, question);
-      const sessionDetailsBeforePoll = await getSessionDetails(sessionId);
-      pollForResponse(sessionId, sessionDetailsBeforePoll.messages.length);
-    } catch (err) {
-      setError("خطا در ارسال پیام.");
-      setMessages(prev => prev.filter(m => m.id !== tempUserMessage.id));
-      setIsLoading(false);
+    await sendUserMessage(question);
+  };
+  
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setInputMessage(e.target.value);
+    if (e.target.value.length > 0) {
+      handleInteraction();
     }
   };
 
@@ -213,22 +224,26 @@ const Chat: React.FC<ChatProps> = ({ startSession, resumeSessionId, setIsChattin
     }
   };
 
-  const showTypingIndicator = isLoading && messages[messages.length - 1]?.sender === 'user';
+  const showTypingIndicator = isLoading && messages.length > 0 && messages[messages.length - 1]?.sender === 'user';
+  
+  const lastMessage = messages.length > 0 ? messages[messages.length - 1] : null;
+  // EDITED: Corrected logic to show suggestions on initial load or after a bot message.
+  const shouldShowSuggestions = suggestions && !isLoading && (lastMessage?.sender === 'bot' || messages.length === 0);
 
   return (
     <div className='flex flex-col flex-grow bg-backGround-1 relative'>
       {error && <Toast message={error} type="error" onClose={() => setError(null)} />}
       
-      <div className={`flex-1 overflow-y-auto p-4 ${currentTool === 'DARS_YAR' ? 'pt-2' : ''}`} style={{ paddingBottom: `${inputAreaHeight}px` }}>
+      <div className={`flex-1 overflow-y-auto p-4`} style={{ paddingBottom: `${inputAreaHeight}px` }}>
         {messages.map((msg) => (
-          <div key={msg.id} className={`w-full flex my-2 ${msg.sender === "user" ? "justify-start" : "justify-end"}`}>
+          <div key={msg.id} className={`w-full flex my-2 ${msg.sender === "user" ? "justify-start" : "justify-start"}`}>
             <div 
               dir="auto" 
               className={`
-                prose prose-sm break-words max-w-[85%]
-                ${msg.sender === 'user' ? 'prose-invert' : ''}
-                p-2 rounded-[16px] 
-                ${msg.sender === "user" ? "border-chatButton-1 bg-backGroundCard border-[2px] " : "bg-white   border-borderColor-1 border-[2px]"}
+                prose prose-sm break-words
+                ${msg.sender === 'user' ? 'max-w-[85%]' : 'w-full'}
+                p-4 rounded-[16px] 
+                ${msg.sender === "user" ? "border-chatButton-1 bg-backGroundCard border-[2px]" : "bg-white border-borderColor-1 border-[2px] prose-invert"}
               `}>
               <ReactMarkdown
                   remarkPlugins={[remarkGfm]}
@@ -271,16 +286,44 @@ const Chat: React.FC<ChatProps> = ({ startSession, resumeSessionId, setIsChattin
         <div ref={messagesEndRef} />
       </div>
 
-      <div ref={inputAreaRef} className="fixed bottom-0 left-0 right-0 bg-white p-4 w-full border-t border-borderColor-1 z-20">
-        <div className="bg-gradient-to-r from-[#6248FF] via-[#FE4C4A] to-[#FFB800] p-[2px] rounded-[26px]">
-          <div className="relative flex items-center">
-          <textarea ref={textareaRef} rows={1} className="w-full py-3 pl-4 pr-14 rounded-[24px] focus:outline-none bg-white resize-none overflow-y-auto max-h-40" placeholder="اینجا بنویس ... " value={inputMessage} onChange={(e) => setInputMessage(e.target.value)} onKeyPress={handleKeyPress} disabled={!sessionId || isLoading} />
-          <button onClick={handleSendMessage} disabled={isLoading || inputMessage.trim() === "" || !sessionId} className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center justify-center bg-custom-purple text-white w-10 h-10 rounded-[24px] shadow-lg transition duration-200 ease-in-out transform hover:scale-105 disabled:bg-gray-400 disabled:cursor-not-allowed rotate-90">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" transform="rotate(180)">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-            </svg>
-          </button>
-        </div>
+      <div ref={inputAreaRef} className="fixed bottom-0 left-0 right-0 bg-backGround-1 border-borderColor-1 z-20">
+        
+        {shouldShowSuggestions && (
+          <div className="mr-6 py-4">
+             <div className="flex gap-2 overflow-x-auto pb-3 scrollbar-hide">
+                {suggestions.map((suggestion) => (
+                    <SuggestionChip 
+                        key={suggestion.text} 
+                        text={suggestion.text} 
+                        onClick={() => handleSuggestionClick(suggestion.text)}
+                    />
+                ))}
+             </div>
+          </div>
+        )}
+        
+        <div className="p-4 bg-backGround-1 pt-0">
+          <div className="bg-gradient-to-r from-[#FFB800] via-[#FE4C4A] to-[#6248FF] p-[2px] rounded-[18px]">
+            <div className="relative flex items-center">
+              <textarea
+                ref={textareaRef}
+                rows={1}
+                className="w-full py-4 pl-4 pr-14 rounded-[16px] focus:outline-none bg-white resize-none overflow-y-auto max-h-40"
+                placeholder="اینجا بنویس ... "
+                value={inputMessage}
+                onChange={handleInputChange}
+                onKeyPress={handleKeyPress}
+                disabled={!sessionId || isLoading}
+              />
+              <button
+                onClick={handleSendMessage}
+                disabled={isLoading || inputMessage.trim() === "" || !sessionId}
+                className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center justify-center bg-[#6248FF] w-10 h-10 rounded-full shadow-lg transition duration-200 ease-in-out transform hover:scale-105 disabled:bg-[#DCDCDC] disabled:cursor-not-allowed"
+              >
+                <img className="w-4 h-4" src={vector} alt="Send" />
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

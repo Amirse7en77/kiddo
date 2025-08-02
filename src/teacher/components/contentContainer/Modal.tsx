@@ -1,5 +1,6 @@
 // src/teacher/components/contentContainer/Modal.tsx
-import React, { FC, useEffect, useRef } from 'react';
+import React, { FC, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 
 interface ModalProps {
   isOpen: boolean;
@@ -7,10 +8,9 @@ interface ModalProps {
   children: React.ReactNode;
 }
 
-const Modal: FC<ModalProps> = ({ isOpen, onClose, children }) => {
-  const modalRef = useRef<HTMLDivElement>(null);
+const modalRoot = document.getElementById('modal-root');
 
-  // Effect to lock/unlock background scroll
+const Modal: FC<ModalProps> = ({ isOpen, onClose, children }) => {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -18,7 +18,6 @@ const Modal: FC<ModalProps> = ({ isOpen, onClose, children }) => {
       document.body.style.overflow = 'unset';
     }
 
-    // Cleanup function to reset scroll when component unmounts
     return () => {
       document.body.style.overflow = 'unset';
     };
@@ -47,22 +46,22 @@ const Modal: FC<ModalProps> = ({ isOpen, onClose, children }) => {
     }
   };
 
-  if (!isOpen) return null;
+  if (!isOpen || !modalRoot) return null;
 
-  return (
+  return createPortal(
     <div
-      className="fixed inset-0 bg-backdrop flex items-end justify-center z-50 transition-opacity duration-300"
+      className="font-yekanBakh fixed inset-0 bg-backdrop flex items-end justify-center z-[110] transition-opacity duration-300"
       onClick={handleBackdropClick}
       aria-modal="true"
       role="dialog"
     >
       <div
-        ref={modalRef}
         className="bg-white rounded-t-[24px] p-6 w-full max-h-[80vh] overflow-y-auto"
       >
         {children}
       </div>
-    </div>
+    </div>,
+    modalRoot
   );
 };
 

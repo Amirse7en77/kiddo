@@ -13,14 +13,14 @@ interface ToolsModalProps {
 
 const ToolsModal: React.FC<ToolsModalProps> = ({ isModalOpen, handleCloseModal, initialSelection, onConfirm }) => {
   const [activeTool, setActiveTool] = useState<string>(initialSelection);
-
+console.log(activeTool)
   const toolsList = [
     { name: "درس‌یار" },
     { name: "کنجکاو شو" },
     { name: "ترکیب کن" },
     { name: "آزمون ساز" },
   ];
-  const allToolsOptionName = "همه ابزار ها";
+  const allToolsOptionName = "همه ابزارها";
 
   const handleConfirmClick = () => {
     onConfirm(activeTool);
@@ -30,7 +30,7 @@ const ToolsModal: React.FC<ToolsModalProps> = ({ isModalOpen, handleCloseModal, 
     <div>
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
         <div className='flex flex-col pb-20'>
-          <h2 className="text-center font-bold text-lg mb-4">لطفا ابزار مورد نظر را انتخاب نمایید</h2>
+          <h2 className="text-center font-bold text-lg mb-4"> ابزار مد نظرتون رو انتخاب کنید.</h2>
           
           <Tools
             name={allToolsOptionName}

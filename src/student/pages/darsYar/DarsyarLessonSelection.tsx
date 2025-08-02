@@ -44,7 +44,7 @@ const DarsyarLessonSelection = () => {
   return (
     <div>
       <div>
-        <Header title={'درس‌یـــــار'} />
+        <Header title={'درس‌یـــــار'} backPath="/student/darsyar/recent-chat" />
         <div className='bg-backGround-1'>
           <HeroSection />
           <MainContent />

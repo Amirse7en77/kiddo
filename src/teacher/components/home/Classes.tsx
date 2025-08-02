@@ -2,6 +2,7 @@ import React from 'react';
 import classImage from './../../../assets/images/class.webp'
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
+import LoadingIndicator from '../../../components/common/LoadingIndicator';
 
 interface Class {
     id: string;
@@ -56,7 +57,9 @@ const Classes: React.FC = () => {
 
   // Loading state
   if (isLoadingClasses) {
-    return <div className="p-4 text-center text-gray-600">در حال بارگذاری کلاس‌ها...</div>; // "Loading classes..."
+    return  <div className="flex justify-center items-center text-center">
+                  <LoadingIndicator className="w-10 h-10 " />
+                </div>;
   }
 
   // Error state
@@ -70,9 +73,9 @@ const Classes: React.FC = () => {
     <>
       <div className="bg-backGround-1 "> {/* A general container for the whole section */}
         {/* Check if data is an array and not empty before mapping */}
-        {classes && classes.length > 0 && students ? (
+       
           <div className=""> {/* Added space-y for consistent vertical spacing */}
-            {classes.map((classItem) => (
+            {classes?.map((classItem) => (
               <div key={classItem.id} className='mb-[12px]'> {/* key prop is essential */}
                 <div className='card-box'> {/* Ensure .card-box is defined in your CSS */}
                   <div className='flex justify-start items-center bg-white rounded-[24px] p-[16px] gap-[16px] '>
@@ -83,7 +86,7 @@ const Classes: React.FC = () => {
                       <h1 className='font-extrabold line-clamp-1 text-[14px]'>{classItem.name}</h1>
                       <div className='flex justify-start items-start'>
                         <p className='bg-backGround-1 px-[8px] rounded-[16px] text-[10px] py-[2px]'>
-                          {students.length} دانش آموز
+                          {students?.length} دانش آموز
                         </p>
                       </div>
                     </div>
@@ -92,10 +95,7 @@ const Classes: React.FC = () => {
               </div>
             ))}
           </div>
-        ) : (
-          // Handle case where data is empty after loading
-          <div className="p-4 text-center text-gray-500">کلاسی برای نمایش وجود ندارد.</div> // "No classes to display."
-        )}
+        
       </div>
     </>
   );

@@ -5,6 +5,7 @@ import CardContent from './CardContent';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import LoadingIndicator from '../../../../components/common/LoadingIndicator';
 
 interface Subject {
   id: string;
@@ -34,14 +35,13 @@ const CardSelector: React.FC = () => {
     },
   });
 
-  // if(subjects?.status===401){
-     
-  //     // Navigate to login page if selections are missing
-     
-  //       navigate('/'); 
-    
-  // }
-
+ if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-[500px]">
+        <LoadingIndicator className='w-10 h-10' />
+      </div>
+    );
+  }
   const handleCardClick = (subject: Subject) => {
     // Only allow switching to a different card, not deselecting
     if (selectedCardId !== subject.id) {

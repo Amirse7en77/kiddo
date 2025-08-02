@@ -55,9 +55,9 @@ const RecentChatCard: React.FC<RecentChatCardProps> = ({ id, title, tool, subjec
   return (
     <div onClick={handleClick} className="cursor-pointer">
       <div className='card-box'>
-        <div className='flex justify-start items-center bg-white rounded-[24px] p-[16px] gap-[16px]'>
+        <div className='flex justify-start items-center bg-white rounded-[24px]  gap-[16px]'>
           <div>
-            <img className='w-[56px] h-[56px]' src={toolDetails.icon} alt={toolDetails.name} />
+            <img className='w-[56px] h-[56px]  m-[16px]' src={toolDetails.icon} alt={toolDetails.name} />
           </div>
           <div className='flex flex-col gap-[4px] w-full overflow-hidden'>
             <h1 className='font-extrabold truncate text-[14px]'>{title}</h1>

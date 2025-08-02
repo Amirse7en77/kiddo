@@ -193,7 +193,7 @@ Authorization: Token YOUR_TOKEN_HERE
 {
     "id": "1a2b3c4d-5e6f-7g8h-9i0j-k1l2m3n4o5p6",
     "tool": "DARS_YAR",
-    "title": "درس یار on علوم تجربی",
+    "title": "درس‌یار on علوم تجربی",
     "messages": [
         {
             "id": "7d793789-c00c-4c91-99fb-89e1ba7562e4",

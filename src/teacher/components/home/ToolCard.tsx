@@ -37,7 +37,7 @@ const ToolCard: FC<ToolCardProps> = ({  title, description, tool, hasRecentChats
   return (
   <div onClick={handleClick} className="w-full">
    
-   <div className="card-box cursor-pointer hover:transform hover:translate-y-1 h-full">
+   <div className="card-box cursor-pointer  h-full">
      <div className="flex flex-col items-center text-center justify-between rounded-[24px] bg-white p-[16px] h-[160px] w-full">
       <img src={image} className="h-[56px] w-[56px] flex-shrink-0"/>
       <div className="flex flex-col justify-center flex-grow">

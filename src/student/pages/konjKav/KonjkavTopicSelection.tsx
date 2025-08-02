@@ -42,7 +42,7 @@ const KonjkavTopicSelection = () => {
 
   return (
     <div className="h-screen flex flex-col bg-backGround-1">
-      <Header title={'کنج‌کـــاو'}/>
+      <Header title={'کنج‌کـــاو'} backPath="/student/konjkav/recent-chat" />
       <div className='flex-1 flex flex-col min-h-0'>
         <HeroSection />
         <div className="flex-1 flex flex-col min-h-0 bg-white rounded-t-[24px] border-t-2 border-x-2 border-borderColor-1">

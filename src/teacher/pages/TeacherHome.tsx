@@ -11,6 +11,7 @@ import darsyar from './../../assets/images/darsyar.webp'
 import azmon from './../../assets/images/azmon.webp'
 import tarkibkon from './../../assets/images/tarkibkon.webp'
 import konjkav from './../../assets/images/konjkav.webp'
+import LoadingIndicator from "../../components/common/LoadingIndicator";
 
 const TeacherHome = () => {
   const navigate=useNavigate()
@@ -36,7 +37,7 @@ const TeacherHome = () => {
            
           </div>
           <div>
-            <h1 className="pt-[20px] pb-[32px]">ابزار‌ها</h1>
+            <h1 className="pt-[20px] pb-[16px]">ابزار‌ها</h1>
             <div className="mb-[24px]">
               <div className="flex justify-center items-stretch mb-[12px] gap-[12px]">
                     <ToolCard
@@ -78,9 +79,11 @@ const TeacherHome = () => {
             چت‌های اخیر
           </h3>
           <div className="space-y-[12px]">
-            {isLoading ? (
-              <div className="text-center py-4">در حال بارگذاری...</div>
-            ) : isError ? (
+              {isLoading ? (
+                <div className="flex justify-center items-center text-center">
+                  <LoadingIndicator className="w-10 h-10 " />
+                </div>
+              ) : isError ? (
               <div className="text-center text-red-500 py-4">
                 خطا در بارگذاری چت‌ها
               </div>

@@ -24,14 +24,20 @@ interface RootState {
 const DarsyarChatWithBot = () => {
   const navigate = useNavigate();
   const [isChatting, setIsChatting] = useState(false);
-  const [showLessonInfo, setShowLessonInfo] = useState(true);
+  const [showHero, setShowHero] = useState(true);
   const selectedStudy = useSelector((state: RootState) => state.darsyar.selectedStudy);
   const selectedLessons = useSelector((state: RootState) => state.darsyar.selectedLessons);
-  console.log(selectedLessons)
+
+  const suggestions = [
+      { text: 'برام بیشتر توضیح بده' },
+      { text: 'نکات کلیدی رو بگو' },
+      { text: 'برام خلاصه کن' },
+      { text: 'یه مثال دیگه بزن' }
+  ];
+
   useEffect(() => {
-    // Navigate to login page if selections are missing
     if (!selectedStudy || selectedLessons.length === 0) {
-      navigate('/'); 
+      navigate('/student/darsyar/study-selection'); 
     }
   }, [selectedStudy, selectedLessons, navigate]);
   
@@ -45,30 +51,32 @@ const DarsyarChatWithBot = () => {
     );
   }, [selectedStudy, selectedLessons]);
 
-  // Render nothing while redirecting
   if (!selectedStudy || selectedLessons.length === 0) {
     return null;
   }
 
   return (
     <div className="bg-backGround-1 h-screen flex flex-col">
-      <Header title={'درس‌یـــــار'} />
+      <Header title={'درس‌یـــــار'} backPath="/student/darsyar/recent-chat" />
 
+      <LessonInformation 
+        study={selectedStudy.name}
+        lesson={selectedLessons.map(l => l.title).join('، ')}
+      />
       
-      {showLessonInfo && (
-        <LessonInformation 
-          study={selectedStudy.name}
-          lesson={selectedLessons.map(l => l.title).join('، ')}
-        />
-      )}
-      {(!isChatting) && <HeroSection />}
-      <main className={`flex-grow flex flex-col transition-all duration-300 ${showLessonInfo ? 'pt-[60px]' : ''}`}>
+      <main className="flex-grow flex flex-col pt-[60px] min-h-0">
+        {showHero && <HeroSection />}
+        
+        <div className="flex-grow flex flex-col min-h-0">
           <Chat 
             startSession={startSessionCallback}
             setIsChatting={setIsChatting}
             tool="DARS_YAR"
             initialUserActionText={selectedLessons.map(l => l.title).join('، ')}
+            onFirstInteraction={() => setShowHero(false)}
+            suggestions={suggestions}
           />
+        </div>
       </main>
     </div>
   );

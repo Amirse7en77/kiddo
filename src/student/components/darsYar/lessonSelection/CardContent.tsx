@@ -32,7 +32,7 @@ const CardContent: React.FC<CardContentProps> = ({ title, isSelected, onClick })
     <div className="flex flex-col justify-center mb-[12px] ">
       <div
         className={` ${
-          isClicked ? "onClickedButton-box transform translate-y-1" : "buttonClicked-box"
+          isClicked ? "onClickedButton-box " : "buttonClicked-box"
         }  `}
       >
         <div

@@ -4,6 +4,7 @@ import { setSelectedStudy } from '../../../../slice/tarkibkonSlice';
 import CardContent from './CardContent';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
+import LoadingIndicator from '../../../../components/common/LoadingIndicator';
 
 interface Subject {
   id: string;
@@ -30,6 +31,13 @@ const CardSelector: React.FC = () => {
             return response.data;
         },
     });
+     if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-[500px]">
+        <LoadingIndicator className='w-10 h-10' />
+      </div>
+    );
+  }
 
     const handleCardClick = (subject: Subject) => {
         // Only allow switching to a different card, not deselecting

@@ -38,3 +38,21 @@ export const fetchEventDetails = async (eventId: string): Promise<ChatEventDetai
     throw error;
   }
 };
+/**
+ * Marks a chat event as resolved.
+ * @param eventId The ID of the event to resolve.
+ * @returns The updated chat event detail object.
+ */
+export const resolveChatEvent = async (eventId: string): Promise<ChatEventDetail> => {
+  console.log('API CALL: resolveChatEvent', { eventId });
+  try {
+    const response = await axios.patch<ChatEventDetail>(`${API_BASE_URL}/chat/events/${eventId}/`, {
+      is_resolved: true,
+    });
+    console.log('API RESPONSE: resolveChatEvent', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('API ERROR: resolveChatEvent', error);
+    throw error;
+  }
+};

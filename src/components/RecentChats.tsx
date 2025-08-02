@@ -3,6 +3,7 @@
 import React from 'react';
 import { useChatSessions } from '../hooks/useChatSessions';
 import RecentChatCard from './common/RecentChatCard';
+import LoadingIndicator from './common/LoadingIndicator';
 
 interface RecentChatsProps {
   filterByTool?: 'DARS_YAR' | 'KONJKAV_SHO' | 'TARKIB_KON' | 'AZMOON_SAZ';
@@ -12,7 +13,9 @@ const RecentChats: React.FC<RecentChatsProps> = ({ filterByTool }) => {
   const { data: chatSessions, isLoading, isError } = useChatSessions();
 
   if (isLoading) {
-    return <div className="text-center py-4">در حال بارگذاری...</div>;
+    return  <div className="flex justify-center items-center text-center">
+                  <LoadingIndicator className="w-10 h-10 " />
+                </div>;
   }
 
   if (isError) {

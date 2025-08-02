@@ -31,7 +31,7 @@ const CardContent: React.FC<CardContentProps> = ({
   }, [selectId, dispatch]); 
 
   return (
-    <div className={`${isSelected ? `onClickedCard-box transform translate-y-1` : "card-box"}`}>
+    <div className={`${isSelected ? `onClickedCard-box` : "card-box"}`}>
       {" "}
       <div
         className={`

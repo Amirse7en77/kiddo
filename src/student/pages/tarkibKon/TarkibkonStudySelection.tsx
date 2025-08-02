@@ -17,7 +17,7 @@ const TarkibkonStudySelection = () => {
 
   return (
     <div className="h-screen">
-      <Header title={'ترکــــــیب‌کن'} />
+      <Header title={'ترکــــــیب‌کن'} backPath="/student/tarkibkon/recent-chat" />
       <div className='font-yekanBakh bg-backGround-1 pb-18'>
         <HeroSection />
         <MainContent />

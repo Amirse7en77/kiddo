@@ -43,18 +43,17 @@ const TarkibkonChatBot = () => {
     return null;
   }
 
-  // Use the actual prompt template for consistency
-  const initialMessage = `موضوع «${learnTopic}» را در فضا و لحن «${favoriteTopic}» توضیح بده.`;
+ 
 
   return (
     <div className="bg-backGround-1 h-screen flex flex-col">
-      <Header title={'ترکــــــیب‌کن'} />
+      <Header title={'ترکــــــیب‌کن'} backPath="/student/tarkibkon/recent-chat" />
       <div className="flex-grow flex flex-col">
           <Chat 
             startSession={startSessionCallback}
             setIsChatting={setIsChatting}
             tool="TARKIB_KON"
-            initialUserActionText={initialMessage}
+            
           />
       </div>
     </div>

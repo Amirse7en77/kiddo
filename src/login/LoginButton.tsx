@@ -6,8 +6,8 @@ interface LoginButtonProps {
 
 const LoginButton: React.FC<LoginButtonProps> = ({ disabled }) => {
   return (
-    <div className="flex justify-center items-center bg-white w-full hover:transform hover:translate-y-1">
-      <div className={`chat-button border-b-2 border-backGroundButton w-full ${disabled ? 'opacity-50' : ''} `}>
+    <div className="flex justify-center items-center bg-white w-full ">
+      <div className={`  border-backGroundButton w-full ${disabled ? 'opacity-50' : ''} `}>
         <button 
           type="submit"
           disabled={disabled}
