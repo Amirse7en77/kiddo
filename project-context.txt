@@ -1124,222 +1124,6 @@ export const useAppDispatch = () => useDispatch<AppDispatch>();
 ```
 
 ================
-FILE: src\router\index.tsx
-================
-
-```
-// src/router/index.tsx
-import { createBrowserRouter, Outlet } from "react-router-dom";
-import App from "../App";
-import Login from "../login/Login";
-import ResumeChatPage from "../student/pages/ResumeChatPage";
-import TeacherHome from "../teacher/pages/TeacherHome";
-import StudentHome from "../student/pages/StudentHome";
-import ClassLayout from "../layout/ClassLayout";
-import StudentsActivities from "../teacher/components/contentContainer/students/StudentsActivities";
-import ClassChat from "../teacher/pages/ClassChat";
-import DarsyarRecentChat from "../student/pages/darsYar/DarsyarRecentChat";
-import DarsyarWelcome from "../student/pages/darsYar/DarsyarStudyAssistant";
-import DarsyarStudySelection from "../student/pages/darsYar/DarsyarStudySelection";
-import DarsyarLessonSelection from "../student/pages/darsYar/DarsyarLessonSelection";
-import DarsyarChatWithBot from "../student/pages/darsYar/DarsyarChatWithBot";
-import KonjkavWelcome from "../student/pages/konjKav/KonjkavWelcome";
-import KonjkavRecentChat from "../student/pages/konjKav/KonjkavRecentChat";
-import KonjkavStudySelection from "../student/pages/konjKav/KonjkavStudySelection";
-import KonjkavTopicSelection from "../student/pages/konjKav/KonjkavTopicSelection";
-import KonjkavTopicBot from "../student/pages/konjKav/KonjkavTopicBot";
-import TarkibkonWelcome from "../student/pages/tarkibKon/TarkibkonWelcome";
-import TarkibkonRecentChat from "../student/pages/tarkibKon/TarkibkonRecentChat";
-import TarkibkonLearnTopic from "../student/pages/tarkibKon/TarkibkonLearnTopic";
-import TarkibkonFavoriteTopic from "../student/pages/tarkibKon/TarkibkonFavoriteTopic";
-import TarkibkonChatBot from "../student/pages/tarkibKon/TarkibkonChatBot";
-import TarkibkonStudySelection from "../student/pages/tarkibKon/TarkibkonStudySelection";
-import ReportsPage from "../teacher/pages/ReportsPage";
-import StudentChat from "../teacher/pages/StudentChat";
-
-export const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <App />, 
-    children: [
-      {
-        index: true,
-        element: <Login />,
-      },
-      {
-        path: "teacher", 
-        element: <TeacherHome />,
-      },
-      {
-        path: "teacher", 
-        element: <ClassLayout />,
-        children: [
-          {
-            path: "students", 
-            element: <StudentsActivities />,
-          },
-          {
-            path: "reports",
-            element: <ReportsPage />,
-          },
-          {
-            path: "chat", 
-            element: <ClassChat />,
-          },
-        ],
-      },
-      {
-        path: "teacher/chat/:sessionId",
-        element: <ResumeChatPage />,
-      },
-      {
-        path: "teacher/student/:studentId/chats",
-        element: <StudentChat />,
-      },
-      {
-        path: "student",
-        children: [
-          {
-            index: true,
-            element: <StudentHome />,
-          },
-          {
-            path: "chat/:sessionId",
-            element: <ResumeChatPage />,
-          },
-          {
-            path: "darsyar",
-            element: <Outlet />,
-            children: [
-              { path: "recent-chat", element: <DarsyarRecentChat /> },
-              { path: "study-assistant", element: <DarsyarWelcome /> },
-              { path: "study-selection", element: <DarsyarStudySelection /> },
-              { path: "lesson-selection", element: <DarsyarLessonSelection /> },
-              { path: "chat", element: <DarsyarChatWithBot /> },
-            ],
-          },
-          {
-            path: "konjkav",
-            element: <Outlet />,
-            children: [
-              { path: "welcome", element: <KonjkavWelcome /> },
-              { path: "recent-chat", element: <KonjkavRecentChat /> },
-              { path: "study-selection", element: <KonjkavStudySelection /> },
-              { path: "topic-selection", element: <KonjkavTopicSelection /> },
-              { path: "chat", element: <KonjkavTopicBot /> },
-            ],
-          },
-          {
-            path: "tarkibkon",
-            element: <Outlet />,
-            children: [
-              { path: "welcome", element: <TarkibkonWelcome /> },
-              { path: "recent-chat", element: <TarkibkonRecentChat /> },
-              { path: "study-selection", element: <TarkibkonStudySelection /> },
-              { path: "learn-topic-selection", element: <TarkibkonLearnTopic /> },
-              { path: "favorite-topic-selection", element: <TarkibkonFavoriteTopic /> },
-              { path: "chat", element: <TarkibkonChatBot /> },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-], {
-  basename: "/kiddo",
-});
-```
-
-================
-FILE: src\layout\ClassLayout.tsx
-================
-
-```
-import React, { useRef } from 'react';
-import { useLocation, useOutlet } from 'react-router-dom';
-import Header from '../components/common/Header';
-import Navbar from '../teacher/components/contentContainer/Navbar';
-import StudentAlert from '../teacher/components/contentContainer/StudentAlert';
-import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
-import { useTransition, animated } from '@react-spring/web';
-
-// Define an interface for the class data structure
-interface TeacherClass {
-  id: string;
-  name: string;
-  grade_level: number;
-}
-
-// Define the order of routes for swipe direction logic
-const routeOrder = ['/teacher/students', '/teacher/reports', '/teacher/chat'];
-const getRouteIndex = (pathname: string) => routeOrder.findIndex(p => pathname.startsWith(p));
-
-const ClassLayout = () => {
-  const location = useLocation();
-  const currentOutlet = useOutlet();
-
-  // Ref to store the previous route's index
-  const prevIndexRef = useRef(getRouteIndex(location.pathname));
-  const currentIndex = getRouteIndex(location.pathname);
-
-  // Determine animation direction: 1 for forward (right to left), -1 for backward (left to right)
-  const direction = currentIndex > prevIndexRef.current ? 1 : -1;
-  
-  // Update the ref with the current index for the next navigation
-  React.useEffect(() => {
-    prevIndexRef.current = currentIndex;
-  });
-
-  // Setup the transition animation
-  const transitions = useTransition(location, {
-    key: location.pathname,
-    from: { opacity: 0, transform: `translate3d(${direction * 100}%, 0, 0)` },
-    enter: { opacity: 1, transform: 'translate3d(0%, 0, 0)' },
-    leave: { opacity: 0, transform: `translate3d(${-direction * 50}%, 0, 0)`, position: 'absolute' },
-    config: { tension: 220, friction: 25 },
-  });
-
-  const { data: classes, isLoading } = useQuery<TeacherClass[]>({
-        queryKey: ['teacherClasses'],
-        queryFn: async () => {
-            console.log("API CALL: fetching classes for Header");
-            const res = await axios.get('https://kiddo2.pythonanywhere.com/api/v1/academics/classes/');
-            console.log("API RESPONSE: fetching classes for Header success", res.data);
-            return res.data;
-        },
-        staleTime: 300000,
-    });
-
-  const headerTitle = isLoading 
-    ? 'در حال بارگذاری...' 
-    : (classes && classes.length > 0 ? classes[0].name : 'کلاس من');
-    
-  return (
-    <div>
-      <Header title={headerTitle} />
-      <Navbar />
-      <div className='bg-backGround-1 min-h-screen '>
-        <div className='mx-[16px] '>
-          <StudentAlert />
-          <main className='relative overflow-x-hidden pt-[16px]'>
-            {transitions((style, item) => (
-              <animated.div style={style} className="w-full">
-                {/* Clone the outlet so react-spring animates the correct component. The key is crucial. */}
-                {currentOutlet && React.cloneElement(currentOutlet, { key: item.pathname })}
-              </animated.div>
-            ))}
-          </main>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default ClassLayout;
-```
-
-================
 FILE: src\slice\userSlice.ts
 ================
 
@@ -1687,6 +1471,133 @@ FILE: src\slice\chatSlice.ts
 ```
 
 ================
+FILE: src\router\index.tsx
+================
+
+```
+// src/router/index.tsx
+import { createBrowserRouter, Outlet } from "react-router-dom";
+import App from "../App";
+import Login from "../login/Login";
+import ResumeChatPage from "../student/pages/ResumeChatPage";
+import TeacherHome from "../teacher/pages/TeacherHome";
+import StudentHome from "../student/pages/StudentHome";
+import ClassLayout from "../layout/ClassLayout";
+import StudentsActivities from "../teacher/components/contentContainer/students/StudentsActivities";
+import ClassChat from "../teacher/pages/ClassChat";
+import DarsyarRecentChat from "../student/pages/darsYar/DarsyarRecentChat";
+import DarsyarWelcome from "../student/pages/darsYar/DarsyarStudyAssistant";
+import DarsyarStudySelection from "../student/pages/darsYar/DarsyarStudySelection";
+import DarsyarLessonSelection from "../student/pages/darsYar/DarsyarLessonSelection";
+import DarsyarChatWithBot from "../student/pages/darsYar/DarsyarChatWithBot";
+import KonjkavWelcome from "../student/pages/konjKav/KonjkavWelcome";
+import KonjkavRecentChat from "../student/pages/konjKav/KonjkavRecentChat";
+import KonjkavStudySelection from "../student/pages/konjKav/KonjkavStudySelection";
+import KonjkavTopicSelection from "../student/pages/konjKav/KonjkavTopicSelection";
+import KonjkavTopicBot from "../student/pages/konjKav/KonjkavTopicBot";
+import TarkibkonWelcome from "../student/pages/tarkibKon/TarkibkonWelcome";
+import TarkibkonRecentChat from "../student/pages/tarkibKon/TarkibkonRecentChat";
+import TarkibkonLearnTopic from "../student/pages/tarkibKon/TarkibkonLearnTopic";
+import TarkibkonFavoriteTopic from "../student/pages/tarkibKon/TarkibkonFavoriteTopic";
+import TarkibkonChatBot from "../student/pages/tarkibKon/TarkibkonChatBot";
+import TarkibkonStudySelection from "../student/pages/tarkibKon/TarkibkonStudySelection";
+import ReportsPage from "../teacher/pages/ReportsPage";
+import StudentChat from "../teacher/pages/StudentChat";
+
+export const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />, 
+    children: [
+      {
+        index: true,
+        element: <Login />,
+      },
+      {
+        path: "teacher", 
+        element: <TeacherHome />,
+      },
+      {
+        path: "teacher", 
+        element: <ClassLayout />,
+        children: [
+          {
+            path: "students", 
+            element: <StudentsActivities />,
+          },
+          {
+            path: "reports",
+            element: <ReportsPage />,
+          },
+          {
+            path: "chat", 
+            element: <ClassChat />,
+          },
+        ],
+      },
+      {
+        path: "teacher/chat/:sessionId",
+        element: <ResumeChatPage />,
+      },
+      {
+        path: "teacher/student/:studentId/chats",
+        element: <StudentChat />,
+      },
+      {
+        path: "student",
+        children: [
+          {
+            index: true,
+            element: <StudentHome />,
+          },
+          {
+            path: "chat/:sessionId",
+            element: <ResumeChatPage />,
+          },
+          {
+            path: "darsyar",
+            element: <Outlet />,
+            children: [
+              { path: "recent-chat", element: <DarsyarRecentChat /> },
+              { path: "study-assistant", element: <DarsyarWelcome /> },
+              { path: "study-selection", element: <DarsyarStudySelection /> },
+              { path: "lesson-selection", element: <DarsyarLessonSelection /> },
+              { path: "chat", element: <DarsyarChatWithBot /> },
+            ],
+          },
+          {
+            path: "konjkav",
+            element: <Outlet />,
+            children: [
+              { path: "welcome", element: <KonjkavWelcome /> },
+              { path: "recent-chat", element: <KonjkavRecentChat /> },
+              { path: "study-selection", element: <KonjkavStudySelection /> },
+              { path: "topic-selection", element: <KonjkavTopicSelection /> },
+              { path: "chat", element: <KonjkavTopicBot /> },
+            ],
+          },
+          {
+            path: "tarkibkon",
+            element: <Outlet />,
+            children: [
+              { path: "welcome", element: <TarkibkonWelcome /> },
+              { path: "recent-chat", element: <TarkibkonRecentChat /> },
+              { path: "study-selection", element: <TarkibkonStudySelection /> },
+              { path: "learn-topic-selection", element: <TarkibkonLearnTopic /> },
+              { path: "favorite-topic-selection", element: <TarkibkonFavoriteTopic /> },
+              { path: "chat", element: <TarkibkonChatBot /> },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+], {
+  basename: "/kiddo",
+});
+```
+
+================
 FILE: src\login\LoginButton.tsx
 ================
 
@@ -1845,63 +1756,92 @@ export default HeroSection
 ```
 
 ================
-FILE: src\components\RecentChats.tsx
+FILE: src\layout\ClassLayout.tsx
 ================
 
 ```
-// src/components/RecentChats.tsx
+import React, { useRef } from 'react';
+import { useLocation, useOutlet } from 'react-router-dom';
+import Header from '../components/common/Header';
+import Navbar from '../teacher/components/contentContainer/Navbar';
+import StudentAlert from '../teacher/components/contentContainer/StudentAlert';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+import { useTransition, animated } from '@react-spring/web';
 
-import React from 'react';
-import { useChatSessions } from '../hooks/useChatSessions';
-import RecentChatCard from './common/RecentChatCard';
-import LoadingIndicator from './common/LoadingIndicator';
-
-interface RecentChatsProps {
-  filterByTool?: 'DARS_YAR' | 'KONJKAV_SHO' | 'TARKIB_KON' | 'AZMOON_SAZ';
+// Define an interface for the class data structure
+interface TeacherClass {
+  id: string;
+  name: string;
+  grade_level: number;
 }
 
-const RecentChats: React.FC<RecentChatsProps> = ({ filterByTool }) => {
-  const { data: chatSessions, isLoading, isError } = useChatSessions();
+// Define the order of routes for swipe direction logic
+const routeOrder = ['/teacher/students', '/teacher/reports', '/teacher/chat'];
+const getRouteIndex = (pathname: string) => routeOrder.findIndex(p => pathname.startsWith(p));
 
-  if (isLoading) {
-    return  <div className="flex justify-center items-center text-center">
-                  <LoadingIndicator className="w-10 h-10 " />
-                </div>;
-  }
+const ClassLayout = () => {
+  const location = useLocation();
+  const currentOutlet = useOutlet();
 
-  if (isError) {
-    return <div className="text-center text-red-500 py-4">خطا در بارگذاری چت‌ها</div>;
-  }
+  // Ref to store the previous route's index
+  const prevIndexRef = useRef(getRouteIndex(location.pathname));
+  const currentIndex = getRouteIndex(location.pathname);
 
-  const filteredSessions = filterByTool 
-    ? chatSessions?.filter(session => session.tool === filterByTool)
-    : chatSessions;
-
-  if (!filteredSessions || filteredSessions.length === 0) {
-    return (
-      <div className="flex flex-col items-center justify-center p-6 text-center">
-        <p className="text-gray-500">چت اخیری وجود ندارد.</p>
-      </div>
-    );
-  }
+  // Determine animation direction: 1 for forward (right to left), -1 for backward (left to right)
+  const direction = currentIndex > prevIndexRef.current ? 1 : -1;
   
+  // Update the ref with the current index for the next navigation
+  React.useEffect(() => {
+    prevIndexRef.current = currentIndex;
+  });
+
+  // Setup the transition animation
+  const transitions = useTransition(location, {
+    key: location.pathname,
+    from: { opacity: 0, transform: `translate3d(${direction * 100}%, 0, 0)` },
+    enter: { opacity: 1, transform: 'translate3d(0%, 0, 0)' },
+    leave: { opacity: 0, transform: `translate3d(${-direction * 50}%, 0, 0)`, position: 'absolute' },
+    config: { tension: 220, friction: 25 },
+  });
+
+  const { data: classes, isLoading } = useQuery<TeacherClass[]>({
+        queryKey: ['teacherClasses'],
+        queryFn: async () => {
+            console.log("API CALL: fetching classes for Header");
+            const res = await axios.get('https://kiddo2.pythonanywhere.com/api/v1/academics/classes/');
+            console.log("API RESPONSE: fetching classes for Header success", res.data);
+            return res.data;
+        },
+        staleTime: 300000,
+    });
+
+  const headerTitle = isLoading 
+    ? 'در حال بارگذاری...' 
+    : (classes && classes.length > 0 ? classes[0].name : 'کلاس من');
+    
   return (
-    <div className="space-y-[12px]">
-      {filteredSessions.map((session) => (
-        <RecentChatCard
-          key={session.id}
-          id={session.id}
-          title={session.title}
-          tool={session.tool}
-          subject={session.subject}
-          updatedAt={session.updated_at}
-        />
-      ))}
+    <div>
+      <Header title={headerTitle} />
+      <Navbar />
+      <div className='bg-backGround-1 min-h-screen '>
+        <div className='mx-[16px] '>
+          <StudentAlert />
+          <main className='relative overflow-x-hidden pt-[16px]'>
+            {transitions((style, item) => (
+              <animated.div style={style} className="w-full">
+                {/* Clone the outlet so react-spring animates the correct component. The key is crucial. */}
+                {currentOutlet && React.cloneElement(currentOutlet, { key: item.pathname })}
+              </animated.div>
+            ))}
+          </main>
+        </div>
+      </div>
     </div>
   );
 };
 
-export default RecentChats;
+export default ClassLayout;
 ```
 
 ================
@@ -2184,6 +2124,66 @@ FILE: src\constants\azmonWelcomeConstant.tsx
 //     title: string,
 //     description:string
 // }
+```
+
+================
+FILE: src\components\RecentChats.tsx
+================
+
+```
+// src/components/RecentChats.tsx
+
+import React from 'react';
+import { useChatSessions } from '../hooks/useChatSessions';
+import RecentChatCard from './common/RecentChatCard';
+import LoadingIndicator from './common/LoadingIndicator';
+
+interface RecentChatsProps {
+  filterByTool?: 'DARS_YAR' | 'KONJKAV_SHO' | 'TARKIB_KON' | 'AZMOON_SAZ';
+}
+
+const RecentChats: React.FC<RecentChatsProps> = ({ filterByTool }) => {
+  const { data: chatSessions, isLoading, isError } = useChatSessions();
+
+  if (isLoading) {
+    return  <div className="flex justify-center items-center text-center">
+                  <LoadingIndicator className="w-10 h-10 " />
+                </div>;
+  }
+
+  if (isError) {
+    return <div className="text-center text-red-500 py-4">خطا در بارگذاری چت‌ها</div>;
+  }
+
+  const filteredSessions = filterByTool 
+    ? chatSessions?.filter(session => session.tool === filterByTool)
+    : chatSessions;
+
+  if (!filteredSessions || filteredSessions.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center p-6 text-center">
+        <p className="text-gray-500">چت اخیری وجود ندارد.</p>
+      </div>
+    );
+  }
+  
+  return (
+    <div className="space-y-[12px]">
+      {filteredSessions.map((session) => (
+        <RecentChatCard
+          key={session.id}
+          id={session.id}
+          title={session.title}
+          tool={session.tool}
+          subject={session.subject}
+          updatedAt={session.updated_at}
+        />
+      ))}
+    </div>
+  );
+};
+
+export default RecentChats;
 ```
 
 ================
@@ -4086,261 +4086,6 @@ export default Chat;
 ```
 
 ================
-FILE: src\teacher\components\home\ToolCard.tsx
-================
-
-```
-// src/teacher/components/home/ToolCard.tsx
-
-import { FC } from "react";
-import { useNavigate } from "react-router-dom";
-
-interface ToolCardProps {
-  title: string;
-  description: string;
-  tool: "DARS_YAR" | "KONJKAV_SHO" | "AZMOON_SAZ" | "TARKIB_KON";
-  hasRecentChats?: boolean;
-  image:string
-}
-
-const getToolRoute = (tool: string, hasRecentChats: boolean) => {
-  switch (tool) {
-    case "DARS_YAR":
-      return hasRecentChats ? "/student/darsyar/recent-chat" : "/student/darsyar/study-assistant";
-    case "KONJKAV_SHO":
-      return hasRecentChats ? "/student/konjkav/recent-chat" : "/student/konjkav/welcome";
-    case "TARKIB_KON":
-      return hasRecentChats ? "/student/tarkibkon/recent-chat" : "/student/tarkibkon/welcome";
-    case "AZMOON_SAZ":
-      return "#";
-    default:
-      return "/student";
-  }
-};
-
-const ToolCard: FC<ToolCardProps> = ({  title, description, tool, hasRecentChats = false,image }) => {
-  const navigate = useNavigate();
-
-  const handleClick = () => {
-    const route = getToolRoute(tool, hasRecentChats);
-    navigate(route);
-  };
-
-  return (
-  <div onClick={handleClick} className="w-full">
-   
-   <div className="card-box cursor-pointer  h-full">
-     <div className="flex flex-col items-center text-center justify-between rounded-[24px] bg-white p-[16px] h-[160px] w-full">
-      <img src={image} className="h-[56px] w-[56px] flex-shrink-0"/>
-      <div className="flex flex-col justify-center flex-grow">
-        <h3 className="font-extrabold text-[18px]">{title}</h3>
-        <p className="text-[10px] leading-relaxed">{description}</p>
-      </div>
-    </div>
-   </div>
-  </div>
-  );
-};
-
-export default ToolCard;
-```
-
-================
-FILE: src\teacher\components\home\RecentChat.tsx
-================
-
-```
-import React from 'react'
-import darsyar from './../../../assets/images/darsyar.webp'
-
-const RecentChatCard = () => {
-  return (
-    <div>
-         <div className='card-box mb-[12px]'>
-            <div className='flex justify-start items-center bg-white rounded-[24px] p-[16px] gap-[16px] pl-[24px]'>
-                <div>
-                    <img className='w-[56px] h-[56px] ' src={darsyar}/>
-                </div>
-                <div className='flex flex-col gap-[4px] '>
-                    <h1 className='font-extrabold line-clamp-1 w-[215px] text-[14px]'>توضیحات مربوط به فتوسنتز و بقیه اطلاعات مهم و کاربری</h1>
-                    <div className='flex justify-start items-start gap-[4px]'>
-                        <p className=' bg-backGround-1 gap-[8px] px-[8px] rounded-[16px] text-[10px] py-[2px]'>د‌رس‌یار</p>
-                    <p className='bg-backGround-1 gap-[8px] px-[8px] rounded-[16px] text-[10px] py-[2px]'> فارسی</p>
-                    <p className='bg-backGround-1 gap-[8px] px-[8px] rounded-[16px] text-[10px] py-[2px]' >19 خرداد</p>
-                    </div>
-                </div>
-                
-            </div>
-        </div>
-    </div>
-  )
-}
-
-export default RecentChatCard
-
-```
-
-================
-FILE: src\teacher\components\home\ProgressQuestion.tsx
-================
-
-```
-import React from 'react'
-interface ProgressBarProps {
-  progress: number; // The current progress percentage (0-100)
-}
-
-const ProgressQuestion:React.FC<ProgressBarProps> = ({ progress }) => {
-     const clampedProgress = Math.max(0, Math.min(100, progress));
-  return (
-        <div className='mb-[12px]'>
-         <div className='card-box'>
-            <div className='flex flex-col items-center bg-white rounded-[24px] p-[16px] gap-[16px] pl-[24px]'>
-             <div className='flex justify-between items-center'>
-                <div>
-                    <h1 className='text-[12px]'>
-                        سوالات باقی مانده
-                </h1>
-                </div>
-                <div className='mr-10 '>
-                    <h1 className='bg-[#F2EFFF] rounded-[24px] text-backGroundButton py-[2px] px-[8px]'>
- 50 از 100
-                </h1>
-                </div>
-             </div>
-                <div className="w-full  rounded-full h-4 bg-backGround-1 overflow-hidden ">
-      <div
-        className="bg-gradient-to-l from-custom-purple via-custom-orange-1 to-custom-orange-2 h-4 rounded-full transition-all duration-500 ease-out"
-        style={{ width: `${clampedProgress}%` }}
-        role="progressbar"
-        aria-valuenow={clampedProgress}
-        aria-valuemin={0}
-        aria-valuemax={100}
-      ></div>
-    </div>
-            </div>
-        </div>
-    </div>
-    
-  )
-}
-
-export default ProgressQuestion
-
-```
-
-================
-FILE: src\teacher\components\home\Classes.tsx
-================
-
-```
-import React from 'react';
-import classImage from './../../../assets/images/class.webp'
-import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
-import LoadingIndicator from '../../../components/common/LoadingIndicator';
-
-interface Class {
-    id: string;
-    name: string;
-}
-
-interface Student {
-  id: string;
-  full_name: string;
-  last_activity_at: string;
-  activity_status: 'Active' | 'Inactive';
-  current_mood: {
-    emoji: string;
-    text: string;
-  } | null; // Allow current_mood to be null
-}
-
-const Classes: React.FC = () => {
-  // Use a type assertion or provide a generic type to useQuery for better type inference
-  const { data: classes, isLoading: isLoadingClasses } = useQuery<Class[]>({
-        queryKey: ['teacherClasses'],
-        queryFn: async () => {
-            console.log("API CALL: fetching classes for teacher");
-            const res = await axios.get('https://kiddo2.pythonanywhere.com/api/v1/academics/classes/');
-            console.log("API RESPONSE: fetching classes success", res.data);
-            return res.data;
-        },
-        staleTime: 300000, // Cache for 5 minutes
-    });
-
-    const classId = classes?.[0]?.id;
-
-    const { data: students, isLoading: isLoadingStudents, isError, error } = useQuery<Student[]>({
-        queryKey: ['students', classId],
-        queryFn: async () => {
-            console.log(`API CALL: fetching students for class ${classId}`);
-            const res = await axios.get(`https://kiddo2.pythonanywhere.com/api/v1/academics/classes/${classId}/students/`);
-            console.log(`API RESPONSE: fetching students for class ${classId} success`, res.data);
-            return res.data;
-        },
-        enabled: !!classId,
-    });
- 
-  // Log data when not loading, for debugging (can be removed in production)
-  // Check if data exists before logging its structure, as it's undefined initially
-  if (!isLoadingClasses && classes) {
-    console.log("Fetched Data:", classes);
-  }
-  console.log(students)
-
-  // 2. Handle different states: Loading, Error, and Success
-
-  // Loading state
-  if (isLoadingClasses) {
-    return  <div className="flex justify-center items-center text-center">
-                  <LoadingIndicator className="w-10 h-10 " />
-                </div>;
-  }
-
-  // Error state
-  if (isError) {
-    console.error("Error fetching classes:", error); // Log the error for debugging
-    return <div className="p-4 text-center text-red-500">خطا در بارگذاری کلاس‌ها: {error?.message || 'نامشخص'}</div>; // "Error loading classes: ..."
-  }
-
-  // Success state: Data is available
-  return (
-    <>
-      <div className="bg-backGround-1 "> {/* A general container for the whole section */}
-        {/* Check if data is an array and not empty before mapping */}
-       
-          <div className=""> {/* Added space-y for consistent vertical spacing */}
-            {classes?.map((classItem) => (
-              <div key={classItem.id} className='mb-[12px]'> {/* key prop is essential */}
-                <div className='card-box'> {/* Ensure .card-box is defined in your CSS */}
-                  <div className='flex justify-start items-center bg-white rounded-[24px] p-[16px] gap-[16px] '>
-                    <div>
-                      <img className='w-[56px] h-[56px]' src={classImage} alt={`تصویر ${classItem.name}`} /> {/* Dynamic alt text */}
-                    </div>
-                    <div className='flex flex-col '>
-                      <h1 className='font-extrabold line-clamp-1 text-[14px]'>{classItem.name}</h1>
-                      <div className='flex justify-start items-start'>
-                        <p className='bg-backGround-1 px-[8px] rounded-[16px] text-[10px] py-[2px]'>
-                          {students?.length} دانش آموز
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        
-      </div>
-    </>
-  );
-};
-
-export default Classes;
-```
-
-================
 FILE: src\teacher\components\contentContainer\StudentAlert.tsx
 ================
 
@@ -4659,6 +4404,261 @@ const Modal: FC<ModalProps> = ({ isOpen, onClose, children }) => {
 };
 
 export default Modal;
+```
+
+================
+FILE: src\teacher\components\home\ToolCard.tsx
+================
+
+```
+// src/teacher/components/home/ToolCard.tsx
+
+import { FC } from "react";
+import { useNavigate } from "react-router-dom";
+
+interface ToolCardProps {
+  title: string;
+  description: string;
+  tool: "DARS_YAR" | "KONJKAV_SHO" | "AZMOON_SAZ" | "TARKIB_KON";
+  hasRecentChats?: boolean;
+  image:string
+}
+
+const getToolRoute = (tool: string, hasRecentChats: boolean) => {
+  switch (tool) {
+    case "DARS_YAR":
+      return hasRecentChats ? "/student/darsyar/recent-chat" : "/student/darsyar/study-assistant";
+    case "KONJKAV_SHO":
+      return hasRecentChats ? "/student/konjkav/recent-chat" : "/student/konjkav/welcome";
+    case "TARKIB_KON":
+      return hasRecentChats ? "/student/tarkibkon/recent-chat" : "/student/tarkibkon/welcome";
+    case "AZMOON_SAZ":
+      return "#";
+    default:
+      return "/student";
+  }
+};
+
+const ToolCard: FC<ToolCardProps> = ({  title, description, tool, hasRecentChats = false,image }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    const route = getToolRoute(tool, hasRecentChats);
+    navigate(route);
+  };
+
+  return (
+  <div onClick={handleClick} className="w-full">
+   
+   <div className="card-box cursor-pointer  h-full">
+     <div className="flex flex-col items-center text-center justify-between rounded-[24px] bg-white p-[16px] h-[160px] w-full">
+      <img src={image} className="h-[56px] w-[56px] flex-shrink-0"/>
+      <div className="flex flex-col justify-center flex-grow">
+        <h3 className="font-extrabold text-[18px]">{title}</h3>
+        <p className="text-[10px] leading-relaxed">{description}</p>
+      </div>
+    </div>
+   </div>
+  </div>
+  );
+};
+
+export default ToolCard;
+```
+
+================
+FILE: src\teacher\components\home\RecentChat.tsx
+================
+
+```
+import React from 'react'
+import darsyar from './../../../assets/images/darsyar.webp'
+
+const RecentChatCard = () => {
+  return (
+    <div>
+         <div className='card-box mb-[12px]'>
+            <div className='flex justify-start items-center bg-white rounded-[24px] p-[16px] gap-[16px] pl-[24px]'>
+                <div>
+                    <img className='w-[56px] h-[56px] ' src={darsyar}/>
+                </div>
+                <div className='flex flex-col gap-[4px] '>
+                    <h1 className='font-extrabold line-clamp-1 w-[215px] text-[14px]'>توضیحات مربوط به فتوسنتز و بقیه اطلاعات مهم و کاربری</h1>
+                    <div className='flex justify-start items-start gap-[4px]'>
+                        <p className=' bg-backGround-1 gap-[8px] px-[8px] rounded-[16px] text-[10px] py-[2px]'>د‌رس‌یار</p>
+                    <p className='bg-backGround-1 gap-[8px] px-[8px] rounded-[16px] text-[10px] py-[2px]'> فارسی</p>
+                    <p className='bg-backGround-1 gap-[8px] px-[8px] rounded-[16px] text-[10px] py-[2px]' >19 خرداد</p>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+  )
+}
+
+export default RecentChatCard
+
+```
+
+================
+FILE: src\teacher\components\home\ProgressQuestion.tsx
+================
+
+```
+import React from 'react'
+interface ProgressBarProps {
+  progress: number; // The current progress percentage (0-100)
+}
+
+const ProgressQuestion:React.FC<ProgressBarProps> = ({ progress }) => {
+     const clampedProgress = Math.max(0, Math.min(100, progress));
+  return (
+        <div className='mb-[12px]'>
+         <div className='card-box'>
+            <div className='flex flex-col items-center bg-white rounded-[24px] p-[16px] gap-[16px] pl-[24px]'>
+             <div className='flex justify-between items-center'>
+                <div>
+                    <h1 className='text-[12px]'>
+                        سوالات باقی مانده
+                </h1>
+                </div>
+                <div className='mr-10 '>
+                    <h1 className='bg-[#F2EFFF] rounded-[24px] text-backGroundButton py-[2px] px-[8px]'>
+ 50 از 100
+                </h1>
+                </div>
+             </div>
+                <div className="w-full  rounded-full h-4 bg-backGround-1 overflow-hidden ">
+      <div
+        className="bg-gradient-to-l from-custom-purple via-custom-orange-1 to-custom-orange-2 h-4 rounded-full transition-all duration-500 ease-out"
+        style={{ width: `${clampedProgress}%` }}
+        role="progressbar"
+        aria-valuenow={clampedProgress}
+        aria-valuemin={0}
+        aria-valuemax={100}
+      ></div>
+    </div>
+            </div>
+        </div>
+    </div>
+    
+  )
+}
+
+export default ProgressQuestion
+
+```
+
+================
+FILE: src\teacher\components\home\Classes.tsx
+================
+
+```
+import React from 'react';
+import classImage from './../../../assets/images/class.webp'
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+import LoadingIndicator from '../../../components/common/LoadingIndicator';
+
+interface Class {
+    id: string;
+    name: string;
+}
+
+interface Student {
+  id: string;
+  full_name: string;
+  last_activity_at: string;
+  activity_status: 'Active' | 'Inactive';
+  current_mood: {
+    emoji: string;
+    text: string;
+  } | null; // Allow current_mood to be null
+}
+
+const Classes: React.FC = () => {
+  // Use a type assertion or provide a generic type to useQuery for better type inference
+  const { data: classes, isLoading: isLoadingClasses } = useQuery<Class[]>({
+        queryKey: ['teacherClasses'],
+        queryFn: async () => {
+            console.log("API CALL: fetching classes for teacher");
+            const res = await axios.get('https://kiddo2.pythonanywhere.com/api/v1/academics/classes/');
+            console.log("API RESPONSE: fetching classes success", res.data);
+            return res.data;
+        },
+        staleTime: 300000, // Cache for 5 minutes
+    });
+
+    const classId = classes?.[0]?.id;
+
+    const { data: students, isLoading: isLoadingStudents, isError, error } = useQuery<Student[]>({
+        queryKey: ['students', classId],
+        queryFn: async () => {
+            console.log(`API CALL: fetching students for class ${classId}`);
+            const res = await axios.get(`https://kiddo2.pythonanywhere.com/api/v1/academics/classes/${classId}/students/`);
+            console.log(`API RESPONSE: fetching students for class ${classId} success`, res.data);
+            return res.data;
+        },
+        enabled: !!classId,
+    });
+ 
+  // Log data when not loading, for debugging (can be removed in production)
+  // Check if data exists before logging its structure, as it's undefined initially
+  if (!isLoadingClasses && classes) {
+    console.log("Fetched Data:", classes);
+  }
+  console.log(students)
+
+  // 2. Handle different states: Loading, Error, and Success
+
+  // Loading state
+  if (isLoadingClasses) {
+    return  <div className="flex justify-center items-center text-center">
+                  <LoadingIndicator className="w-10 h-10 " />
+                </div>;
+  }
+
+  // Error state
+  if (isError) {
+    console.error("Error fetching classes:", error); // Log the error for debugging
+    return <div className="p-4 text-center text-red-500">خطا در بارگذاری کلاس‌ها: {error?.message || 'نامشخص'}</div>; // "Error loading classes: ..."
+  }
+
+  // Success state: Data is available
+  return (
+    <>
+      <div className="bg-backGround-1 "> {/* A general container for the whole section */}
+        {/* Check if data is an array and not empty before mapping */}
+       
+          <div className=""> {/* Added space-y for consistent vertical spacing */}
+            {classes?.map((classItem) => (
+              <div key={classItem.id} className='mb-[12px]'> {/* key prop is essential */}
+                <div className='card-box'> {/* Ensure .card-box is defined in your CSS */}
+                  <div className='flex justify-start items-center bg-white rounded-[24px] p-[16px] gap-[16px] '>
+                    <div>
+                      <img className='w-[56px] h-[56px]' src={classImage} alt={`تصویر ${classItem.name}`} /> {/* Dynamic alt text */}
+                    </div>
+                    <div className='flex flex-col '>
+                      <h1 className='font-extrabold line-clamp-1 text-[14px]'>{classItem.name}</h1>
+                      <div className='flex justify-start items-start'>
+                        <p className='bg-backGround-1 px-[8px] rounded-[16px] text-[10px] py-[2px]'>
+                          {students?.length} دانش آموز
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        
+      </div>
+    </>
+  );
+};
+
+export default Classes;
 ```
 
 ================
@@ -6021,6 +6021,62 @@ export default ReportTools;
 ```
 
 ================
+FILE: src\student\components\tarkibKon\welcome\HeroSection.tsx
+================
+
+```
+import happyFace from './../../../../assets/images/happyFace.png'
+
+const HeroSection = () => {
+  return (
+    <div className='mb-[32px] pt-[16px]'>
+        <div className='flex justify-center  p-4'>
+        <img src={happyFace}/>
+      </div>
+      <p className='text-center font-extrabold'>به ترکیب‌کن خوش آمدی!</p>
+    </div>
+  )
+}
+
+export default HeroSection
+```
+
+================
+FILE: src\student\components\tarkibKon\welcome\CardSection.tsx
+================
+
+```
+import React from 'react'
+import { tarkibkonWelcomeConstant } from '../../../../constants/tarkibkonWelcomeConstant'
+
+
+const CardSection:React.FC = () => {
+  return (
+  <div >
+   {tarkibkonWelcomeConstant.map(study=>(
+        <div className='card-box mb-[12px] gap-[12px] '>
+        <div className=' flex justify-center flex-col bg-white rounded-[24px] gap-[8px] p-[16px] '>
+            <div className='gap-[8px] flex items-center justify-start'>
+               {study.logo}
+                <h1 className='font-extrabold text-[14px]'> {study.title}   </h1>
+
+            </div>
+             <div>
+           <p className=' text-justify  text-[14px]'>{study.description}</p>
+        </div>
+            
+        </div>
+       
+     </div>
+  )
+   )}
+  </div>)
+}
+
+export default CardSection
+```
+
+================
 FILE: src\student\components\tarkibKon\studySelection\MainContent.tsx
 ================
 
@@ -6185,62 +6241,6 @@ const CardContent: React.FC<CardContentProps> = ({image, name, isSelected, onCli
 };
 
 export default CardContent;
-```
-
-================
-FILE: src\student\components\tarkibKon\welcome\HeroSection.tsx
-================
-
-```
-import happyFace from './../../../../assets/images/happyFace.png'
-
-const HeroSection = () => {
-  return (
-    <div className='mb-[32px] pt-[16px]'>
-        <div className='flex justify-center  p-4'>
-        <img src={happyFace}/>
-      </div>
-      <p className='text-center font-extrabold'>به ترکیب‌کن خوش آمدی!</p>
-    </div>
-  )
-}
-
-export default HeroSection
-```
-
-================
-FILE: src\student\components\tarkibKon\welcome\CardSection.tsx
-================
-
-```
-import React from 'react'
-import { tarkibkonWelcomeConstant } from '../../../../constants/tarkibkonWelcomeConstant'
-
-
-const CardSection:React.FC = () => {
-  return (
-  <div >
-   {tarkibkonWelcomeConstant.map(study=>(
-        <div className='card-box mb-[12px] gap-[12px] '>
-        <div className=' flex justify-center flex-col bg-white rounded-[24px] gap-[8px] p-[16px] '>
-            <div className='gap-[8px] flex items-center justify-start'>
-               {study.logo}
-                <h1 className='font-extrabold text-[14px]'> {study.title}   </h1>
-
-            </div>
-             <div>
-           <p className=' text-justify  text-[14px]'>{study.description}</p>
-        </div>
-            
-        </div>
-       
-     </div>
-  )
-   )}
-  </div>)
-}
-
-export default CardSection
 ```
 
 ================
@@ -6790,6 +6790,62 @@ export default HeroSection;
 ```
 
 ================
+FILE: src\student\components\konjKav\welcome\HeroSection.tsx
+================
+
+```
+import happyFace from './../../../../assets/images/happyFace.png'
+
+const HeroSection = () => {
+  return (
+    <div className='mb-[32px] pt-[24px]'>
+        <div className='flex justify-center   mb-[32px]'>
+        <img src={happyFace}/>
+      </div>
+      <p className='text-center font-extrabold'>به کنج‌کـــاو خوش اومدی!</p>
+    </div>
+  )
+}
+
+export default HeroSection
+```
+
+================
+FILE: src\student\components\konjKav\welcome\CardSection.tsx
+================
+
+```
+import React from 'react'
+import { konjkavWelcomeConstant } from '../../../../constants/konjkavWelcomConstant'
+
+
+const CardSection:React.FC = () => {
+  return (
+  <div >
+   {konjkavWelcomeConstant.map(study=>(
+        <div className='card-box mb-[12px] gap-[12px] '>
+        <div className=' flex justify-center flex-col bg-white rounded-[24px] gap-[8px] p-[16px] '>
+            <div className='gap-[8px] flex items-center justify-start'>
+               {study.logo}
+                <h1 className='font-extrabold text-[14px]'> {study.title}   </h1>
+
+            </div>
+             <div>
+           <p className=' text-justify  text-[14px]'>{study.description}</p>
+        </div>
+            
+        </div>
+       
+     </div>
+  )
+   )}
+  </div>)
+}
+
+export default CardSection
+```
+
+================
 FILE: src\student\components\konjKav\topicSelection\TopicSelector.tsx
 ================
 
@@ -7073,70 +7129,6 @@ export default HeroSection;
 ```
 
 ================
-FILE: src\student\components\konjKav\welcome\HeroSection.tsx
-================
-
-```
-import happyFace from './../../../../assets/images/happyFace.png'
-
-const HeroSection = () => {
-  return (
-    <div className='mb-[32px] pt-[24px]'>
-        <div className='flex justify-center   mb-[32px]'>
-        <img src={happyFace}/>
-      </div>
-      <p className='text-center font-extrabold'>به کنج‌کـــاو خوش اومدی!</p>
-    </div>
-  )
-}
-
-export default HeroSection
-```
-
-================
-FILE: src\student\components\konjKav\welcome\CardSection.tsx
-================
-
-```
-import React from 'react'
-import { konjkavWelcomeConstant } from '../../../../constants/konjkavWelcomConstant'
-
-
-const CardSection:React.FC = () => {
-  return (
-  <div >
-   {konjkavWelcomeConstant.map(study=>(
-        <div className='card-box mb-[12px] gap-[12px] '>
-        <div className=' flex justify-center flex-col bg-white rounded-[24px] gap-[8px] p-[16px] '>
-            <div className='gap-[8px] flex items-center justify-start'>
-               {study.logo}
-                <h1 className='font-extrabold text-[14px]'> {study.title}   </h1>
-
-            </div>
-             <div>
-           <p className=' text-justify  text-[14px]'>{study.description}</p>
-        </div>
-            
-        </div>
-       
-     </div>
-  )
-   )}
-  </div>)
-}
-
-export default CardSection
-```
-
-================
-FILE: src\student\components\konjKav\recentChat\RecentChat.tsx
-================
-
-```
-
-```
-
-================
 FILE: src\student\components\konjKav\studySelection\MainContent.tsx
 ================
 
@@ -7319,62 +7311,11 @@ export default CardContent;
 ```
 
 ================
-FILE: src\student\components\darsYar\studyAssistant\HeroSection.tsx
+FILE: src\student\components\konjKav\recentChat\RecentChat.tsx
 ================
 
 ```
 
-import kiddoFace from './../../../../assets/images/happyFace.png'
-
-
-
-
-const HeroSection = () => {
-  return (
-    <div className='mb-[32px] pt-[16px]'>
-        <div className='flex justify-center  p-4'>
-        <img src={kiddoFace}/>
-      </div>
-      <p className='text-center text-[16px] font-extrabold'>به درس‌یار خوش آمدی!</p>
-    </div>
-  )
-}
-
-export default HeroSection
-```
-
-================
-FILE: src\student\components\darsYar\studyAssistant\CardSection.tsx
-================
-
-```
-import React from 'react'
-import { studyAssistantConstatnt } from '../../../../constants/studyAssistantConstant'
-
-const CardSection:React.FC = () => {
-  return (
-  <div >
-   {studyAssistantConstatnt.map((study,index)=>(
-        <div className='card-box mb-[12px] gap-[12px] ' key={index}>
-        <div className=' flex justify-center flex-col bg-white rounded-[24px] gap-[8px] p-[16px] '>
-            <div className='gap-[8px] flex items-center justify-start'>
-               {study.logo}
-                <h1 className='font-extrabold text-[14px]'> {study.title}   </h1>
-
-            </div>
-             <div>
-           <p className=' text-justify  text-[14px]'>{study.description}</p>
-        </div>
-            
-        </div>
-       
-     </div>
-  )
-   )}
-  </div>)
-}
-
-export default CardSection
 ```
 
 ================
@@ -7607,6 +7548,65 @@ const CardContent: React.FC<CardContentProps> = ({
 };
 
 export default CardContent;
+```
+
+================
+FILE: src\student\components\darsYar\studyAssistant\HeroSection.tsx
+================
+
+```
+
+import kiddoFace from './../../../../assets/images/happyFace.png'
+
+
+
+
+const HeroSection = () => {
+  return (
+    <div className='mb-[32px] pt-[16px]'>
+        <div className='flex justify-center  p-4'>
+        <img src={kiddoFace}/>
+      </div>
+      <p className='text-center text-[16px] font-extrabold'>به درس‌یار خوش آمدی!</p>
+    </div>
+  )
+}
+
+export default HeroSection
+```
+
+================
+FILE: src\student\components\darsYar\studyAssistant\CardSection.tsx
+================
+
+```
+import React from 'react'
+import { studyAssistantConstatnt } from '../../../../constants/studyAssistantConstant'
+
+const CardSection:React.FC = () => {
+  return (
+  <div >
+   {studyAssistantConstatnt.map((study,index)=>(
+        <div className='card-box mb-[12px] gap-[12px] ' key={index}>
+        <div className=' flex justify-center flex-col bg-white rounded-[24px] gap-[8px] p-[16px] '>
+            <div className='gap-[8px] flex items-center justify-start'>
+               {study.logo}
+                <h1 className='font-extrabold text-[14px]'> {study.title}   </h1>
+
+            </div>
+             <div>
+           <p className=' text-justify  text-[14px]'>{study.description}</p>
+        </div>
+            
+        </div>
+       
+     </div>
+  )
+   )}
+  </div>)
+}
+
+export default CardSection
 ```
 
 ================
