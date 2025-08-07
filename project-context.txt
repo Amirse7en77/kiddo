@@ -267,6 +267,70 @@ FILE: tsconfig.json
 ```
 
 ================
+FILE: README.md
+================
+
+```
+# React + TypeScript + Vite
+
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+
+Currently, two official plugins are available:
+
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+
+## Expanding the ESLint configuration
+
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+
+```js
+export default tseslint.config({
+  extends: [
+    // Remove ...tseslint.configs.recommended and replace with this
+    ...tseslint.configs.recommendedTypeChecked,
+    // Alternatively, use this for stricter rules
+    ...tseslint.configs.strictTypeChecked,
+    // Optionally, add this for stylistic rules
+    ...tseslint.configs.stylisticTypeChecked,
+  ],
+  languageOptions: {
+    // other options...
+    parserOptions: {
+      project: ['./tsconfig.node.json', './tsconfig.app.json'],
+      tsconfigRootDir: import.meta.dirname,
+    },
+  },
+})
+```
+
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
+
+export default tseslint.config({
+  plugins: {
+    // Add the react-x and react-dom plugins
+    'react-x': reactX,
+    'react-dom': reactDom,
+  },
+  rules: {
+    // other rules...
+    // Enable its recommended typescript rules
+    ...reactX.configs['recommended-typescript'].rules,
+    ...reactDom.configs.recommended.rules,
+  },
+})
+```
+#   k i d d o 
+ 
+ 
+```
+
+================
 FILE: src\vite-env.d.ts
 ================
 
@@ -888,1370 +952,6 @@ FILE: src\api-chat-details.ts
 ```
 
 ================
-FILE: README.md
-================
-
-```
-# React + TypeScript + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
-#   k i d d o  
- 
-```
-
-================
-FILE: src\types\user.ts
-================
-
-```
-�� 
- e x p o r t   i n t e r f a c e   U s e r   {  
-     i d :   s t r i n g ;  
-     u s e r n a m e :   s t r i n g ;  
-     f i r s t _ n a m e :   s t r i n g ;  
-     l a s t _ n a m e :   s t r i n g ;  
-     r o l e :   " S T U D E N T "   |   " S T A F F " ;  
- }  
-  
- e x p o r t   i n t e r f a c e   A u t h S t a t e   {  
-     u s e r :   U s e r   |   n u l l ;  
-     t o k e n :   s t r i n g   |   n u l l ;  
-     s t a t u s :   ' i d l e '   |   ' l o a d i n g '   |   ' s u c c e e d e d '   |   ' f a i l e d ' ;  
-     e r r o r :   s t r i n g   |   n u l l ;  
- } 
-```
-
-================
-FILE: src\types\state.ts
-================
-
-```
-export interface RootState {
-  darsyar: {
-    studySelectionButton: boolean;
-    selectedStudy: string | null;
-    selectedLesson: string | null;
-  };
-  konjkav: {
-    studySelectionButton: boolean;
-    selectedStudy: string | null;
-    selectedTopics: string[];
-    hasSelectedTopics: boolean;
-  };
-}
-
-export interface Lesson {
-  id: string;
-  title: string;
-}
-
-export interface Study {
-  id: string;
-  title: string;
-}
-
-export interface Topic {
-  id: string;
-  title: string;
-  description: string;
-  emoji: string;
-}
-
-```
-
-================
-FILE: src\types\chat.ts
-================
-
-```
-export interface RecentChat {
-    id: string;
-    title: string;
-    lastMessage?: string;
-    timestamp?: string;
-    tool?: string;
-    subject?: string;
-    date?: string;
-    iconUrl?: string;
-}
-
-```
-
-================
-FILE: src\types\auth.ts
-================
-
-```
-��i m p o r t   {   U s e r   }   f r o m   " . / u s e r " ;  
-  
- e x p o r t   i n t e r f a c e   L o g i n C r e d e n t i a l s   {  
-         u s e r n a m e ? :   s t r i n g ;  
-         p a s s w o r d ? :   s t r i n g ;  
- }  
-  
- e x p o r t   i n t e r f a c e   L o g i n R e s p o n s e   {  
-         t o k e n :   s t r i n g ;  
-         u s e r :   U s e r ;  
- } 
-```
-
-================
-FILE: src\types\api.ts
-================
-
-```
-// src/types/api.ts
-
-// Based on GET /api/v1/chat/sessions/{session_id}/
-export interface ApiMessage {
-  id: string;
-  sender_type: 'SYSTEM' | 'USER' | 'AI';
-  content: string;
-  timestamp: string;
-  raw_ai_response?: any; // Define more strictly if needed
-}
-
-// Based on POST /api/v1/tools/dars-yar/start/
-export interface ChatSession {
-  id: string; // This is the crucial session_id
-  tool: string;
-  title: string;
-  messages: ApiMessage[];
-}
-
-// Based on GET /api/v1/chat/events/
-export interface ChatEvent {
-  id: string;
-  student_name: string;
-  overview: string;
-  emoji: string;
-  level: 'INFO' | 'CONCERN' | 'DANGER';
-  subject_name: string;
-  created_at: string;
-  is_resolved: boolean;
-}
-
-// Based on GET /api/v1/chat/events/{event_id}/
-export interface ChatEventDetail extends ChatEvent {
-  explanation: string;
-  session_id: string;
-  resolved_by: {
-    id: string;
-    username: string;
-  } | null;
-}
-```
-
-================
-FILE: src\store\index.ts
-================
-
-```
-import { configureStore } from '@reduxjs/toolkit';
-import { useDispatch } from 'react-redux';
-import darsyarReducer from './../slice/darsyarSlice';
-import konjkavReducer from './../slice/konjkavSlice';
-import tarkibkonReducer from './../slice/tarkibkonSlice';
-import userReducer from './../slice/userSlice';
-import dangerStudentsReducer from './../slice/dangerStudentsSlice'
-
-export const store = configureStore({
-  reducer: {
-    darsyar: darsyarReducer,
-    konjkav: konjkavReducer,
-    tarkibkon:tarkibkonReducer,
-    user:userReducer,
-    dangerStudents: dangerStudentsReducer
-  },
-});
-
-export type RootState = ReturnType<typeof store.getState>;
-
-export type AppDispatch = typeof store.dispatch;
-
-export const useAppDispatch = () => useDispatch<AppDispatch>();
-```
-
-================
-FILE: src\slice\userSlice.ts
-================
-
-```
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-export interface UserState {
-  id: string | null;
-  username: string | null;
-  first_name: string | null;
-  last_name: string | null;
-  role: 'STUDENT' | 'STAFF' | null;
-  token: string | null;
-}
-
-const initialState: UserState = {
-  id: null,
-  username: null,
-  first_name: null,
-  last_name: null,
-  role: null,
-  token: null,
-};
-
-const userSlice = createSlice({
-  name: 'user',
-  initialState,
-  reducers: {
-    setUser: (state, action: PayloadAction<UserState>) => {
-      return { ...action.payload };
-    },
-    clearUser: () => initialState,
-  },
-  
-});
-
-
-export const { setUser, clearUser } = userSlice.actions;
-export default userSlice.reducer;
-
-```
-
-================
-FILE: src\slice\tarkibkonSlice.ts
-================
-
-```
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-interface Study {
-    id: string;
-    name: string;
-}
-
-interface TarkibkonState {
-  selectedStudy: Study | null;
-  learnTopic: string;
-  favoriteTopic: string;
-  studySelectionButton: boolean;
-}
-
-const initialState: TarkibkonState = {
-  selectedStudy: null,
-  learnTopic: "",
-  favoriteTopic: '',
-  studySelectionButton: false,
-};
-
-const tarkibkonSlice = createSlice({
-  name: "tarkibkon",
-  initialState,
-  reducers: {
-    setSelectedStudy: (state, action: PayloadAction<Study | null>) => {
-      state.selectedStudy = action.payload;
-      state.studySelectionButton = !!action.payload;
-    },
-    setLearnTopic: (state, action: PayloadAction<string>) => {
-      state.learnTopic = action.payload;
-    },
-     setFavoriteTopic: (state, action: PayloadAction<string>) => {
-      state.favoriteTopic = action.payload;
-    },
-    resetSelection: (state) => {
-      state.selectedStudy = null;
-      state.learnTopic = "";
-      state.favoriteTopic='';
-      state.studySelectionButton = false;
-    },
-    activeButtonReducer: (state) => {
-      state.studySelectionButton = true;
-    },
-    disableButtonReducer: (state) => {
-      state.studySelectionButton = false;
-    },
-  },
-});
-
-export const {
-  setSelectedStudy,
-  setLearnTopic,
-  setFavoriteTopic,
-  resetSelection,
-  activeButtonReducer,
-  disableButtonReducer,
-} = tarkibkonSlice.actions;
-
-export default tarkibkonSlice.reducer;
-```
-
-================
-FILE: src\slice\konjkavSlice.ts
-================
-
-```
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-interface Study {
-  id: string;
-  name: string;
-}
-
-interface KonjkavState {
-  selectedStudy: Study | null;
-  selectedTopic: string;
-  studySelectionButton: boolean;
-}
-
-const initialState: KonjkavState = {
-  selectedStudy: null,
-  selectedTopic: "",
-  studySelectionButton: false,
-};
-
-const konjkavSlice = createSlice({
-  name: "konjkav",
-  initialState,
-  reducers: {
-    setSelectedStudy: (state, action: PayloadAction<Study | null>) => {
-      state.selectedStudy = action.payload;
-      if (action.payload) {
-        state.studySelectionButton = true;
-      } else {
-        state.studySelectionButton = false;
-      }
-    },
-    setSelectedTopic: (state, action: PayloadAction<string>) => {
-      state.selectedTopic = action.payload;
-    },
-    resetSelection: (state) => {
-      state.selectedStudy = null;
-      state.selectedTopic = "";
-      state.studySelectionButton = false;
-    },
-    activeButtonReducer: (state) => {
-      state.studySelectionButton = true;
-    },
-    disableButtonReducer: (state) => {
-      state.studySelectionButton = false;
-    },
-  },
-});
-
-export const {
-  setSelectedStudy,
-  setSelectedTopic,
-  resetSelection,
-  activeButtonReducer,
-  disableButtonReducer,
-} = konjkavSlice.actions;
-
-export default konjkavSlice.reducer;
-```
-
-================
-FILE: src\slice\darsyarSlice.ts
-================
-
-```
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-interface Study {
-  id: string;
-  name: string;
-}
-
-interface Lesson {
-  id: string;
-  title: string;
-}
-
-interface DarsyarState {
-  studySelectionButton: boolean;
-  selectedStudy: Study | null;
-  studyName: string | null;
-  selectedLessons: Lesson[];
-  hasSelectedLessons: boolean;
-}
-
-const initialState: DarsyarState = {
-  studySelectionButton: false,
-  selectedStudy: null,
-  studyName: null,
-  selectedLessons: [],
-  hasSelectedLessons: false
-};
-
-const darsyarSlice = createSlice({
-  name: 'darsyar',
-  initialState,
-  reducers: {
-    activeButtonReducer: (state) => {
-      state.studySelectionButton = true;
-    },
-    disableButtonReducer: (state) => {
-      state.studySelectionButton = false;
-    },
-    setSelectedStudy: (state, action: PayloadAction<Study>) => {
-      state.selectedStudy = action.payload;
-      state.studyName = action.payload.name;
-    },
-    setSelectedLesson: (state, action: PayloadAction<Lesson[]>) => {
-      state.selectedLessons = action.payload;
-      state.hasSelectedLessons = action.payload.length > 0;
-    },
-    clearSelections: (state) => {
-      state.selectedStudy = null;
-      state.studyName = null;
-      state.selectedLessons = [];
-      state.studySelectionButton = false;
-      state.hasSelectedLessons = false;
-    }
-  }
-});
-
-export const {
-  activeButtonReducer,
-  disableButtonReducer,
-  setSelectedStudy,
-  setSelectedLesson,
-  clearSelections
-} = darsyarSlice.actions;
-
-export default darsyarSlice.reducer;
-```
-
-================
-FILE: src\slice\dangerStudentsSlice.ts
-================
-
-```
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-interface DangerEvent {
-  id: string;
-  student_name: string;
-  subject_name: string;
-  level: 'DANGER' | 'CONCERN' | 'INFO';
-  explanation: string;
-  emoji: string;
-  created_at: string;
-  session_id?: string;
-}
-
-interface DangerStudentsState {
-  dangerEvents: DangerEvent[];
-  lastUpdated: string | null;
-  isLoading: boolean;
-}
-
-const initialState: DangerStudentsState = {
-  dangerEvents: [],
-  lastUpdated: null,
-  isLoading: false,
-};
-
-const dangerStudentsSlice = createSlice({
-  name: 'dangerStudents',
-  initialState,
-  reducers: {
-    setDangerEvents: (state, action: PayloadAction<DangerEvent[]>) => {
-      state.dangerEvents = action.payload;
-      state.lastUpdated = new Date().toISOString();
-      state.isLoading = false;
-    },
-    addDangerEvent: (state, action: PayloadAction<DangerEvent>) => {
-      const existingIndex = state.dangerEvents.findIndex(
-        event => event.id === action.payload.id
-      );
-      
-      if (existingIndex !== -1) {
-        // Update existing event
-        state.dangerEvents[existingIndex] = action.payload;
-      } else {
-        // Add new event
-        state.dangerEvents.push(action.payload);
-      }
-      state.lastUpdated = new Date().toISOString();
-    },
-    removeDangerEvent: (state, action: PayloadAction<string>) => {
-      state.dangerEvents = state.dangerEvents.filter(
-        event => event.id !== action.payload
-      );
-      state.lastUpdated = new Date().toISOString();
-    },
-    clearDangerEvents: (state) => {
-      state.dangerEvents = [];
-      state.lastUpdated = null;
-    },
-    setLoading: (state, action: PayloadAction<boolean>) => {
-      state.isLoading = action.payload;
-    },
-  },
-});
-
-export const {
-  setDangerEvents,
-  addDangerEvent,
-  removeDangerEvent,
-  clearDangerEvents,
-  setLoading,
-} = dangerStudentsSlice.actions;
-
-export default dangerStudentsSlice.reducer;
-
-// Selectors
-export const selectDangerEvents = (state: { dangerStudents: DangerStudentsState }) => 
-  state.dangerStudents.dangerEvents;
-
-export const selectDangerEventsCount = (state: { dangerStudents: DangerStudentsState }) => 
-  state.dangerStudents.dangerEvents.length;
-
-export const selectLastUpdated = (state: { dangerStudents: DangerStudentsState }) => 
-  state.dangerStudents.lastUpdated;
-
-export const selectIsLoading = (state: { dangerStudents: DangerStudentsState }) => 
-  state.dangerStudents.isLoading;
-```
-
-================
-FILE: src\slice\chatSlice.ts
-================
-
-```
-
-```
-
-================
-FILE: src\router\index.tsx
-================
-
-```
-// src/router/index.tsx
-import { createBrowserRouter, Outlet } from "react-router-dom";
-import App from "../App";
-import Login from "../login/Login";
-import ResumeChatPage from "../student/pages/ResumeChatPage";
-import TeacherHome from "../teacher/pages/TeacherHome";
-import StudentHome from "../student/pages/StudentHome";
-import ClassLayout from "../layout/ClassLayout";
-import StudentsActivities from "../teacher/components/contentContainer/students/StudentsActivities";
-import ClassChat from "../teacher/pages/ClassChat";
-import DarsyarRecentChat from "../student/pages/darsYar/DarsyarRecentChat";
-import DarsyarWelcome from "../student/pages/darsYar/DarsyarStudyAssistant";
-import DarsyarStudySelection from "../student/pages/darsYar/DarsyarStudySelection";
-import DarsyarLessonSelection from "../student/pages/darsYar/DarsyarLessonSelection";
-import DarsyarChatWithBot from "../student/pages/darsYar/DarsyarChatWithBot";
-import KonjkavWelcome from "../student/pages/konjKav/KonjkavWelcome";
-import KonjkavRecentChat from "../student/pages/konjKav/KonjkavRecentChat";
-import KonjkavStudySelection from "../student/pages/konjKav/KonjkavStudySelection";
-import KonjkavTopicSelection from "../student/pages/konjKav/KonjkavTopicSelection";
-import KonjkavTopicBot from "../student/pages/konjKav/KonjkavTopicBot";
-import TarkibkonWelcome from "../student/pages/tarkibKon/TarkibkonWelcome";
-import TarkibkonRecentChat from "../student/pages/tarkibKon/TarkibkonRecentChat";
-import TarkibkonLearnTopic from "../student/pages/tarkibKon/TarkibkonLearnTopic";
-import TarkibkonFavoriteTopic from "../student/pages/tarkibKon/TarkibkonFavoriteTopic";
-import TarkibkonChatBot from "../student/pages/tarkibKon/TarkibkonChatBot";
-import TarkibkonStudySelection from "../student/pages/tarkibKon/TarkibkonStudySelection";
-import ReportsPage from "../teacher/pages/ReportsPage";
-import StudentChat from "../teacher/pages/StudentChat";
-
-export const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <App />, 
-    children: [
-      {
-        index: true,
-        element: <Login />,
-      },
-      {
-        path: "teacher", 
-        element: <TeacherHome />,
-      },
-      {
-        path: "teacher", 
-        element: <ClassLayout />,
-        children: [
-          {
-            path: "students", 
-            element: <StudentsActivities />,
-          },
-          {
-            path: "reports",
-            element: <ReportsPage />,
-          },
-          {
-            path: "chat", 
-            element: <ClassChat />,
-          },
-        ],
-      },
-      {
-        path: "teacher/chat/:sessionId",
-        element: <ResumeChatPage />,
-      },
-      {
-        path: "teacher/student/:studentId/chats",
-        element: <StudentChat />,
-      },
-      {
-        path: "student",
-        children: [
-          {
-            index: true,
-            element: <StudentHome />,
-          },
-          {
-            path: "chat/:sessionId",
-            element: <ResumeChatPage />,
-          },
-          {
-            path: "darsyar",
-            element: <Outlet />,
-            children: [
-              { path: "recent-chat", element: <DarsyarRecentChat /> },
-              { path: "study-assistant", element: <DarsyarWelcome /> },
-              { path: "study-selection", element: <DarsyarStudySelection /> },
-              { path: "lesson-selection", element: <DarsyarLessonSelection /> },
-              { path: "chat", element: <DarsyarChatWithBot /> },
-            ],
-          },
-          {
-            path: "konjkav",
-            element: <Outlet />,
-            children: [
-              { path: "welcome", element: <KonjkavWelcome /> },
-              { path: "recent-chat", element: <KonjkavRecentChat /> },
-              { path: "study-selection", element: <KonjkavStudySelection /> },
-              { path: "topic-selection", element: <KonjkavTopicSelection /> },
-              { path: "chat", element: <KonjkavTopicBot /> },
-            ],
-          },
-          {
-            path: "tarkibkon",
-            element: <Outlet />,
-            children: [
-              { path: "welcome", element: <TarkibkonWelcome /> },
-              { path: "recent-chat", element: <TarkibkonRecentChat /> },
-              { path: "study-selection", element: <TarkibkonStudySelection /> },
-              { path: "learn-topic-selection", element: <TarkibkonLearnTopic /> },
-              { path: "favorite-topic-selection", element: <TarkibkonFavoriteTopic /> },
-              { path: "chat", element: <TarkibkonChatBot /> },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-], {
-  basename: "/kiddo",
-});
-```
-
-================
-FILE: src\login\LoginButton.tsx
-================
-
-```
-import React from 'react'
-
-interface LoginButtonProps {
-  disabled?: boolean
-}
-
-const LoginButton: React.FC<LoginButtonProps> = ({ disabled }) => {
-  return (
-    <div className="flex justify-center items-center bg-white w-full ">
-      <div className={`  border-backGroundButton w-full ${disabled ? 'opacity-50' : ''} `}>
-        <button 
-          type="submit"
-          disabled={disabled}
-          className="button-box text-white cursor-pointer p-[16px] w-full disabled:cursor-not-allowed "
-        >
-          {disabled ? 'در حال ورود...' : 'ورود'}
-        </button>
-      </div>
-    </div>
-  )
-}
-
-export default LoginButton
-
-```
-
-================
-FILE: src\login\Login.tsx
-================
-
-```
-import React from 'react'
-import HeroSection from './HeroSection'
-import InputGroup from './InputGroup'
-
-const Login = () => {
-  return (
-    <div className='bg-backGround-1 '>
-      <HeroSection/>
-      <InputGroup/>
-    </div>
-  )
-}
-
-export default Login
-
-```
-
-================
-FILE: src\login\InputGroup.tsx
-================
-
-```
-import { useState } from 'react'
-import { useDispatch } from 'react-redux'
-import LoginButton from './LoginButton'
-import { login } from '../api'
-import { setUser } from '../slice/userSlice'
-import { useNavigate } from 'react-router-dom'
-
-const InputGroup = () => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError('')
-    setLoading(true)
-
-    try {
-      const response = await login(username, password)
-      
-      dispatch(setUser({
-        id: response.user.id,
-        username: response.user.username,
-        first_name: response.user.first_name,
-        last_name: response.user.last_name,
-        role: response.user.role,
-        token: response.token
-      }))
-      
-      // Navigate based on role
-      if (response.user.role === 'STUDENT') {
-        navigate('/student')
-      } else if (response.user.role === 'STAFF') {
-        navigate('/teacher')
-      }
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'خطا در ورود به سیستم')
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  return (
-    <form onSubmit={handleSubmit} className='flex flex-col justify-center items-center rounded-[24px] p-[40px] space-y-6 bg-white border-[2px] border-borderColor-1 rounded-b-none'>
-      {error && (
-        <div className='w-full text-right text-red-500 text-sm mb-4'>
-          {error}
-        </div>
-      )}
-      <div className='w-full mb-[16px]'>
-        <p className='mb-[12px] text-right text-[14px] font-extrabold'>نام کاربری</p>
-        <input
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          className='p-[16px] rounded-[16px] w-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-chatButton-1'
-          required
-        />
-      </div>
-      <div className='w-full mb-[40px]'>
-        <p className='mb-[12px] text-right text-[14px] font-extrabold'>کد ورود</p>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className='p-[16px] rounded-[16px] border border-gray-300 w-full focus:outline-none focus:ring-2 focus:ring-chatButton-1'
-          required
-        />
-      </div>
-      <LoginButton disabled={loading} />
-    </form>
-  )
-}
-
-export default InputGroup
-```
-
-================
-FILE: src\login\HeroSection.tsx
-================
-
-```
-import happyFace from './../assets/images/happyFace.png'
-
-const HeroSection = () => {
-  return (
-    <div className='pb-[32px] pt-[16px]   flex justify-center items-center flex-col h-[60vh]'>
-        <div className=' p-4'>
-        <img src={happyFace}/>
-      </div>
-      <p className='text-center font-extrabold'>به کیــــدو  خوش آمدی!</p>
-    </div>
-  )
-}
-
-export default HeroSection
-```
-
-================
-FILE: src\layout\ClassLayout.tsx
-================
-
-```
-import React, { useRef } from 'react';
-import { useLocation, useOutlet } from 'react-router-dom';
-import Header from '../components/common/Header';
-import Navbar from '../teacher/components/contentContainer/Navbar';
-import StudentAlert from '../teacher/components/contentContainer/StudentAlert';
-import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
-import { useTransition, animated } from '@react-spring/web';
-
-// Define an interface for the class data structure
-interface TeacherClass {
-  id: string;
-  name: string;
-  grade_level: number;
-}
-
-// Define the order of routes for swipe direction logic
-const routeOrder = ['/teacher/students', '/teacher/reports', '/teacher/chat'];
-const getRouteIndex = (pathname: string) => routeOrder.findIndex(p => pathname.startsWith(p));
-
-const ClassLayout = () => {
-  const location = useLocation();
-  const currentOutlet = useOutlet();
-
-  // Ref to store the previous route's index
-  const prevIndexRef = useRef(getRouteIndex(location.pathname));
-  const currentIndex = getRouteIndex(location.pathname);
-
-  // Determine animation direction: 1 for forward (right to left), -1 for backward (left to right)
-  const direction = currentIndex > prevIndexRef.current ? 1 : -1;
-  
-  // Update the ref with the current index for the next navigation
-  React.useEffect(() => {
-    prevIndexRef.current = currentIndex;
-  });
-
-  // Setup the transition animation
-  const transitions = useTransition(location, {
-    key: location.pathname,
-    from: { opacity: 0, transform: `translate3d(${direction * 100}%, 0, 0)` },
-    enter: { opacity: 1, transform: 'translate3d(0%, 0, 0)' },
-    leave: { opacity: 0, transform: `translate3d(${-direction * 50}%, 0, 0)`, position: 'absolute' },
-    config: { tension: 220, friction: 25 },
-  });
-
-  const { data: classes, isLoading } = useQuery<TeacherClass[]>({
-        queryKey: ['teacherClasses'],
-        queryFn: async () => {
-            console.log("API CALL: fetching classes for Header");
-            const res = await axios.get('https://kiddo2.pythonanywhere.com/api/v1/academics/classes/');
-            console.log("API RESPONSE: fetching classes for Header success", res.data);
-            return res.data;
-        },
-        staleTime: 300000,
-    });
-
-  const headerTitle = isLoading 
-    ? 'در حال بارگذاری...' 
-    : (classes && classes.length > 0 ? classes[0].name : 'کلاس من');
-    
-  return (
-    <div>
-      <Header title={headerTitle} />
-      <Navbar />
-      <div className='bg-backGround-1 min-h-screen '>
-        <div className='mx-[16px] '>
-          <StudentAlert />
-          <main className='relative overflow-x-hidden pt-[16px]'>
-            {transitions((style, item) => (
-              <animated.div style={style} className="w-full">
-                {/* Clone the outlet so react-spring animates the correct component. The key is crucial. */}
-                {currentOutlet && React.cloneElement(currentOutlet, { key: item.pathname })}
-              </animated.div>
-            ))}
-          </main>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default ClassLayout;
-```
-
-================
-FILE: src\hooks\useStudentChatSessions.ts
-================
-
-```
-import React from 'react';
-import { useQuery, useQueries } from '@tanstack/react-query';
-import { fetchChatEvents } from '../api-teacher';
-import { getSessionDetails } from '../api-chat';
-import { ChatSession } from '../types/api';
-
-export const useStudentChatSessions = (studentName: string | null) => {
-  // 1. Fetch all events. This is cached across the app by its queryKey.
-  console.log(`HOOK: useStudentChatSessions for student: ${studentName}`);
-  const { data: events, isLoading: isLoadingEvents, isError: isErrorEvents } = useQuery({
-    queryKey: ['chatEvents'], // Use the same key as ReportsPage to leverage cache
-    queryFn: fetchChatEvents,
-    enabled: !!studentName, // Only run if a studentName is provided
-  });
-
-  // 2. Filter events for the specific student and get unique session IDs
-  const sessionIds = React.useMemo(() => {
-    if (!events || !studentName) return [];
-    
-    // Defensive coding: trim names to avoid whitespace issues.
-    const trimmedStudentName = studentName.trim();
-    const studentEvents = events.filter(e => e.student_name && e.student_name.trim() === trimmedStudentName);
-    const uniqueIds = [...new Set(studentEvents.map(e => e.session_id))];
-    
-    console.log(`HOOK: All events count: ${events.length}. Events for "${trimmedStudentName}": ${studentEvents.length}. Unique sessions: ${uniqueIds.length}`);
-    return uniqueIds;
-  }, [events, studentName]);
-
-  // 3. Fetch details for each session in parallel
-  const sessionQueries = useQueries({
-    queries: sessionIds.map(id => ({
-      queryKey: ['sessionDetails', id],
-      queryFn: () => getSessionDetails(id),
-      staleTime: 5 * 60 * 1000, // Cache session details for 5 minutes
-      enabled: !!id,
-    })),
-  });
-
-  // 4. Aggregate loading, error, and data states
-  const isLoading = isLoadingEvents || sessionQueries.some(q => q.isLoading);
-  const isError = isErrorEvents || sessionQueries.some(q => q.isError);
-
-  const data: ChatSession[] = React.useMemo(() => 
-    sessionQueries
-      .filter(q => q.isSuccess && q.data)
-      .map(q => q.data as ChatSession),
-    [sessionQueries]
-  );
-  
-  console.log(`HOOK: Returning isLoading: ${isLoading}, isError: ${isError}, data count: ${data.length}`);
-  
-  return { data, isLoading, isError };
-};
-```
-
-================
-FILE: src\hooks\useClientInfo.ts
-================
-
-```
-import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
-
-interface ClientInfo {
-  id: string;
-  username: string;
-  first_name: string;
-  last_name: string;
-  role: string;
-}
-
-const fetchClientInfo = async (): Promise<ClientInfo> => {
-  const response = await axios.get('/api/v1/accounts/me/', {
-    headers: {
-      Authorization: `Token ${localStorage.getItem('token')}`,
-    },
-  });
-
-  return response.data;
-};
-
-export const useClientInfo = () => {
-  return useQuery({
-    queryKey: ['clientInfo'],
-    queryFn: fetchClientInfo,
-  });
-};
-
-```
-
-================
-FILE: src\hooks\useChatSessions.ts
-================
-
-```
-import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
-
-const API_BASE_URL = 'https://kiddo2.pythonanywhere.com';
-
-interface ChatSession {
-  id: string;
-  tool: string;
-  title: string;
-  subject: string;
-  updated_at: string;
-}
-
-const fetchChatSessions = async (): Promise<ChatSession[]> => {
-  console.log("API CALL: fetchChatSessions");
-  // The token is handled by the global axios interceptor.
-  const response = await axios.get(`${API_BASE_URL}/api/v1/chat/sessions/`);
-  console.log("API RESPONSE: fetchChatSessions success", response.data);
-  // Ensure we always return an array
-  return Array.isArray(response.data) ? response.data : [];
-};
-
-export const useChatSessions = () => {
-  return useQuery({
-    queryKey: ['chatSessions'],
-    queryFn: fetchChatSessions,
-    staleTime: 60000, // Cache for 1 minute
-  });
-};
-```
-
-================
-FILE: src\constants\tarkibkonWelcomeConstant.tsx
-================
-
-```
-import { FluentEmoji } from '@lobehub/fluent-emoji';
-import { ReactElement } from 'react';
-
-export const tarkibkonWelcomeConstant:TarkibkonType[] = [
-  {
-    logo: <FluentEmoji emoji='🧪' size={24}  type='anim'/>,
-    title: 'ترکیب شگفت‌انگیز',
-    description:
-      'درس‌ها رو با بازی‌ها، فیلم‌ها و هر چیزی که عاشقشی، یاد بگیر. اینجا علم و سرگرمی با هم ترکیب میشن!',
-  },
-  {
-    logo:<FluentEmoji emoji='🕹️' size={24}  type='anim'/>,
-    title: 'خداحافظی با درس‌های خسته‌کننده',
-    description:
-     'سخت‌ترین موضوعات درسی رو با مثال‌هایی از دنیای ماینکرفت، فوتبال یا هری پاتر برات توضیح میدیم.',
-  },
-  {
-    logo: <FluentEmoji emoji='🔭' size={24}  type='anim'/>,
-    title: 'از زاویه جدید ببین',
-    description:
-      'ارتباط‌های پنهان بین درس و دنیای اطرافت رو کشف کن و ببین چطور همه چیز به هم ربط داره.',
-  },
-];
-export interface TarkibkonType{
-   logo:ReactElement ,
-    title: string,
-    description:string
-}
-
-```
-
-================
-FILE: src\constants\studyAssistantConstant.tsx
-================
-
-```
-import { FluentEmoji } from "@lobehub/fluent-emoji";
-import { ReactElement } from "react";
-
-export const studyAssistantConstatnt: studyAssistantType[] = [
-  {
-    logo: (
-      <FluentEmoji
-        emoji="🚀"
-
-        size={24}
-        type={"anim"}
-        
-      />
-    ),
-    title: "هیچ درسی دیگه سخت نیست",
-    description:
-      "با درس‌یـــار هر مبحث سختی از کتاب رو اینجا به زبون ساده و سریع یاد بگیر.",
-  },
-  {
-    logo: <FluentEmoji emoji="😎" size={24} type="anim" />,
-    title: "معلم خصوصی ۲۴ ساعته",
-    description:
-      "درس‌یـــار همیشه همراه تو! هر زمان و هرکجا، برای سوالاتت جواب فوری بگیر.",
-  },
-  {
-    logo: <FluentEmoji emoji="👽" size={24} type="anim" />,
-    title: "جمع‌بندی آسون برای امتحانات",
-    description:
-      "با خلاصه‌های دقیق و نکته‌های امتحانی، سریع‌تر از همیشه برای امتحانات آماده شو.",
-  },
-];
-export interface studyAssistantType {
-  logo: ReactElement;
-  title: string;
-  description: string;
-}
-
-```
-
-================
-FILE: src\constants\konjkavWelcomConstant.tsx
-================
-
-```
-import { ReactElement } from "react";
-import { FluentEmoji } from '@lobehub/fluent-emoji';
-
-
-export const konjkavWelcomeConstant:KonjkavType[] = [
-  {
-    logo: <FluentEmoji emoji='🕵️' size={24}  type='3d'/>,
-    title: 'کارآگاهِ دانش شو',
-    description:
-      "یادگیری رو با پرسیدن سوال‌های هیجان‌انگیز شروع کن و مثل یک کارآگاه به عمق هر موضوعی سفر کن.",
-  },
-  {
-    logo:<FluentEmoji emoji='🌌' size={24}  type='anim'/>,
-    title: ' از یک کلمه تا یک کهکشان',
-    description:
-      'فقط یک موضوع رو انتخاب کن تا کیدو با سوال‌های جدید، راه رو برای کشف‌های بزرگتر برات باز کنه.',
-  },
-  {
-    logo: <FluentEmoji emoji='🗺️' size={24}  type='anim'/>,
-    title: 'ماجراجویی در سرزمین علم',
-    description:
-    'هیچوقت برای یادگرفتن متوقف نشو؛ همیشه یک سوال جالب و یک مسیر کشف نشده منتظرته!',
-  },
-];
-export interface KonjkavType{
-   logo:ReactElement ,
-    title: string,
-    description:string
-}
-
-```
-
-================
-FILE: src\constants\azmonWelcomeConstant.tsx
-================
-
-```
-// import { FluentEmoji } from '@lobehub/fluent-emoji';
-// import { ReactElement } from 'react';
-
-// export const azmonWelcomeConstant:AzmonType[] = [
-//   {
-//     logo: <FluentEmoji emoji='🏆' size={24}  type='anim'/>,
-//     title: 'قهرمان امتحان خودت باش',
-//     description:
-//       'با آزمون‌ساز از هر درس و فصلی که بخوای، آزمون بساز و نقاط قوت و ضعفت رو پیدا کن.',
-//   },
-//   {
-//     logo:<FluentEmoji emoji='🎚️' size={24}  type='anim'/>,
-//     title: ' سطح سوالات دست خودته ',
-//     description:'آزمون‌ها رو با سختی دلخواهت بساز، از سوالای آسون شروع کن و با سخت‌ترین‌ها بهتر یاد بگیر.',
-//   },
-//   {
-//     logo:<FluentEmoji emoji='😌' size={24}  type='anim'/>,
-//     title: 'با نمره ۲۰ غافلگیرشون کن',
-//     description:
-//      'با سوال‌های شبیه به امتحان اصلی تمرین کن تا سر جلسه، جواب‌ها رو چشم‌بسته بزنی!',
-//   },
-// ];
-// export interface AzmonType{
-//    logo:ReactElement ,
-//     title: string,
-//     description:string
-// }
-```
-
-================
-FILE: src\components\RecentChats.tsx
-================
-
-```
-// src/components/RecentChats.tsx
-
-import React from 'react';
-import { useChatSessions } from '../hooks/useChatSessions';
-import RecentChatCard from './common/RecentChatCard';
-import LoadingIndicator from './common/LoadingIndicator';
-
-interface RecentChatsProps {
-  filterByTool?: 'DARS_YAR' | 'KONJKAV_SHO' | 'TARKIB_KON' | 'AZMOON_SAZ';
-}
-
-const RecentChats: React.FC<RecentChatsProps> = ({ filterByTool }) => {
-  const { data: chatSessions, isLoading, isError } = useChatSessions();
-
-  if (isLoading) {
-    return  <div className="flex justify-center items-center text-center">
-                  <LoadingIndicator className="w-10 h-10 " />
-                </div>;
-  }
-
-  if (isError) {
-    return <div className="text-center text-red-500 py-4">خطا در بارگذاری چت‌ها</div>;
-  }
-
-  const filteredSessions = filterByTool 
-    ? chatSessions?.filter(session => session.tool === filterByTool)
-    : chatSessions;
-
-  if (!filteredSessions || filteredSessions.length === 0) {
-    return (
-      <div className="flex flex-col items-center justify-center p-6 text-center">
-        <p className="text-gray-500">چت اخیری وجود ندارد.</p>
-      </div>
-    );
-  }
-  
-  return (
-    <div className="space-y-[12px]">
-      {filteredSessions.map((session) => (
-        <RecentChatCard
-          key={session.id}
-          id={session.id}
-          title={session.title}
-          tool={session.tool}
-          subject={session.subject}
-          updatedAt={session.updated_at}
-        />
-      ))}
-    </div>
-  );
-};
-
-export default RecentChats;
-```
-
-================
-FILE: src\api\chatApi.ts
-================
-
-```
-import darsyarIcon from "../assets/images/darsyar.webp";
-import konjkavIcon from "../assets/images/konjkav.png";
-import tarkibkonIcon from "../assets/images/hediye.png";
-import { RecentChat } from "../types/chat";
-
-// این تابع ارتباط با API را شبیه‌سازی می‌کند
-export const fetchRecentChats = async (): Promise<RecentChat[]> => {
-  console.log("Fetching recent chats from API...");
-  // تاخیر عمدی برای شبیه‌سازی شبکه
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-
-  // داده‌های ساختگی
-  const mockChats: RecentChat[] = [
-    {
-      id: "1",
-      title: "توضیحات مربوط به فتوسنتز و اطلاعات مهم",
-      tool: "درس‌یار",
-      subject: "علوم",
-      date: "۱۹ خرداد",
-      iconUrl: darsyarIcon,
-    },
-    {
-      id: "2",
-      title: "حل معادله درجه دو و کاربردهای آن",
-      tool: "کنج‌کاو",
-      subject: "ریاضی",
-      date: "۱۸ خرداد",
-      iconUrl: konjkavIcon,
-    },
-    {
-      id: "3",
-      title: "خلاصه نویسی درس تاریخ معاصر ایران",
-      tool: "ترکیب‌کن",
-      subject: "تاریخ",
-      date: "۱۷ خرداد",
-      iconUrl: tarkibkonIcon,
-    },
-  ];
-
-  return mockChats;
-};
-```
-
-================
-FILE: src\api\authApi.ts
-================
-
-```
-�� 
- 
-```
-
-================
-FILE: src\api\apiClient.ts
-================
-
-```
-
-```
-
-================
 FILE: backend\api-docs.md
 ================
 
@@ -2792,6 +1492,1332 @@ Authorization: Token YOUR_TOKEN_HERE
 3. شناسه‌های منابع (id) از نوع UUID هستند.
 4. در صورت بروز خطا، همیشه یک پیام خطای معنادار برگردانده می‌شود.
 
+```
+
+================
+FILE: src\types\user.ts
+================
+
+```
+��
+ 
+ e x p o r t   i n t e r f a c e   U s e r   { 
+ 
+     i d :   s t r i n g ; 
+ 
+     u s e r n a m e :   s t r i n g ; 
+ 
+     f i r s t _ n a m e :   s t r i n g ; 
+ 
+     l a s t _ n a m e :   s t r i n g ; 
+ 
+     r o l e :   " S T U D E N T "   |   " S T A F F " ; 
+ 
+ } 
+ 
+ 
+ 
+ e x p o r t   i n t e r f a c e   A u t h S t a t e   { 
+ 
+     u s e r :   U s e r   |   n u l l ; 
+ 
+     t o k e n :   s t r i n g   |   n u l l ; 
+ 
+     s t a t u s :   ' i d l e '   |   ' l o a d i n g '   |   ' s u c c e e d e d '   |   ' f a i l e d ' ; 
+ 
+     e r r o r :   s t r i n g   |   n u l l ; 
+ 
+ } 
+```
+
+================
+FILE: src\types\state.ts
+================
+
+```
+export interface RootState {
+  darsyar: {
+    studySelectionButton: boolean;
+    selectedStudy: string | null;
+    selectedLesson: string | null;
+  };
+  konjkav: {
+    studySelectionButton: boolean;
+    selectedStudy: string | null;
+    selectedTopics: string[];
+    hasSelectedTopics: boolean;
+  };
+}
+
+export interface Lesson {
+  id: string;
+  title: string;
+}
+
+export interface Study {
+  id: string;
+  title: string;
+}
+
+export interface Topic {
+  id: string;
+  title: string;
+  description: string;
+  emoji: string;
+}
+
+```
+
+================
+FILE: src\types\chat.ts
+================
+
+```
+export interface RecentChat {
+    id: string;
+    title: string;
+    lastMessage?: string;
+    timestamp?: string;
+    tool?: string;
+    subject?: string;
+    date?: string;
+    iconUrl?: string;
+}
+
+```
+
+================
+FILE: src\types\auth.ts
+================
+
+```
+��i m p o r t   {   U s e r   }   f r o m   " . / u s e r " ; 
+ 
+ 
+ 
+ e x p o r t   i n t e r f a c e   L o g i n C r e d e n t i a l s   { 
+ 
+         u s e r n a m e ? :   s t r i n g ; 
+ 
+         p a s s w o r d ? :   s t r i n g ; 
+ 
+ } 
+ 
+ 
+ 
+ e x p o r t   i n t e r f a c e   L o g i n R e s p o n s e   { 
+ 
+         t o k e n :   s t r i n g ; 
+ 
+         u s e r :   U s e r ; 
+ 
+ } 
+```
+
+================
+FILE: src\types\api.ts
+================
+
+```
+// src/types/api.ts
+
+// Based on GET /api/v1/chat/sessions/{session_id}/
+export interface ApiMessage {
+  id: string;
+  sender_type: 'SYSTEM' | 'USER' | 'AI';
+  content: string;
+  timestamp: string;
+  raw_ai_response?: any; // Define more strictly if needed
+}
+
+// Based on POST /api/v1/tools/dars-yar/start/
+export interface ChatSession {
+  id: string; // This is the crucial session_id
+  tool: string;
+  title: string;
+  messages: ApiMessage[];
+}
+
+// Based on GET /api/v1/chat/events/
+export interface ChatEvent {
+  id: string;
+  student_name: string;
+  overview: string;
+  emoji: string;
+  level: 'INFO' | 'CONCERN' | 'DANGER';
+  subject_name: string;
+  created_at: string;
+  is_resolved: boolean;
+}
+
+// Based on GET /api/v1/chat/events/{event_id}/
+export interface ChatEventDetail extends ChatEvent {
+  explanation: string;
+  session_id: string;
+  resolved_by: {
+    id: string;
+    username: string;
+  } | null;
+}
+```
+
+================
+FILE: src\store\index.ts
+================
+
+```
+import { configureStore } from '@reduxjs/toolkit';
+import { useDispatch } from 'react-redux';
+import darsyarReducer from './../slice/darsyarSlice';
+import konjkavReducer from './../slice/konjkavSlice';
+import tarkibkonReducer from './../slice/tarkibkonSlice';
+import userReducer from './../slice/userSlice';
+import dangerStudentsReducer from './../slice/dangerStudentsSlice'
+
+export const store = configureStore({
+  reducer: {
+    darsyar: darsyarReducer,
+    konjkav: konjkavReducer,
+    tarkibkon:tarkibkonReducer,
+    user:userReducer,
+    dangerStudents: dangerStudentsReducer
+  },
+});
+
+export type RootState = ReturnType<typeof store.getState>;
+
+export type AppDispatch = typeof store.dispatch;
+
+export const useAppDispatch = () => useDispatch<AppDispatch>();
+```
+
+================
+FILE: src\slice\userSlice.ts
+================
+
+```
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
+export interface UserState {
+  id: string | null;
+  username: string | null;
+  first_name: string | null;
+  last_name: string | null;
+  role: 'STUDENT' | 'STAFF' | null;
+  token: string | null;
+}
+
+const initialState: UserState = {
+  id: null,
+  username: null,
+  first_name: null,
+  last_name: null,
+  role: null,
+  token: null,
+};
+
+const userSlice = createSlice({
+  name: 'user',
+  initialState,
+  reducers: {
+    setUser: (state, action: PayloadAction<UserState>) => {
+      return { ...action.payload };
+    },
+    clearUser: () => initialState,
+  },
+  
+});
+
+
+export const { setUser, clearUser } = userSlice.actions;
+export default userSlice.reducer;
+
+```
+
+================
+FILE: src\slice\tarkibkonSlice.ts
+================
+
+```
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
+interface Study {
+    id: string;
+    name: string;
+}
+
+interface TarkibkonState {
+  selectedStudy: Study | null;
+  learnTopic: string;
+  favoriteTopic: string;
+  studySelectionButton: boolean;
+}
+
+const initialState: TarkibkonState = {
+  selectedStudy: null,
+  learnTopic: "",
+  favoriteTopic: '',
+  studySelectionButton: false,
+};
+
+const tarkibkonSlice = createSlice({
+  name: "tarkibkon",
+  initialState,
+  reducers: {
+    setSelectedStudy: (state, action: PayloadAction<Study | null>) => {
+      state.selectedStudy = action.payload;
+      state.studySelectionButton = !!action.payload;
+    },
+    setLearnTopic: (state, action: PayloadAction<string>) => {
+      state.learnTopic = action.payload;
+    },
+     setFavoriteTopic: (state, action: PayloadAction<string>) => {
+      state.favoriteTopic = action.payload;
+    },
+    resetSelection: (state) => {
+      state.selectedStudy = null;
+      state.learnTopic = "";
+      state.favoriteTopic='';
+      state.studySelectionButton = false;
+    },
+    activeButtonReducer: (state) => {
+      state.studySelectionButton = true;
+    },
+    disableButtonReducer: (state) => {
+      state.studySelectionButton = false;
+    },
+  },
+});
+
+export const {
+  setSelectedStudy,
+  setLearnTopic,
+  setFavoriteTopic,
+  resetSelection,
+  activeButtonReducer,
+  disableButtonReducer,
+} = tarkibkonSlice.actions;
+
+export default tarkibkonSlice.reducer;
+```
+
+================
+FILE: src\slice\konjkavSlice.ts
+================
+
+```
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
+interface Study {
+  id: string;
+  name: string;
+}
+
+interface KonjkavState {
+  selectedStudy: Study | null;
+  selectedTopic: string;
+  studySelectionButton: boolean;
+}
+
+const initialState: KonjkavState = {
+  selectedStudy: null,
+  selectedTopic: "",
+  studySelectionButton: false,
+};
+
+const konjkavSlice = createSlice({
+  name: "konjkav",
+  initialState,
+  reducers: {
+    setSelectedStudy: (state, action: PayloadAction<Study | null>) => {
+      state.selectedStudy = action.payload;
+      if (action.payload) {
+        state.studySelectionButton = true;
+      } else {
+        state.studySelectionButton = false;
+      }
+    },
+    setSelectedTopic: (state, action: PayloadAction<string>) => {
+      state.selectedTopic = action.payload;
+    },
+    resetSelection: (state) => {
+      state.selectedStudy = null;
+      state.selectedTopic = "";
+      state.studySelectionButton = false;
+    },
+    activeButtonReducer: (state) => {
+      state.studySelectionButton = true;
+    },
+    disableButtonReducer: (state) => {
+      state.studySelectionButton = false;
+    },
+  },
+});
+
+export const {
+  setSelectedStudy,
+  setSelectedTopic,
+  resetSelection,
+  activeButtonReducer,
+  disableButtonReducer,
+} = konjkavSlice.actions;
+
+export default konjkavSlice.reducer;
+```
+
+================
+FILE: src\slice\darsyarSlice.ts
+================
+
+```
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
+interface Study {
+  id: string;
+  name: string;
+}
+
+interface Lesson {
+  id: string;
+  title: string;
+}
+
+interface DarsyarState {
+  studySelectionButton: boolean;
+  selectedStudy: Study | null;
+  studyName: string | null;
+  selectedLessons: Lesson[];
+  hasSelectedLessons: boolean;
+}
+
+const initialState: DarsyarState = {
+  studySelectionButton: false,
+  selectedStudy: null,
+  studyName: null,
+  selectedLessons: [],
+  hasSelectedLessons: false
+};
+
+const darsyarSlice = createSlice({
+  name: 'darsyar',
+  initialState,
+  reducers: {
+    activeButtonReducer: (state) => {
+      state.studySelectionButton = true;
+    },
+    disableButtonReducer: (state) => {
+      state.studySelectionButton = false;
+    },
+    setSelectedStudy: (state, action: PayloadAction<Study>) => {
+      state.selectedStudy = action.payload;
+      state.studyName = action.payload.name;
+    },
+    setSelectedLesson: (state, action: PayloadAction<Lesson[]>) => {
+      state.selectedLessons = action.payload;
+      state.hasSelectedLessons = action.payload.length > 0;
+    },
+    clearSelections: (state) => {
+      state.selectedStudy = null;
+      state.studyName = null;
+      state.selectedLessons = [];
+      state.studySelectionButton = false;
+      state.hasSelectedLessons = false;
+    }
+  }
+});
+
+export const {
+  activeButtonReducer,
+  disableButtonReducer,
+  setSelectedStudy,
+  setSelectedLesson,
+  clearSelections
+} = darsyarSlice.actions;
+
+export default darsyarSlice.reducer;
+```
+
+================
+FILE: src\slice\dangerStudentsSlice.ts
+================
+
+```
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
+interface DangerEvent {
+  id: string;
+  student_name: string;
+  subject_name: string;
+  level: 'DANGER' | 'CONCERN' | 'INFO';
+  explanation: string;
+  emoji: string;
+  created_at: string;
+  session_id?: string;
+}
+
+interface DangerStudentsState {
+  dangerEvents: DangerEvent[];
+  lastUpdated: string | null;
+  isLoading: boolean;
+}
+
+const initialState: DangerStudentsState = {
+  dangerEvents: [],
+  lastUpdated: null,
+  isLoading: false,
+};
+
+const dangerStudentsSlice = createSlice({
+  name: 'dangerStudents',
+  initialState,
+  reducers: {
+    setDangerEvents: (state, action: PayloadAction<DangerEvent[]>) => {
+      state.dangerEvents = action.payload;
+      state.lastUpdated = new Date().toISOString();
+      state.isLoading = false;
+    },
+    addDangerEvent: (state, action: PayloadAction<DangerEvent>) => {
+      const existingIndex = state.dangerEvents.findIndex(
+        event => event.id === action.payload.id
+      );
+      
+      if (existingIndex !== -1) {
+        // Update existing event
+        state.dangerEvents[existingIndex] = action.payload;
+      } else {
+        // Add new event
+        state.dangerEvents.push(action.payload);
+      }
+      state.lastUpdated = new Date().toISOString();
+    },
+    removeDangerEvent: (state, action: PayloadAction<string>) => {
+      state.dangerEvents = state.dangerEvents.filter(
+        event => event.id !== action.payload
+      );
+      state.lastUpdated = new Date().toISOString();
+    },
+    clearDangerEvents: (state) => {
+      state.dangerEvents = [];
+      state.lastUpdated = null;
+    },
+    setLoading: (state, action: PayloadAction<boolean>) => {
+      state.isLoading = action.payload;
+    },
+  },
+});
+
+export const {
+  setDangerEvents,
+  addDangerEvent,
+  removeDangerEvent,
+  clearDangerEvents,
+  setLoading,
+} = dangerStudentsSlice.actions;
+
+export default dangerStudentsSlice.reducer;
+
+// Selectors
+export const selectDangerEvents = (state: { dangerStudents: DangerStudentsState }) => 
+  state.dangerStudents.dangerEvents;
+
+export const selectDangerEventsCount = (state: { dangerStudents: DangerStudentsState }) => 
+  state.dangerStudents.dangerEvents.length;
+
+export const selectLastUpdated = (state: { dangerStudents: DangerStudentsState }) => 
+  state.dangerStudents.lastUpdated;
+
+export const selectIsLoading = (state: { dangerStudents: DangerStudentsState }) => 
+  state.dangerStudents.isLoading;
+```
+
+================
+FILE: src\slice\chatSlice.ts
+================
+
+```
+
+```
+
+================
+FILE: src\layout\ClassLayout.tsx
+================
+
+```
+import React, { useRef } from 'react';
+import { useLocation, useOutlet } from 'react-router-dom';
+import Header from '../components/common/Header';
+import Navbar from '../teacher/components/contentContainer/Navbar';
+import StudentAlert from '../teacher/components/contentContainer/StudentAlert';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+import { useTransition, animated } from '@react-spring/web';
+
+// Define an interface for the class data structure
+interface TeacherClass {
+  id: string;
+  name: string;
+  grade_level: number;
+}
+
+// Define the order of routes for swipe direction logic
+const routeOrder = ['/teacher/students', '/teacher/reports', '/teacher/chat'];
+const getRouteIndex = (pathname: string) => routeOrder.findIndex(p => pathname.startsWith(p));
+
+const ClassLayout = () => {
+  const location = useLocation();
+  const currentOutlet = useOutlet();
+
+  // Ref to store the previous route's index
+  const prevIndexRef = useRef(getRouteIndex(location.pathname));
+  const currentIndex = getRouteIndex(location.pathname);
+
+  // Determine animation direction: 1 for forward (right to left), -1 for backward (left to right)
+  const direction = currentIndex > prevIndexRef.current ? 1 : -1;
+  
+  // Update the ref with the current index for the next navigation
+  React.useEffect(() => {
+    prevIndexRef.current = currentIndex;
+  });
+
+  // Setup the transition animation
+  const transitions = useTransition(location, {
+    key: location.pathname,
+    from: { opacity: 0, transform: `translate3d(${direction * 100}%, 0, 0)` },
+    enter: { opacity: 1, transform: 'translate3d(0%, 0, 0)' },
+    leave: { opacity: 0, transform: `translate3d(${-direction * 50}%, 0, 0)`, position: 'absolute' },
+    config: { tension: 220, friction: 25 },
+  });
+
+  const { data: classes, isLoading } = useQuery<TeacherClass[]>({
+        queryKey: ['teacherClasses'],
+        queryFn: async () => {
+            console.log("API CALL: fetching classes for Header");
+            const res = await axios.get('https://kiddo2.pythonanywhere.com/api/v1/academics/classes/');
+            console.log("API RESPONSE: fetching classes for Header success", res.data);
+            return res.data;
+        },
+        staleTime: 300000,
+    });
+
+  const headerTitle = isLoading 
+    ? 'در حال بارگذاری...' 
+    : (classes && classes.length > 0 ? classes[0].name : 'کلاس من');
+    
+  return (
+    <div>
+      <Header title={headerTitle} />
+      <Navbar />
+      <div className='bg-backGround-1 min-h-screen '>
+        <div className='mx-[16px] '>
+          <StudentAlert />
+          <main className='relative overflow-x-hidden pt-[16px]'>
+            {transitions((style, item) => (
+              <animated.div style={style} className="w-full">
+                {/* Clone the outlet so react-spring animates the correct component. The key is crucial. */}
+                {currentOutlet && React.cloneElement(currentOutlet, { key: item.pathname })}
+              </animated.div>
+            ))}
+          </main>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ClassLayout;
+```
+
+================
+FILE: src\hooks\useStudentChatSessions.ts
+================
+
+```
+import React from 'react';
+import { useQuery, useQueries } from '@tanstack/react-query';
+import { fetchChatEvents } from '../api-teacher';
+import { getSessionDetails } from '../api-chat';
+import { ChatSession } from '../types/api';
+
+export const useStudentChatSessions = (studentName: string | null) => {
+  // 1. Fetch all events. This is cached across the app by its queryKey.
+  console.log(`HOOK: useStudentChatSessions for student: ${studentName}`);
+  const { data: events, isLoading: isLoadingEvents, isError: isErrorEvents } = useQuery({
+    queryKey: ['chatEvents'], // Use the same key as ReportsPage to leverage cache
+    queryFn: fetchChatEvents,
+    enabled: !!studentName, // Only run if a studentName is provided
+  });
+
+  // 2. Filter events for the specific student and get unique session IDs
+  const sessionIds = React.useMemo(() => {
+    if (!events || !studentName) return [];
+    
+    // Defensive coding: trim names to avoid whitespace issues.
+    const trimmedStudentName = studentName.trim();
+    const studentEvents = events.filter(e => e.student_name && e.student_name.trim() === trimmedStudentName);
+    const uniqueIds = [...new Set(studentEvents.map(e => e.session_id))];
+    
+    console.log(`HOOK: All events count: ${events.length}. Events for "${trimmedStudentName}": ${studentEvents.length}. Unique sessions: ${uniqueIds.length}`);
+    return uniqueIds;
+  }, [events, studentName]);
+
+  // 3. Fetch details for each session in parallel
+  const sessionQueries = useQueries({
+    queries: sessionIds.map(id => ({
+      queryKey: ['sessionDetails', id],
+      queryFn: () => getSessionDetails(id),
+      staleTime: 5 * 60 * 1000, // Cache session details for 5 minutes
+      enabled: !!id,
+    })),
+  });
+
+  // 4. Aggregate loading, error, and data states
+  const isLoading = isLoadingEvents || sessionQueries.some(q => q.isLoading);
+  const isError = isErrorEvents || sessionQueries.some(q => q.isError);
+
+  const data: ChatSession[] = React.useMemo(() => 
+    sessionQueries
+      .filter(q => q.isSuccess && q.data)
+      .map(q => q.data as ChatSession),
+    [sessionQueries]
+  );
+  
+  console.log(`HOOK: Returning isLoading: ${isLoading}, isError: ${isError}, data count: ${data.length}`);
+  
+  return { data, isLoading, isError };
+};
+```
+
+================
+FILE: src\hooks\useClientInfo.ts
+================
+
+```
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+
+interface ClientInfo {
+  id: string;
+  username: string;
+  first_name: string;
+  last_name: string;
+  role: string;
+}
+
+const fetchClientInfo = async (): Promise<ClientInfo> => {
+  const response = await axios.get('/api/v1/accounts/me/', {
+    headers: {
+      Authorization: `Token ${localStorage.getItem('token')}`,
+    },
+  });
+
+  return response.data;
+};
+
+export const useClientInfo = () => {
+  return useQuery({
+    queryKey: ['clientInfo'],
+    queryFn: fetchClientInfo,
+  });
+};
+
+```
+
+================
+FILE: src\hooks\useChatSessions.ts
+================
+
+```
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+
+const API_BASE_URL = 'https://kiddo2.pythonanywhere.com';
+
+interface ChatSession {
+  id: string;
+  tool: string;
+  title: string;
+  subject: string;
+  updated_at: string;
+}
+
+const fetchChatSessions = async (): Promise<ChatSession[]> => {
+  console.log("API CALL: fetchChatSessions");
+  // The token is handled by the global axios interceptor.
+  const response = await axios.get(`${API_BASE_URL}/api/v1/chat/sessions/`);
+  console.log("API RESPONSE: fetchChatSessions success", response.data);
+  // Ensure we always return an array
+  return Array.isArray(response.data) ? response.data : [];
+};
+
+export const useChatSessions = () => {
+  return useQuery({
+    queryKey: ['chatSessions'],
+    queryFn: fetchChatSessions,
+    staleTime: 60000, // Cache for 1 minute
+  });
+};
+```
+
+================
+FILE: src\router\index.tsx
+================
+
+```
+// src/router/index.tsx
+import { createBrowserRouter, Outlet } from "react-router-dom";
+import App from "../App";
+import Login from "../login/Login";
+import ResumeChatPage from "../student/pages/ResumeChatPage";
+import TeacherHome from "../teacher/pages/TeacherHome";
+import StudentHome from "../student/pages/StudentHome";
+import ClassLayout from "../layout/ClassLayout";
+import StudentsActivities from "../teacher/components/contentContainer/students/StudentsActivities";
+import ClassChat from "../teacher/pages/ClassChat";
+import DarsyarRecentChat from "../student/pages/darsYar/DarsyarRecentChat";
+import DarsyarWelcome from "../student/pages/darsYar/DarsyarStudyAssistant";
+import DarsyarStudySelection from "../student/pages/darsYar/DarsyarStudySelection";
+import DarsyarLessonSelection from "../student/pages/darsYar/DarsyarLessonSelection";
+import DarsyarChatWithBot from "../student/pages/darsYar/DarsyarChatWithBot";
+import KonjkavWelcome from "../student/pages/konjKav/KonjkavWelcome";
+import KonjkavRecentChat from "../student/pages/konjKav/KonjkavRecentChat";
+import KonjkavStudySelection from "../student/pages/konjKav/KonjkavStudySelection";
+import KonjkavTopicSelection from "../student/pages/konjKav/KonjkavTopicSelection";
+import KonjkavTopicBot from "../student/pages/konjKav/KonjkavTopicBot";
+import TarkibkonWelcome from "../student/pages/tarkibKon/TarkibkonWelcome";
+import TarkibkonRecentChat from "../student/pages/tarkibKon/TarkibkonRecentChat";
+import TarkibkonLearnTopic from "../student/pages/tarkibKon/TarkibkonLearnTopic";
+import TarkibkonFavoriteTopic from "../student/pages/tarkibKon/TarkibkonFavoriteTopic";
+import TarkibkonChatBot from "../student/pages/tarkibKon/TarkibkonChatBot";
+import TarkibkonStudySelection from "../student/pages/tarkibKon/TarkibkonStudySelection";
+import ReportsPage from "../teacher/pages/ReportsPage";
+import StudentChat from "../teacher/pages/StudentChat";
+
+export const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />, 
+    children: [
+      {
+        index: true,
+        element: <Login />,
+      },
+      {
+        path: "teacher", 
+        element: <TeacherHome />,
+      },
+      {
+        path: "teacher", 
+        element: <ClassLayout />,
+        children: [
+          {
+            path: "students", 
+            element: <StudentsActivities />,
+          },
+          {
+            path: "reports",
+            element: <ReportsPage />,
+          },
+          {
+            path: "chat", 
+            element: <ClassChat />,
+          },
+        ],
+      },
+      {
+        path: "teacher/chat/:sessionId",
+        element: <ResumeChatPage />,
+      },
+      {
+        path: "teacher/student/:studentId/chats",
+        element: <StudentChat />,
+      },
+      {
+        path: "student",
+        children: [
+          {
+            index: true,
+            element: <StudentHome />,
+          },
+          {
+            path: "chat/:sessionId",
+            element: <ResumeChatPage />,
+          },
+          {
+            path: "darsyar",
+            element: <Outlet />,
+            children: [
+              { path: "recent-chat", element: <DarsyarRecentChat /> },
+              { path: "study-assistant", element: <DarsyarWelcome /> },
+              { path: "study-selection", element: <DarsyarStudySelection /> },
+              { path: "lesson-selection", element: <DarsyarLessonSelection /> },
+              { path: "chat", element: <DarsyarChatWithBot /> },
+            ],
+          },
+          {
+            path: "konjkav",
+            element: <Outlet />,
+            children: [
+              { path: "welcome", element: <KonjkavWelcome /> },
+              { path: "recent-chat", element: <KonjkavRecentChat /> },
+              { path: "study-selection", element: <KonjkavStudySelection /> },
+              { path: "topic-selection", element: <KonjkavTopicSelection /> },
+              { path: "chat", element: <KonjkavTopicBot /> },
+            ],
+          },
+          {
+            path: "tarkibkon",
+            element: <Outlet />,
+            children: [
+              { path: "welcome", element: <TarkibkonWelcome /> },
+              { path: "recent-chat", element: <TarkibkonRecentChat /> },
+              { path: "study-selection", element: <TarkibkonStudySelection /> },
+              { path: "learn-topic-selection", element: <TarkibkonLearnTopic /> },
+              { path: "favorite-topic-selection", element: <TarkibkonFavoriteTopic /> },
+              { path: "chat", element: <TarkibkonChatBot /> },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+], {
+  basename: "/kiddo",
+});
+```
+
+================
+FILE: src\login\LoginButton.tsx
+================
+
+```
+import React from 'react'
+
+interface LoginButtonProps {
+  disabled?: boolean
+}
+
+const LoginButton: React.FC<LoginButtonProps> = ({ disabled }) => {
+  return (
+    <div className="flex justify-center items-center bg-white w-full ">
+      <div className={`  border-backGroundButton w-full ${disabled ? 'opacity-50' : ''} `}>
+        <button 
+          type="submit"
+          disabled={disabled}
+          className="button-box text-white cursor-pointer p-[16px] w-full disabled:cursor-not-allowed "
+        >
+          {disabled ? 'در حال ورود...' : 'ورود'}
+        </button>
+      </div>
+    </div>
+  )
+}
+
+export default LoginButton
+
+```
+
+================
+FILE: src\login\Login.tsx
+================
+
+```
+import React from 'react'
+import HeroSection from './HeroSection'
+import InputGroup from './InputGroup'
+
+const Login = () => {
+  return (
+    <div className='bg-backGround-1 '>
+      <HeroSection/>
+      <InputGroup/>
+    </div>
+  )
+}
+
+export default Login
+
+```
+
+================
+FILE: src\login\InputGroup.tsx
+================
+
+```
+import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import LoginButton from './LoginButton'
+import { login } from '../api'
+import { setUser } from '../slice/userSlice'
+import { useNavigate } from 'react-router-dom'
+
+const InputGroup = () => {
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setError('')
+    setLoading(true)
+
+    try {
+      const response = await login(username, password)
+      
+      dispatch(setUser({
+        id: response.user.id,
+        username: response.user.username,
+        first_name: response.user.first_name,
+        last_name: response.user.last_name,
+        role: response.user.role,
+        token: response.token
+      }))
+      
+      // Navigate based on role
+      if (response.user.role === 'STUDENT') {
+        navigate('/student')
+      } else if (response.user.role === 'STAFF') {
+        navigate('/teacher')
+      }
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'خطا در ورود به سیستم')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className='flex flex-col justify-center items-center rounded-[24px] p-[40px] space-y-6 bg-white border-[2px] border-borderColor-1 rounded-b-none'>
+      {error && (
+        <div className='w-full text-right text-red-500 text-sm mb-4'>
+          {error}
+        </div>
+      )}
+      <div className='w-full mb-[16px]'>
+        <p className='mb-[12px] text-right text-[14px] font-extrabold'>نام کاربری</p>
+        <input
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          className='p-[16px] rounded-[16px] w-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-chatButton-1'
+          required
+        />
+      </div>
+      <div className='w-full mb-[40px]'>
+        <p className='mb-[12px] text-right text-[14px] font-extrabold'>کد ورود</p>
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className='p-[16px] rounded-[16px] border border-gray-300 w-full focus:outline-none focus:ring-2 focus:ring-chatButton-1'
+          required
+        />
+      </div>
+      <LoginButton disabled={loading} />
+    </form>
+  )
+}
+
+export default InputGroup
+```
+
+================
+FILE: src\login\HeroSection.tsx
+================
+
+```
+import happyFace from './../assets/images/happyFace.png'
+
+const HeroSection = () => {
+  return (
+    <div className='pb-[32px] pt-[16px]   flex justify-center items-center flex-col h-[60vh]'>
+        <div className=' p-4'>
+        <img src={happyFace}/>
+      </div>
+      <p className='text-center font-extrabold'>به کیــــدو  خوش آمدی!</p>
+    </div>
+  )
+}
+
+export default HeroSection
+```
+
+================
+FILE: src\components\RecentChats.tsx
+================
+
+```
+// src/components/RecentChats.tsx
+
+import React from 'react';
+import { useChatSessions } from '../hooks/useChatSessions';
+import RecentChatCard from './common/RecentChatCard';
+import LoadingIndicator from './common/LoadingIndicator';
+
+interface RecentChatsProps {
+  filterByTool?: 'DARS_YAR' | 'KONJKAV_SHO' | 'TARKIB_KON' | 'AZMOON_SAZ';
+}
+
+const RecentChats: React.FC<RecentChatsProps> = ({ filterByTool }) => {
+  const { data: chatSessions, isLoading, isError } = useChatSessions();
+
+  if (isLoading) {
+    return  <div className="flex justify-center items-center text-center">
+                  <LoadingIndicator className="w-10 h-10 " />
+                </div>;
+  }
+
+  if (isError) {
+    return <div className="text-center text-red-500 py-4">خطا در بارگذاری چت‌ها</div>;
+  }
+
+  const filteredSessions = filterByTool 
+    ? chatSessions?.filter(session => session.tool === filterByTool)
+    : chatSessions;
+
+  if (!filteredSessions || filteredSessions.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center p-6 text-center">
+        <p className="text-gray-500">چت اخیری وجود ندارد.</p>
+      </div>
+    );
+  }
+  
+  return (
+    <div className="space-y-[12px]">
+      {filteredSessions.map((session) => (
+        <RecentChatCard
+          key={session.id}
+          id={session.id}
+          title={session.title}
+          tool={session.tool}
+          subject={session.subject}
+          updatedAt={session.updated_at}
+        />
+      ))}
+    </div>
+  );
+};
+
+export default RecentChats;
+```
+
+================
+FILE: src\api\chatApi.ts
+================
+
+```
+import darsyarIcon from "../assets/images/darsyar.webp";
+import konjkavIcon from "../assets/images/konjkav.png";
+import tarkibkonIcon from "../assets/images/hediye.png";
+import { RecentChat } from "../types/chat";
+
+// این تابع ارتباط با API را شبیه‌سازی می‌کند
+export const fetchRecentChats = async (): Promise<RecentChat[]> => {
+  console.log("Fetching recent chats from API...");
+  // تاخیر عمدی برای شبیه‌سازی شبکه
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  // داده‌های ساختگی
+  const mockChats: RecentChat[] = [
+    {
+      id: "1",
+      title: "توضیحات مربوط به فتوسنتز و اطلاعات مهم",
+      tool: "درس‌یار",
+      subject: "علوم",
+      date: "۱۹ خرداد",
+      iconUrl: darsyarIcon,
+    },
+    {
+      id: "2",
+      title: "حل معادله درجه دو و کاربردهای آن",
+      tool: "کنج‌کاو",
+      subject: "ریاضی",
+      date: "۱۸ خرداد",
+      iconUrl: konjkavIcon,
+    },
+    {
+      id: "3",
+      title: "خلاصه نویسی درس تاریخ معاصر ایران",
+      tool: "ترکیب‌کن",
+      subject: "تاریخ",
+      date: "۱۷ خرداد",
+      iconUrl: tarkibkonIcon,
+    },
+  ];
+
+  return mockChats;
+};
+```
+
+================
+FILE: src\api\authApi.ts
+================
+
+```
+��
+ 
+ 
+```
+
+================
+FILE: src\api\apiClient.ts
+================
+
+```
+
+```
+
+================
+FILE: src\constants\tarkibkonWelcomeConstant.tsx
+================
+
+```
+import { FluentEmoji } from '@lobehub/fluent-emoji';
+import { ReactElement } from 'react';
+
+export const tarkibkonWelcomeConstant:TarkibkonType[] = [
+  {
+    logo: <FluentEmoji emoji='🧪' size={24}  type='anim'/>,
+    title: 'ترکیب شگفت‌انگیز',
+    description:
+      'درس‌ها رو با بازی‌ها، فیلم‌ها و هر چیزی که عاشقشی، یاد بگیر. اینجا علم و سرگرمی با هم ترکیب میشن!',
+  },
+  {
+    logo:<FluentEmoji emoji='🕹️' size={24}  type='anim'/>,
+    title: 'خداحافظی با درس‌های خسته‌کننده',
+    description:
+     'سخت‌ترین موضوعات درسی رو با مثال‌هایی از دنیای ماینکرفت، فوتبال یا هری پاتر برات توضیح میدیم.',
+  },
+  {
+    logo: <FluentEmoji emoji='🔭' size={24}  type='anim'/>,
+    title: 'از زاویه جدید ببین',
+    description:
+      'ارتباط‌های پنهان بین درس و دنیای اطرافت رو کشف کن و ببین چطور همه چیز به هم ربط داره.',
+  },
+];
+export interface TarkibkonType{
+   logo:ReactElement ,
+    title: string,
+    description:string
+}
+
+```
+
+================
+FILE: src\constants\studyAssistantConstant.tsx
+================
+
+```
+import { FluentEmoji } from "@lobehub/fluent-emoji";
+import { ReactElement } from "react";
+
+export const studyAssistantConstatnt: studyAssistantType[] = [
+  {
+    logo: (
+      <FluentEmoji
+        emoji="🚀"
+
+        size={24}
+        type={"anim"}
+        
+      />
+    ),
+    title: "هیچ درسی دیگه سخت نیست",
+    description:
+      "با درس‌یـــار هر مبحث سختی از کتاب رو اینجا به زبون ساده و سریع یاد بگیر.",
+  },
+  {
+    logo: <FluentEmoji emoji="😎" size={24} type="anim" />,
+    title: "معلم خصوصی ۲۴ ساعته",
+    description:
+      "درس‌یـــار همیشه همراه تو! هر زمان و هرکجا، برای سوالاتت جواب فوری بگیر.",
+  },
+  {
+    logo: <FluentEmoji emoji="👽" size={24} type="anim" />,
+    title: "جمع‌بندی آسون برای امتحانات",
+    description:
+      "با خلاصه‌های دقیق و نکته‌های امتحانی، سریع‌تر از همیشه برای امتحانات آماده شو.",
+  },
+];
+export interface studyAssistantType {
+  logo: ReactElement;
+  title: string;
+  description: string;
+}
+
+```
+
+================
+FILE: src\constants\konjkavWelcomConstant.tsx
+================
+
+```
+import { ReactElement } from "react";
+import { FluentEmoji } from '@lobehub/fluent-emoji';
+
+
+export const konjkavWelcomeConstant:KonjkavType[] = [
+  {
+    logo: <FluentEmoji emoji='🕵️' size={24}  type='3d'/>,
+    title: 'کارآگاهِ دانش شو',
+    description:
+      "یادگیری رو با پرسیدن سوال‌های هیجان‌انگیز شروع کن و مثل یک کارآگاه به عمق هر موضوعی سفر کن.",
+  },
+  {
+    logo:<FluentEmoji emoji='🌌' size={24}  type='anim'/>,
+    title: ' از یک کلمه تا یک کهکشان',
+    description:
+      'فقط یک موضوع رو انتخاب کن تا کیدو با سوال‌های جدید، راه رو برای کشف‌های بزرگتر برات باز کنه.',
+  },
+  {
+    logo: <FluentEmoji emoji='🗺️' size={24}  type='anim'/>,
+    title: 'ماجراجویی در سرزمین علم',
+    description:
+    'هیچوقت برای یادگرفتن متوقف نشو؛ همیشه یک سوال جالب و یک مسیر کشف نشده منتظرته!',
+  },
+];
+export interface KonjkavType{
+   logo:ReactElement ,
+    title: string,
+    description:string
+}
+
+```
+
+================
+FILE: src\constants\azmonWelcomeConstant.tsx
+================
+
+```
+// import { FluentEmoji } from '@lobehub/fluent-emoji';
+// import { ReactElement } from 'react';
+
+// export const azmonWelcomeConstant:AzmonType[] = [
+//   {
+//     logo: <FluentEmoji emoji='🏆' size={24}  type='anim'/>,
+//     title: 'قهرمان امتحان خودت باش',
+//     description:
+//       'با آزمون‌ساز از هر درس و فصلی که بخوای، آزمون بساز و نقاط قوت و ضعفت رو پیدا کن.',
+//   },
+//   {
+//     logo:<FluentEmoji emoji='🎚️' size={24}  type='anim'/>,
+//     title: ' سطح سوالات دست خودته',
+//     description:'آزمون‌ها رو با سختی دلخواهت بساز، از سوالای آسون شروع کن و با سخت‌ترین‌ها بهتر یاد بگیر.',
+//   },
+//   {
+//     logo:<FluentEmoji emoji='😌' size={24}  type='anim'/>,
+//     title: 'با نمره ۲۰ غافلگیرشون کن',
+//     description:
+//      'با سوال‌های شبیه به امتحان اصلی تمرین کن تا سر جلسه، جواب‌ها رو چشم‌بسته بزنی!',
+//   },
+// ];
+// export interface AzmonType{
+//    logo:ReactElement ,
+//     title: string,
+//     description:string
+// }
 ```
 
 ================
@@ -4086,6 +4112,261 @@ export default Chat;
 ```
 
 ================
+FILE: src\teacher\components\home\ToolCard.tsx
+================
+
+```
+// src/teacher/components/home/ToolCard.tsx
+
+import { FC } from "react";
+import { useNavigate } from "react-router-dom";
+
+interface ToolCardProps {
+  title: string;
+  description: string;
+  tool: "DARS_YAR" | "KONJKAV_SHO" | "AZMOON_SAZ" | "TARKIB_KON";
+  hasRecentChats?: boolean;
+  image:string
+}
+
+const getToolRoute = (tool: string, hasRecentChats: boolean) => {
+  switch (tool) {
+    case "DARS_YAR":
+      return hasRecentChats ? "/student/darsyar/recent-chat" : "/student/darsyar/study-assistant";
+    case "KONJKAV_SHO":
+      return hasRecentChats ? "/student/konjkav/recent-chat" : "/student/konjkav/welcome";
+    case "TARKIB_KON":
+      return hasRecentChats ? "/student/tarkibkon/recent-chat" : "/student/tarkibkon/welcome";
+    case "AZMOON_SAZ":
+      return "#";
+    default:
+      return "/student";
+  }
+};
+
+const ToolCard: FC<ToolCardProps> = ({  title, description, tool, hasRecentChats = false,image }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    const route = getToolRoute(tool, hasRecentChats);
+    navigate(route);
+  };
+
+  return (
+  <div onClick={handleClick} className="w-full">
+   
+   <div className="card-box cursor-pointer  h-full">
+     <div className="flex flex-col items-center text-center justify-between rounded-[24px] bg-white p-[16px] h-[160px] w-full">
+      <img src={image} className="h-[56px] w-[56px] flex-shrink-0"/>
+      <div className="flex flex-col justify-center flex-grow">
+        <h3 className="font-extrabold text-[18px]">{title}</h3>
+        <p className="text-[10px] leading-relaxed">{description}</p>
+      </div>
+    </div>
+   </div>
+  </div>
+  );
+};
+
+export default ToolCard;
+```
+
+================
+FILE: src\teacher\components\home\RecentChat.tsx
+================
+
+```
+import React from 'react'
+import darsyar from './../../../assets/images/darsyar.webp'
+
+const RecentChatCard = () => {
+  return (
+    <div>
+         <div className='card-box mb-[12px]'>
+            <div className='flex justify-start items-center bg-white rounded-[24px] p-[16px] gap-[16px] pl-[24px]'>
+                <div>
+                    <img className='w-[56px] h-[56px] ' src={darsyar}/>
+                </div>
+                <div className='flex flex-col gap-[4px] '>
+                    <h1 className='font-extrabold line-clamp-1 w-[215px] text-[14px]'>توضیحات مربوط به فتوسنتز و بقیه اطلاعات مهم و کاربری</h1>
+                    <div className='flex justify-start items-start gap-[4px]'>
+                        <p className=' bg-backGround-1 gap-[8px] px-[8px] rounded-[16px] text-[10px] py-[2px]'>د‌رس‌یار</p>
+                    <p className='bg-backGround-1 gap-[8px] px-[8px] rounded-[16px] text-[10px] py-[2px]'> فارسی</p>
+                    <p className='bg-backGround-1 gap-[8px] px-[8px] rounded-[16px] text-[10px] py-[2px]' >19 خرداد</p>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+  )
+}
+
+export default RecentChatCard
+
+```
+
+================
+FILE: src\teacher\components\home\ProgressQuestion.tsx
+================
+
+```
+import React from 'react'
+interface ProgressBarProps {
+  progress: number; // The current progress percentage (0-100)
+}
+
+const ProgressQuestion:React.FC<ProgressBarProps> = ({ progress }) => {
+     const clampedProgress = Math.max(0, Math.min(100, progress));
+  return (
+        <div className='mb-[12px]'>
+         <div className='card-box'>
+            <div className='flex flex-col items-center bg-white rounded-[24px] p-[16px] gap-[16px] pl-[24px]'>
+             <div className='flex justify-between items-center'>
+                <div>
+                    <h1 className='text-[12px]'>
+                        سوالات باقی مانده
+                </h1>
+                </div>
+                <div className='mr-10 '>
+                    <h1 className='bg-[#F2EFFF] rounded-[24px] text-backGroundButton py-[2px] px-[8px]'>
+ 50 از 100
+                </h1>
+                </div>
+             </div>
+                <div className="w-full  rounded-full h-4 bg-backGround-1 overflow-hidden ">
+      <div
+        className="bg-gradient-to-l from-custom-purple via-custom-orange-1 to-custom-orange-2 h-4 rounded-full transition-all duration-500 ease-out"
+        style={{ width: `${clampedProgress}%` }}
+        role="progressbar"
+        aria-valuenow={clampedProgress}
+        aria-valuemin={0}
+        aria-valuemax={100}
+      ></div>
+    </div>
+            </div>
+        </div>
+    </div>
+    
+  )
+}
+
+export default ProgressQuestion
+
+```
+
+================
+FILE: src\teacher\components\home\Classes.tsx
+================
+
+```
+import React from 'react';
+import classImage from './../../../assets/images/class.webp'
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+import LoadingIndicator from '../../../components/common/LoadingIndicator';
+
+interface Class {
+    id: string;
+    name: string;
+}
+
+interface Student {
+  id: string;
+  full_name: string;
+  last_activity_at: string;
+  activity_status: 'Active' | 'Inactive';
+  current_mood: {
+    emoji: string;
+    text: string;
+  } | null; // Allow current_mood to be null
+}
+
+const Classes: React.FC = () => {
+  // Use a type assertion or provide a generic type to useQuery for better type inference
+  const { data: classes, isLoading: isLoadingClasses } = useQuery<Class[]>({
+        queryKey: ['teacherClasses'],
+        queryFn: async () => {
+            console.log("API CALL: fetching classes for teacher");
+            const res = await axios.get('https://kiddo2.pythonanywhere.com/api/v1/academics/classes/');
+            console.log("API RESPONSE: fetching classes success", res.data);
+            return res.data;
+        },
+        staleTime: 300000, // Cache for 5 minutes
+    });
+
+    const classId = classes?.[0]?.id;
+
+    const { data: students, isLoading: isLoadingStudents, isError, error } = useQuery<Student[]>({
+        queryKey: ['students', classId],
+        queryFn: async () => {
+            console.log(`API CALL: fetching students for class ${classId}`);
+            const res = await axios.get(`https://kiddo2.pythonanywhere.com/api/v1/academics/classes/${classId}/students/`);
+            console.log(`API RESPONSE: fetching students for class ${classId} success`, res.data);
+            return res.data;
+        },
+        enabled: !!classId,
+    });
+ 
+  // Log data when not loading, for debugging (can be removed in production)
+  // Check if data exists before logging its structure, as it's undefined initially
+  if (!isLoadingClasses && classes) {
+    console.log("Fetched Data:", classes);
+  }
+  console.log(students)
+
+  // 2. Handle different states: Loading, Error, and Success
+
+  // Loading state
+  if (isLoadingClasses) {
+    return  <div className="flex justify-center items-center text-center">
+                  <LoadingIndicator className="w-10 h-10 " />
+                </div>;
+  }
+
+  // Error state
+  if (isError) {
+    console.error("Error fetching classes:", error); // Log the error for debugging
+    return <div className="p-4 text-center text-red-500">خطا در بارگذاری کلاس‌ها: {error?.message || 'نامشخص'}</div>; // "Error loading classes: ..."
+  }
+
+  // Success state: Data is available
+  return (
+    <>
+      <div className="bg-backGround-1 "> {/* A general container for the whole section */}
+        {/* Check if data is an array and not empty before mapping */}
+       
+          <div className=""> {/* Added space-y for consistent vertical spacing */}
+            {classes?.map((classItem) => (
+              <div key={classItem.id} className='mb-[12px]'> {/* key prop is essential */}
+                <div className='card-box'> {/* Ensure .card-box is defined in your CSS */}
+                  <div className='flex justify-start items-center bg-white rounded-[24px] p-[16px] gap-[16px] '>
+                    <div>
+                      <img className='w-[56px] h-[56px]' src={classImage} alt={`تصویر ${classItem.name}`} /> {/* Dynamic alt text */}
+                    </div>
+                    <div className='flex flex-col '>
+                      <h1 className='font-extrabold line-clamp-1 text-[14px]'>{classItem.name}</h1>
+                      <div className='flex justify-start items-start'>
+                        <p className='bg-backGround-1 px-[8px] rounded-[16px] text-[10px] py-[2px]'>
+                          {students?.length} دانش آموز
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        
+      </div>
+    </>
+  );
+};
+
+export default Classes;
+```
+
+================
 FILE: src\teacher\components\contentContainer\StudentAlert.tsx
 ================
 
@@ -4407,15 +4688,13 @@ export default Modal;
 ```
 
 ================
-FILE: src\teacher\components\home\ToolCard.tsx
+FILE: src\student\components\home\ToolCard.tsx
 ================
 
 ```
-// src/teacher/components/home/ToolCard.tsx
-
 import { FC } from "react";
 import { useNavigate } from "react-router-dom";
-
+ 
 interface ToolCardProps {
   title: string;
   description: string;
@@ -4433,7 +4712,7 @@ const getToolRoute = (tool: string, hasRecentChats: boolean) => {
     case "TARKIB_KON":
       return hasRecentChats ? "/student/tarkibkon/recent-chat" : "/student/tarkibkon/welcome";
     case "AZMOON_SAZ":
-      return "#";
+      return "#"; // No route for Azmoon Saz yet
     default:
       return "/student";
   }
@@ -4448,217 +4727,147 @@ const ToolCard: FC<ToolCardProps> = ({  title, description, tool, hasRecentChats
   };
 
   return (
-  <div onClick={handleClick} className="w-full">
+  <div onClick={handleClick} className="w-full" >
    
    <div className="card-box cursor-pointer  h-full">
-     <div className="flex flex-col items-center text-center justify-between rounded-[24px] bg-white p-[16px] h-[160px] w-full">
-      <img src={image} className="h-[56px] w-[56px] flex-shrink-0"/>
-      <div className="flex flex-col justify-center flex-grow">
-        <h3 className="font-extrabold text-[18px]">{title}</h3>
-        <p className="text-[10px] leading-relaxed">{description}</p>
-      </div>
+     <div className="flex flex-col items-center text-center rounded-[24px] bg-white relative p-[16px] w-full">
+      <img src={image} className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[56px] w-[56px]" alt={title} />
+      <h3 className="font-extrabold text-[18px] mt-[28px] mb-[4px]">{title}</h3>
+      <p className="text-[10px]">{description}</p>
     </div>
    </div>
   </div>
   );
 };
 
-export default ToolCard;
+export default ToolCard
 ```
 
 ================
-FILE: src\teacher\components\home\RecentChat.tsx
+FILE: src\student\components\home\RecentItem.tsx
 ================
 
 ```
-import React from 'react'
-import darsyar from './../../../assets/images/darsyar.webp'
+import { FC } from "react";
 
-const RecentChatCard = () => {
+interface RecentItemProps {
+  icon: React.ReactNode;
+  title: string;
+  date: string;
+}
+
+const RecentItem: FC<RecentItemProps> = ({ icon, title, date }) => {
   return (
-    <div>
-         <div className='card-box mb-[12px]'>
-            <div className='flex justify-start items-center bg-white rounded-[24px] p-[16px] gap-[16px] pl-[24px]'>
-                <div>
-                    <img className='w-[56px] h-[56px] ' src={darsyar}/>
-                </div>
-                <div className='flex flex-col gap-[4px] '>
-                    <h1 className='font-extrabold line-clamp-1 w-[215px] text-[14px]'>توضیحات مربوط به فتوسنتز و بقیه اطلاعات مهم و کاربری</h1>
-                    <div className='flex justify-start items-start gap-[4px]'>
-                        <p className=' bg-backGround-1 gap-[8px] px-[8px] rounded-[16px] text-[10px] py-[2px]'>د‌رس‌یار</p>
-                    <p className='bg-backGround-1 gap-[8px] px-[8px] rounded-[16px] text-[10px] py-[2px]'> فارسی</p>
-                    <p className='bg-backGround-1 gap-[8px] px-[8px] rounded-[16px] text-[10px] py-[2px]' >19 خرداد</p>
-                    </div>
-                </div>
-                
-            </div>
+    <div className="flex items-center justify-between bg-white p-3 rounded-lg shadow">
+      <div className="flex items-center gap-2">
+        <div className="text-2xl">{icon}</div>
+        <div className="flex flex-col">
+          <span className="text-sm font-medium truncate">{title}</span>
+          <span className="text-xs text-gray-500">{date}</span>
         </div>
-    </div>
-  )
-}
-
-export default RecentChatCard
-
-```
-
-================
-FILE: src\teacher\components\home\ProgressQuestion.tsx
-================
-
-```
-import React from 'react'
-interface ProgressBarProps {
-  progress: number; // The current progress percentage (0-100)
-}
-
-const ProgressQuestion:React.FC<ProgressBarProps> = ({ progress }) => {
-     const clampedProgress = Math.max(0, Math.min(100, progress));
-  return (
-        <div className='mb-[12px]'>
-         <div className='card-box'>
-            <div className='flex flex-col items-center bg-white rounded-[24px] p-[16px] gap-[16px] pl-[24px]'>
-             <div className='flex justify-between items-center'>
-                <div>
-                    <h1 className='text-[12px]'>
-                        سوالات باقی مانده
-                </h1>
-                </div>
-                <div className='mr-10 '>
-                    <h1 className='bg-[#F2EFFF] rounded-[24px] text-backGroundButton py-[2px] px-[8px]'>
- 50 از 100
-                </h1>
-                </div>
-             </div>
-                <div className="w-full  rounded-full h-4 bg-backGround-1 overflow-hidden ">
-      <div
-        className="bg-gradient-to-l from-custom-purple via-custom-orange-1 to-custom-orange-2 h-4 rounded-full transition-all duration-500 ease-out"
-        style={{ width: `${clampedProgress}%` }}
-        role="progressbar"
-        aria-valuenow={clampedProgress}
-        aria-valuemin={0}
-        aria-valuemax={100}
-      ></div>
-    </div>
-            </div>
-        </div>
-    </div>
-    
-  )
-}
-
-export default ProgressQuestion
-
-```
-
-================
-FILE: src\teacher\components\home\Classes.tsx
-================
-
-```
-import React from 'react';
-import classImage from './../../../assets/images/class.webp'
-import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
-import LoadingIndicator from '../../../components/common/LoadingIndicator';
-
-interface Class {
-    id: string;
-    name: string;
-}
-
-interface Student {
-  id: string;
-  full_name: string;
-  last_activity_at: string;
-  activity_status: 'Active' | 'Inactive';
-  current_mood: {
-    emoji: string;
-    text: string;
-  } | null; // Allow current_mood to be null
-}
-
-const Classes: React.FC = () => {
-  // Use a type assertion or provide a generic type to useQuery for better type inference
-  const { data: classes, isLoading: isLoadingClasses } = useQuery<Class[]>({
-        queryKey: ['teacherClasses'],
-        queryFn: async () => {
-            console.log("API CALL: fetching classes for teacher");
-            const res = await axios.get('https://kiddo2.pythonanywhere.com/api/v1/academics/classes/');
-            console.log("API RESPONSE: fetching classes success", res.data);
-            return res.data;
-        },
-        staleTime: 300000, // Cache for 5 minutes
-    });
-
-    const classId = classes?.[0]?.id;
-
-    const { data: students, isLoading: isLoadingStudents, isError, error } = useQuery<Student[]>({
-        queryKey: ['students', classId],
-        queryFn: async () => {
-            console.log(`API CALL: fetching students for class ${classId}`);
-            const res = await axios.get(`https://kiddo2.pythonanywhere.com/api/v1/academics/classes/${classId}/students/`);
-            console.log(`API RESPONSE: fetching students for class ${classId} success`, res.data);
-            return res.data;
-        },
-        enabled: !!classId,
-    });
- 
-  // Log data when not loading, for debugging (can be removed in production)
-  // Check if data exists before logging its structure, as it's undefined initially
-  if (!isLoadingClasses && classes) {
-    console.log("Fetched Data:", classes);
-  }
-  console.log(students)
-
-  // 2. Handle different states: Loading, Error, and Success
-
-  // Loading state
-  if (isLoadingClasses) {
-    return  <div className="flex justify-center items-center text-center">
-                  <LoadingIndicator className="w-10 h-10 " />
-                </div>;
-  }
-
-  // Error state
-  if (isError) {
-    console.error("Error fetching classes:", error); // Log the error for debugging
-    return <div className="p-4 text-center text-red-500">خطا در بارگذاری کلاس‌ها: {error?.message || 'نامشخص'}</div>; // "Error loading classes: ..."
-  }
-
-  // Success state: Data is available
-  return (
-    <>
-      <div className="bg-backGround-1 "> {/* A general container for the whole section */}
-        {/* Check if data is an array and not empty before mapping */}
-       
-          <div className=""> {/* Added space-y for consistent vertical spacing */}
-            {classes?.map((classItem) => (
-              <div key={classItem.id} className='mb-[12px]'> {/* key prop is essential */}
-                <div className='card-box'> {/* Ensure .card-box is defined in your CSS */}
-                  <div className='flex justify-start items-center bg-white rounded-[24px] p-[16px] gap-[16px] '>
-                    <div>
-                      <img className='w-[56px] h-[56px]' src={classImage} alt={`تصویر ${classItem.name}`} /> {/* Dynamic alt text */}
-                    </div>
-                    <div className='flex flex-col '>
-                      <h1 className='font-extrabold line-clamp-1 text-[14px]'>{classItem.name}</h1>
-                      <div className='flex justify-start items-start'>
-                        <p className='bg-backGround-1 px-[8px] rounded-[16px] text-[10px] py-[2px]'>
-                          {students?.length} دانش آموز
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        
       </div>
-    </>
+    </div>
   );
 };
 
-export default Classes;
+export default RecentItem;
+
+```
+
+================
+FILE: src\student\components\home\HeroSection.tsx
+================
+
+```
+import { FC } from "react";
+import book from './../../../assets/images/book.png'
+import hero from './../../../assets/images/heroSection.png'
+
+const HeroSection: FC = () => {
+  return (
+   <div  className="bg-gradient-to-l from-custom-purple via-custom-orange-1 to-custom-orange-2 p-[2px] rounded-[18px] flex items-center justify-between h-25 ">
+        <div className="flex h-full w-full bg-gradient-to-l from-purple-100 to-orange-100 rounded-[16px] ">
+            <div className="flex flex-3/4 justify-center items-center flex-col">
+       <div className="flex justify-center">
+         <img src={book}/>
+          <h2 className="font-bold text-lg text-center">درس‌یار</h2>
+       </div>
+          <p className="text-sm text-gray-700">بهت کمک می‌کنه، درسا رو بهتر بفهمی!</p>
+        </div>
+        <div className="text-4xl flex flex-1/4 justify-end ml-4">
+        <img  src={hero}/>
+        </div>
+        </div>
+        
+      </div>
+  );
+};
+
+export default HeroSection;
+
+```
+
+================
+FILE: src\student\components\home\Header.tsx
+================
+
+```
+import { FC, useState, useEffect } from "react";
+import { logout } from "../../../api"; // Import the logout function
+import kiddo from './../../../assets/images/Kiddos.svg';
+
+const Header: FC = () => {
+ 
+
+  const handleLogout = () => {
+    logout(); 
+  };
+
+
+
+  return (
+    <div>
+      <header
+        className={`
+          flex items-center justify-between bg-white py-[24px] px-[16px] h-[52px]
+          fixed top-0 w-full z-100
+          
+        `}
+      >
+        {/* Logout Icon Button on the left */}
+        <button onClick={handleLogout} className="text-gray-600 hover:text-red-500 transition-colors">
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            className="h-6 w-6" 
+            fill="none" 
+            viewBox="0 0 24 24" 
+            stroke="currentColor" 
+            strokeWidth={2}
+          >
+            <path 
+              strokeLinecap="round" 
+              strokeLinejoin="round" 
+              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" 
+            />
+          </svg>
+        </button>
+        
+        <div className="flex items-center">
+            <img src={kiddo} className="h-[24px] w-[24px] ml-[8px]"/>
+            <div className="text-[16px] font-extrabold">کیــــدو </div>
+        </div>
+        
+        {/* Placeholder to balance the layout */}
+        <div className="w-6"></div>
+      </header>
+      
+      
+      <hr className="border-[1.5px] border-borderColor-1 w-full fixed" />
+    </div>
+  );
+};
+
+export default Header;
 ```
 
 ================
@@ -5540,189 +5749,6 @@ const DarsyarChatWithBot = () => {
 };
 
 export default DarsyarChatWithBot;
-```
-
-================
-FILE: src\student\components\home\ToolCard.tsx
-================
-
-```
-import { FC } from "react";
-import { useNavigate } from "react-router-dom";
- 
-interface ToolCardProps {
-  title: string;
-  description: string;
-  tool: "DARS_YAR" | "KONJKAV_SHO" | "AZMOON_SAZ" | "TARKIB_KON";
-  hasRecentChats?: boolean;
-  image:string
-}
-
-const getToolRoute = (tool: string, hasRecentChats: boolean) => {
-  switch (tool) {
-    case "DARS_YAR":
-      return hasRecentChats ? "/student/darsyar/recent-chat" : "/student/darsyar/study-assistant";
-    case "KONJKAV_SHO":
-      return hasRecentChats ? "/student/konjkav/recent-chat" : "/student/konjkav/welcome";
-    case "TARKIB_KON":
-      return hasRecentChats ? "/student/tarkibkon/recent-chat" : "/student/tarkibkon/welcome";
-    case "AZMOON_SAZ":
-      return "#"; // No route for Azmoon Saz yet
-    default:
-      return "/student";
-  }
-};
-
-const ToolCard: FC<ToolCardProps> = ({  title, description, tool, hasRecentChats = false,image }) => {
-  const navigate = useNavigate();
-
-  const handleClick = () => {
-    const route = getToolRoute(tool, hasRecentChats);
-    navigate(route);
-  };
-
-  return (
-  <div onClick={handleClick} className="w-full" >
-   
-   <div className="card-box cursor-pointer  h-full">
-     <div className="flex flex-col items-center text-center rounded-[24px] bg-white relative p-[16px] w-full">
-      <img src={image} className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[56px] w-[56px]" alt={title} />
-      <h3 className="font-extrabold text-[18px] mt-[28px] mb-[4px]">{title}</h3>
-      <p className="text-[10px]">{description}</p>
-    </div>
-   </div>
-  </div>
-  );
-};
-
-export default ToolCard
-```
-
-================
-FILE: src\student\components\home\RecentItem.tsx
-================
-
-```
-import { FC } from "react";
-
-interface RecentItemProps {
-  icon: React.ReactNode;
-  title: string;
-  date: string;
-}
-
-const RecentItem: FC<RecentItemProps> = ({ icon, title, date }) => {
-  return (
-    <div className="flex items-center justify-between bg-white p-3 rounded-lg shadow">
-      <div className="flex items-center gap-2">
-        <div className="text-2xl">{icon}</div>
-        <div className="flex flex-col">
-          <span className="text-sm font-medium truncate">{title}</span>
-          <span className="text-xs text-gray-500">{date}</span>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default RecentItem;
-
-```
-
-================
-FILE: src\student\components\home\HeroSection.tsx
-================
-
-```
-import { FC } from "react";
-import book from './../../../assets/images/book.png'
-import hero from './../../../assets/images/heroSection.png'
-
-const HeroSection: FC = () => {
-  return (
-   <div  className="bg-gradient-to-l from-custom-purple via-custom-orange-1 to-custom-orange-2 p-[2px] rounded-[18px] flex items-center justify-between h-25 ">
-        <div className="flex h-full w-full bg-gradient-to-l from-purple-100 to-orange-100 rounded-[16px] ">
-            <div className="flex flex-3/4 justify-center items-center flex-col">
-       <div className="flex justify-center">
-         <img src={book}/>
-          <h2 className="font-bold text-lg text-center">درس‌یار</h2>
-       </div>
-          <p className="text-sm text-gray-700">بهت کمک می‌کنه، درسا رو بهتر بفهمی!</p>
-        </div>
-        <div className="text-4xl flex flex-1/4 justify-end ml-4">
-        <img  src={hero}/>
-        </div>
-        </div>
-        
-      </div>
-  );
-};
-
-export default HeroSection;
-
-```
-
-================
-FILE: src\student\components\home\Header.tsx
-================
-
-```
-import { FC, useState, useEffect } from "react";
-import { logout } from "../../../api"; // Import the logout function
-import kiddo from './../../../assets/images/Kiddos.svg';
-
-const Header: FC = () => {
- 
-
-  const handleLogout = () => {
-    logout(); 
-  };
-
-
-
-  return (
-    <div>
-      <header
-        className={`
-          flex items-center justify-between bg-white py-[24px] px-[16px] h-[52px]
-          fixed top-0 w-full z-100
-          
-        `}
-      >
-        {/* Logout Icon Button on the left */}
-        <button onClick={handleLogout} className="text-gray-600 hover:text-red-500 transition-colors">
-          <svg 
-            xmlns="http://www.w3.org/2000/svg" 
-            className="h-6 w-6" 
-            fill="none" 
-            viewBox="0 0 24 24" 
-            stroke="currentColor" 
-            strokeWidth={2}
-          >
-            <path 
-              strokeLinecap="round" 
-              strokeLinejoin="round" 
-              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" 
-            />
-          </svg>
-        </button>
-        
-        <div className="flex items-center">
-            <img src={kiddo} className="h-[24px] w-[24px] ml-[8px]"/>
-            <div className="text-[16px] font-extrabold">کیــــدو </div>
-        </div>
-        
-        {/* Placeholder to balance the layout */}
-        <div className="w-6"></div>
-      </header>
-      
-      
-      <hr className="border-[1.5px] border-borderColor-1 w-full fixed" />
-    </div>
-  );
-};
-
-export default Header;
 ```
 
 ================
