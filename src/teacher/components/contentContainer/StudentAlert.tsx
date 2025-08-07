@@ -32,7 +32,7 @@ const AlertItem: React.FC<{
       api.start({
         to: async (next) => {
           await next({ x: xDir * window.innerWidth, opacity: 0 });
-          await next({ height: 0, immediate: true });
+          await next({ height: "0px", immediate: true });
         },
         onRest: () => onResolve(event.id), // فراخوانی resolve بعد از اتمام انیمیشن
       });

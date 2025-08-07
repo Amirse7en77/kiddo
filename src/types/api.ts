@@ -27,6 +27,7 @@ export interface ChatEvent {
   subject_name: string;
   created_at: string;
   is_resolved: boolean;
+  session_id: string;
 }
 
 // Based on GET /api/v1/chat/events/{event_id}/

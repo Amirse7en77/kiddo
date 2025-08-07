@@ -5,12 +5,15 @@ interface ToolsProps {
   name: string; // Add a name prop to identify each tool
   isActive: boolean;
   onClick: (name: string) => void;
+  isDisabled?: boolean;
 }
 
-const Tools: React.FC<ToolsProps> = ({ name, isActive, onClick }) => {
+const Tools: React.FC<ToolsProps> = ({ name, isActive, onClick, isDisabled = false }) => {
  
   const handleClick = () => {
-    onClick(name);
+    if (!isDisabled) {
+      onClick(name);
+    }
   };
 
   return (
